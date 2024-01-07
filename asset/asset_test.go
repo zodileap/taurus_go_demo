@@ -66,7 +66,7 @@ func TestCopy(t *testing.T) {
 }
 
 func TestCopyDir(t *testing.T) {
-	err := asset.CopyDir("dir", "dir2")
+	err := asset.CopyDir("dir", "dst")
 	if err != nil {
 		fmt.Print(err)
 	}
