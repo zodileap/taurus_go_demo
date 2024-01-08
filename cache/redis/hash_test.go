@@ -3,18 +3,17 @@ package redis
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/yohobala/taurus_go/cache/redis"
 )
 
-func TestSetExample(t *testing.T) {
+func TestHashAdd(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -22,100 +21,28 @@ func TestSetExample(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	s.Add("set_key", 0, "value")
-	s.Get("set_key")
-	s.Add("set_key", 0, "value3")
-	s.Add("set_key2", 0, "value2")
-	s.Del("set_key", "value")
-	s.Get("set_key")
+	h.Add("hash_key", 0, "filed_1", "value1")
+	h.Add("hash_key", 0, "filed_2", "value2")
+	h.Add("hash_key2", 0, "filed_1", "value1")
 	r, err := c.Save()
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyRes := r.GetSet("set_key")
-	fmt.Println(keyRes)
-	if err != nil {
-		fmt.Println(err)
-	}
-	s, err = c.Set()
-	if err != nil {
-		fmt.Println(err)
-	}
-	s.Add("set_key", 0, "value666")
-	c.Save()
-}
-
-func TestSetExampleDelAll(t *testing.T) {
-	name := "test"
-	options := &redis.Options{
-		Addr:     "localhost:6379",
-		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
-	}
-	redis.SetClient(name, options)
-	c, err := redis.GetClient("test")
-	defer c.Close()
-	if err != nil {
-		fmt.Println(err)
-	}
-	s, err := c.Set()
-	if err != nil {
-		fmt.Println(err)
-	}
-	s.Add("set_key", 0, "value")
-	s.Get("set_key")
-	s.Add("set_key", 0, "value3")
-	s.Del("set_key", "value")
-	s.DelAll("set_key")
-	r, err := c.Save()
-	if err != nil {
-		fmt.Println(err)
-	}
-	keyRes := r.GetSet("set_key")
-	fmt.Println(keyRes)
-}
-
-func TestSetAdd(t *testing.T) {
-	name := "test"
-	options := &redis.Options{
-		Addr:     "localhost:6379",
-		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
-	}
-	redis.SetClient(name, options)
-	c, err := redis.GetClient("test")
-	defer c.Close()
-	if err != nil {
-		fmt.Println(err)
-	}
-	s, err := c.Set()
-	if err != nil {
-		fmt.Println(err)
-	}
-	s.Add("set_key", 0, "value")
-	s.Add("set_key", 0, "value2")
-	s.Add("set_key2", 0, "value2")
-	r, err := c.Save()
-	if err != nil {
-		fmt.Println(err)
-	}
-	keyRes := r.GetSet("set_key")
+	keyRes := r.GetHash("hash_key")
 	fmt.Println(keyRes.AddNum)
 }
 
-func TestSetGet(t *testing.T) {
+func TestHashAddM(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -123,26 +50,55 @@ func TestSetGet(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	s.Get("set_key")
+	h.AddM("hash_key", 0, map[string]string{"filed_3": "value3", "filed_4": "value4"})
+	h.AddM("hash_key2", 0, map[string]string{"filed_2": "value2"})
 	r, err := c.Save()
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyRes := r.GetSet("set_key")
+	keyRes := r.GetHash("hash_key")
+	fmt.Println(keyRes.AddNum)
+}
+
+func TestHashGet(t *testing.T) {
+	name := "test"
+	options := &redis.Options{
+		Addr:     "localhost:6379",
+		Username: "",
+		Password: "",
+		DB:       1,
+	}
+	redis.SetClient(name, options)
+	c, err := redis.GetClient("test")
+	defer c.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h, err := c.Hash()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h.Get("hash_key", "filed_1")
+	h.Get("hash_key", "filed_2")
+	r, err := c.Save()
+	if err != nil {
+		fmt.Println(err)
+	}
+	keyRes := r.GetHash("hash_key")
 	fmt.Println(keyRes.Value)
 }
 
-func TestSetDel(t *testing.T) {
+func TestHashGetM(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -150,27 +106,29 @@ func TestSetDel(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	s.Del("set_key", "value")
-	s.Del("set_key2", "value2")
+	h.GetM("hash_key", []string{"filed_1", "filed_2"})
+	if err != nil {
+		fmt.Println(err)
+	}
 	r, err := c.Save()
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyRes := r.GetSet("set_key")
-	fmt.Println(keyRes.DelNum)
+	keyRes := r.GetHash("hash_key")
+	fmt.Println(keyRes.Value)
 }
 
-func TestSetDelAll(t *testing.T) {
+func TestHashGetVals(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -178,26 +136,87 @@ func TestSetDelAll(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	s.DelAll("set_key")
+	h.GetVals("hash_key")
+	if err != nil {
+		fmt.Println(err)
+	}
 	r, err := c.Save()
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyRes := r.GetSet("set_key")
+	keyRes := r.GetHash("hash_key")
+	fmt.Println(keyRes.Value)
+}
+
+func TestHashGetKeys(t *testing.T) {
+	name := "test"
+	options := &redis.Options{
+		Addr:     "localhost:6379",
+		Username: "",
+		Password: "",
+		DB:       1,
+	}
+	redis.SetClient(name, options)
+	c, err := redis.GetClient("test")
+	defer c.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h, err := c.Hash()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h.GetAll("hash_key")
+	if err != nil {
+		fmt.Println(err)
+	}
+	r, err := c.Save()
+	if err != nil {
+		fmt.Println(err)
+	}
+	keyRes := r.GetHash("hash_key")
+	fmt.Println(keyRes.MapValue)
+}
+
+func TestHashDel(t *testing.T) {
+	name := "test"
+	options := &redis.Options{
+		Addr:     "localhost:6379",
+		Username: "",
+		Password: "",
+		DB:       1,
+	}
+	redis.SetClient(name, options)
+	c, err := redis.GetClient("test")
+	defer c.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h, err := c.Hash()
+	if err != nil {
+		fmt.Println(err)
+	}
+	h.Del("hash_key", "filed_1")
+	h.Del("hash_key2", "filed_2")
+	r, err := c.Save()
+	if err != nil {
+		fmt.Println(err)
+	}
+	keyRes := r.GetHash("hash_key")
 	fmt.Println(keyRes.DelNum)
 }
 
-func TestSetAddR(t *testing.T) {
+func TestHashDelAll(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -205,29 +224,26 @@ func TestSetAddR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	r, err := s.AddR("set_key", 0, "value")
+	h.DelAll("hash_key")
+	r, err := c.Save()
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(r)
-	r, err = s.AddR("key4", 20*time.Second, "value4")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(r)
+	keyRes := r.GetHash("hash_key")
+	fmt.Println(keyRes.DelNum)
 }
 
-func TestSetGetR(t *testing.T) {
+func TestHashAddR(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -235,24 +251,29 @@ func TestSetGetR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	r, err := s.GetR("key3")
+	r1, err := h.AddR("hash_key", 0, "filed_1", "value1")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(r)
+	r2, err := h.AddR("hash_key", 0, "filed_2", "value2")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(r1)
+	fmt.Println(r2)
 }
 
-func TestSetDelR(t *testing.T) {
+func TestHashAddMR(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -260,29 +281,29 @@ func TestSetDelR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
 	if err != nil {
 		fmt.Println(err)
 	}
-	r, err := s.DelR("key3", "value3")
+	r1, err := h.AddMR("hash_key", 0, map[string]string{"filed_3": "value3", "filed_4": "value4"})
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(r)
-	r, err = s.DelR("set_key", "value")
+	r2, err := h.AddMR("hash_key2", 0, map[string]string{"filed_2": "value2"})
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(r)
+	fmt.Println(r1)
+	fmt.Println(r2)
 }
 
-func TestSetDelAllR(t *testing.T) {
+func TestHashGetR(t *testing.T) {
 	name := "test"
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -290,13 +311,15 @@ func TestSetDelAllR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	s, err := c.Set()
+	h, err := c.Hash()
+	r1, err := h.GetR("hash_key", "filed_1")
 	if err != nil {
 		fmt.Println(err)
 	}
-	r, err := s.DelAllR("set_key")
+	r2, err := h.GetR("hash_key", "filed_2")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(r)
+	fmt.Println(r1)
+	fmt.Println(r2)
 }

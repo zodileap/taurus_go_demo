@@ -43,9 +43,9 @@ func TestSetClient(t *testing.T) {
 	redis.SetClient("test", &redis.Options{
 		Addr: "localhost:6379",
 		// 如果有用户名,否则空字符串
-		Username: "root",
+		Username: "",
 		// 如果有密码,否则空字符串
-		Password: "root",
+		Password: "",
 		DB:       1,
 	})
 }
@@ -53,8 +53,8 @@ func TestSetClient(t *testing.T) {
 func TestGetClient(t *testing.T) {
 	redis.SetClient("test", &redis.Options{
 		Addr:     "localhost:6379",
-		Username: "root",
-		Password: "root",
+		Username: "",
+		Password: "",
 		DB:       1,
 	})
 	c, err := redis.GetClient("test")
@@ -68,8 +68,8 @@ func TestGetClient(t *testing.T) {
 func TestClearClient(t *testing.T) {
 	redis.SetClient("test", &redis.Options{
 		Addr:     "localhost:6379",
-		Username: "root",
-		Password: "root",
+		Username: "",
+		Password: "",
 		DB:       15,
 	})
 	defer redis.ClearClient()
@@ -78,8 +78,8 @@ func TestClearClient(t *testing.T) {
 func TestClose(t *testing.T) {
 	redis.SetClient("test", &redis.Options{
 		Addr:     "localhost:6379",
-		Username: "root",
-		Password: "root",
+		Username: "",
+		Password: "",
 		DB:       1,
 	})
 	c, err := redis.GetClient("test")
