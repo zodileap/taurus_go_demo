@@ -13,8 +13,8 @@ func TestSetExample(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -54,8 +54,8 @@ func TestSetExampleDelAll(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -85,8 +85,8 @@ func TestSetAdd(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -114,8 +114,8 @@ func TestSetGet(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -141,8 +141,8 @@ func TestSetDel(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -169,8 +169,8 @@ func TestSetDelAll(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -196,8 +196,8 @@ func TestSetAddR(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -226,8 +226,8 @@ func TestSetGetR(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -251,8 +251,8 @@ func TestSetDelR(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
@@ -281,8 +281,8 @@ func TestSetDelAllR(t *testing.T) {
 	options := &redis.Options{
 		Addr:     "localhost:6379",
 		Username: "",
-		Password: "", // no password set
-		DB:       1,  // use default DB
+		Password: "",
+		DB:       1,
 	}
 	redis.SetClient(name, options)
 	c, err := redis.GetClient("test")
