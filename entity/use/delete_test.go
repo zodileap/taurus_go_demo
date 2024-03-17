@@ -2,24 +2,42 @@ package use
 
 import (
 	"context"
-	entity "taurus_go_demo/entity/template"
 	"testing"
+	"time"
 
+	"github.com/yohobala/taurus_go/testutil/unit"
 	"github.com/yohobala/taurus_go/tlog"
 )
 
 func TestDelete(t *testing.T) {
-	db, err := entity.NewUser()
+	db := initDb()
 	defer db.Close()
-	if err != nil {
-		t.Errorf(err.Error())
-	}
 	ctx := context.Background()
-	u, err := db.Users.First(ctx)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	tlog.Print(u)
-	db.Users.Remove(u)
-	db.Save()
+
+	t.Run("single", func(t *testing.T) {
+		u, err := db.Blogs.First(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		tlog.Print(u)
+		db.Blogs.Remove(u)
+		db.Save(ctx)
+	})
+
+	t.Run("multi", func(t *testing.T) {
+		starttime := time.Now()
+		us, err := db.Blogs.Where(db.Blogs.Url.EQ("http://test.com")).ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		for _, u := range us {
+			if err := db.Blogs.Remove(u); err != nil {
+				unit.Must(err)
+			}
+		}
+		err = db.Save(ctx)
+		unit.Must(err)
+		elapsedTime := time.Since(starttime)
+		tlog.Printf("elapsedTime: %s", elapsedTime)
+	})
 }

@@ -1,4 +1,4 @@
-package cluster
+package schema
 
 import (
 	"github.com/yohobala/taurus_go/entity"
@@ -7,24 +7,13 @@ import (
 
 type User struct {
 	entity.Database
-	User UserEntity
+	Blog BlogEntity
 }
 
 func (d User) Config() entity.DbConfig {
 	return entity.DbConfig{
-		Tag:  "usertag",
-		Type: dialect.PostgreSQL,
-	}
-}
-
-type Permission struct {
-	entity.Database
-	User UserEntity
-}
-
-func (d Permission) Config() entity.DbConfig {
-	return entity.DbConfig{
-		Tag:  "usertag",
+		Name: "user",
+		Tag:  "User",
 		Type: dialect.PostgreSQL,
 	}
 }

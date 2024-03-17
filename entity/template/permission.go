@@ -1,7 +1,10 @@
 package gen
 
 import (
+	"context"
+
 	"github.com/yohobala/taurus_go/entity"
+	"github.com/yohobala/taurus_go/entity/entitysql"
 
 	"taurus_go_demo/entity/template/internal"
 	"taurus_go_demo/entity/template/user"
@@ -36,13 +39,23 @@ func (d *Permission) Close() error {
 }
 
 // Save saves all changes to the database.
-func (d *Permission) Save() error {
-	for _, m := range d.tracker.Mutators() {
-		if err := m.Exec(); err != nil {
-			return err
-		}
+func (d *Permission) Save(ctx context.Context) error {
+	tx, err := d.Config.MayTx(ctx)
+	if err != nil {
+		return err
 	}
-	return nil
+	if err := func() error {
+		for _, m := range d.tracker.Mutators() {
+			if err := m.Exec(ctx, tx); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return entitysql.Rollback(tx, err)
+	}
+
+	return tx.Commit()
 }
 
 func (d *Permission) init() {

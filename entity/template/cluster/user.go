@@ -8,11 +8,11 @@ import (
 type UserEntity struct {
 	entity.Entity
 	ID          field.Int64
-	UUID        field.String
-	Name        field.String
-	Email       field.String
+	UUID        field.Varchar
+	Name        field.Varchar
+	Email       field.Varchar
 	CreatedTime field.Timestamptz
-	Desc        field.String
+	Desc        field.Varchar
 }
 
 func (u UserEntity) Config() entity.EntityConfig {

@@ -50,7 +50,7 @@ var (
 )
 
 var (
-	rows = []entitysql.FieldName{
+	columns = []entitysql.FieldName{
 		FieldID.Name,
 		FieldUUID.Name,
 		FieldName.Name,
