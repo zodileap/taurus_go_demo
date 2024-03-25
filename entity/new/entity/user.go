@@ -12,23 +12,23 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 )
 
-const userTag = "User"
+const UserTag = "UserTag"
 
-// user  is an struct of the database
-type user struct {
+// User  is an struct of the database
+type User struct {
 	*internal.Config
 	tracker entity.Tracker
 
 	Blogs *blog.BlogEntityBuilder
 }
 
-// Newuser creates a new user instance.
-func Newuser() (*user, error) {
-	config, err := internal.NewConfig(userTag)
+// NewUser creates a new User instance.
+func NewUser() (*User, error) {
+	config, err := internal.NewConfig(UserTag)
 	if err != nil {
 		return nil, err
 	}
-	user := &user{
+	user := &User{
 		Config:  config,
 		tracker: &entity.Tracking{},
 	}
@@ -37,12 +37,12 @@ func Newuser() (*user, error) {
 }
 
 // Close closes the database.
-func (d *user) Close() error {
+func (d *User) Close() error {
 	return d.Driver.Close()
 }
 
 // Save saves all changes to the database.
-func (d *user) Save(ctx context.Context) error {
+func (d *User) Save(ctx context.Context) error {
 	tx, err := d.Config.MayTx(ctx)
 	if err != nil {
 		return err
@@ -60,7 +60,7 @@ func (d *user) Save(ctx context.Context) error {
 	return tx.Commit()
 }
 
-func (d *user) init() {
+func (d *User) init() {
 	d.Blogs = blog.NewBlogEntityBuilder(d.Config, d.tracker)
 	d.tracker.Add(d.Blogs)
 }

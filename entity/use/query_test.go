@@ -2,143 +2,138 @@ package use
 
 import (
 	"context"
-	entity "taurus_go_demo/entity/template"
+	"fmt"
 	"testing"
-
-	"github.com/yohobala/taurus_go/tlog"
 )
 
 func TestQuery(t *testing.T) {
-	db, err := entity.NewUser()
+	db := initDb()
 	defer db.Close()
-	if err != nil {
-		t.Errorf(err.Error())
-	}
 	ctx := context.Background()
 
 	t.Run("first", func(t *testing.T) {
-		u, err := db.Users.First(ctx)
+		u, err := db.Blogs.First(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
-		tlog.Print(u)
+		fmt.Println(u)
 	})
 
 	t.Run("list", func(t *testing.T) {
-		u, err := db.Users.ToList(ctx)
+		u, err := db.Blogs.ToList(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
-		tlog.Print(u)
+		fmt.Println(u)
 	})
 
 	t.Run("eq", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.Name.EQ("test"),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.EQ("single desc"),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("neq", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.Name.NEQ("test"),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.NEQ("single desc"),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("gt", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.GT(20159078),
+		u, err := db.Blogs.Where(
+			db.Blogs.ID.GT(1),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("gte", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.GTE(20159078),
+		u, err := db.Blogs.Where(
+			db.Blogs.ID.GTE(4068),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("lt", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.LT(20157081),
+		u, err := db.Blogs.Where(
+			db.Blogs.ID.LT(20157081),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("lte", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.LTE(20157081),
+		u, err := db.Blogs.Where(
+			db.Blogs.ID.LTE(20157081),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("in", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.IN(20157081, 20157083),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.In("single desc", "multi desc"),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("not in", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.ID.NotIn(20157081, 20157083),
+		u, err := db.Blogs.Where(
+			db.Blogs.ID.NotIn(1, 2),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("like", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.Name.Like("test"),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.Like("%mutil%"),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("is null", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.Email.IsNull(),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.IsNull(),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 
 	t.Run("is not null", func(t *testing.T) {
-		u, err := db.Users.Where(
-			db.Users.Email.NotNull(),
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.NotNull(),
 		).ToList(ctx)
-		tlog.Print(u)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
+		fmt.Println(u)
 	})
 }

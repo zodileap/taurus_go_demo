@@ -13,7 +13,7 @@ type User struct {
 func (d User) Config() entity.DbConfig {
 	return entity.DbConfig{
 		Name: "user",
-		Tag:  "User",
+		Tag:  "UserTag",
 		Type: dialect.PostgreSQL,
 	}
 }

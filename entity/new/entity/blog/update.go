@@ -30,6 +30,7 @@ func NewBlogEntityUpdate(c *internal.Config, es ...*BlogEntity) *BlogEntityUpdat
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
 		predicates: [][]func(*entitysql.Predicate){},
+		batchIndex: []int{0},
 	}
 }
 
@@ -120,7 +121,9 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 			}
 		}
 		if (o.total+num)/entity.BatchSize > len(o.batchIndex) {
-			o.batchIndex = append(o.batchIndex, len(o.predicates)-1)
+			o.batchIndex = append(o.batchIndex, len(o.predicates))
+		} else {
+			o.batchIndex[len(o.batchIndex)-1] = len(o.predicates)
 		}
 		o.total += num
 	}

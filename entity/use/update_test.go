@@ -18,14 +18,14 @@ func TestUpdate(t *testing.T) {
 		if err != nil {
 			t.Errorf(err.Error())
 		}
-		tlog.Print(u)
 		u.Desc.Set("single desc")
 		err = db.Save(ctx)
+		tlog.Print(*u.Desc.Get())
 		unit.Must(err)
 	})
 
 	t.Run("multi", func(t *testing.T) {
-		us, err := db.Blogs.Where(db.Blogs.Url.EQ("http://test.com")).ToList(ctx)
+		us, err := db.Blogs.Where(db.Blogs.Desc.EQ("single desc")).ToList(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}

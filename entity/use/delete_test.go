@@ -26,7 +26,7 @@ func TestDelete(t *testing.T) {
 
 	t.Run("multi", func(t *testing.T) {
 		starttime := time.Now()
-		us, err := db.Blogs.Where(db.Blogs.Url.EQ("http://test.com")).ToList(ctx)
+		us, err := db.Blogs.Where(db.Blogs.Desc.Like("%desc%")).ToList(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}

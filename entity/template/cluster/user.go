@@ -8,7 +8,7 @@ import (
 type UserEntity struct {
 	entity.Entity
 	ID          field.Int64
-	UUID        field.Varchar
+	UUID        field.UUID
 	Name        field.Varchar
 	Email       field.Varchar
 	CreatedTime field.Timestamptz

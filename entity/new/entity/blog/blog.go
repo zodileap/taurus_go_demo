@@ -12,7 +12,7 @@ const (
 
 var (
 	FieldID = entitysql.Field{
-		Name:     "i_d",
+		Name:     "id",
 		Primary:  1,
 		Default:  true,
 		Required: true,

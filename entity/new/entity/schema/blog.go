@@ -21,7 +21,7 @@ func (e BlogEntity) Config() entity.EntityConfig {
 
 func (e BlogEntity) Fields() []entity.FieldBuilder {
 	return []entity.FieldBuilder{
-		e.ID.Primary(1).Sequence(entity.NewSequence("blog_id_seq")).Comment("Blog primary key"),
+		e.ID.Name("id").Primary(1).Sequence(entity.NewSequence("blog_id_seq")).Comment("Blog primary key").Locked(),
 		e.UUID.Required().Name("uuid"),
 		e.CreatedTime.Required().Default("CURRENT_TIMESTAMP"),
 	}

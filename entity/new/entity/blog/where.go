@@ -13,67 +13,67 @@ type PredID struct {
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredID) EQ(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) EQ(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.EQ(FieldID.Name.String(), i_d)
+		p.EQ(FieldID.Name.String(), id)
 	}
 }
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredID) NEQ(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) NEQ(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.NEQ(FieldID.Name.String(), i_d)
+		p.NEQ(FieldID.Name.String(), id)
 	}
 }
 
-func (f *PredID) GT(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) GT(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.GT(FieldID.Name.String(), i_d)
+		p.GT(FieldID.Name.String(), id)
 	}
 }
 
-func (f *PredID) GTE(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) GTE(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.GTE(FieldID.Name.String(), i_d)
+		p.GTE(FieldID.Name.String(), id)
 	}
 }
 
-func (f *PredID) LT(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) LT(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.LT(FieldID.Name.String(), i_d)
+		p.LT(FieldID.Name.String(), id)
 	}
 }
 
-func (f *PredID) LTE(i_d int64) func(*entitysql.Predicate) {
+func (f *PredID) LTE(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.LTE(FieldID.Name.String(), i_d)
+		p.LTE(FieldID.Name.String(), id)
 	}
 }
 
-func (f *PredID) IN(i_ds ...int64) func(*entitysql.Predicate) {
+func (f *PredID) In(ids ...int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		v := make([]any, len(i_ds))
+		v := make([]any, len(ids))
 		for i := range v {
-			v[i] = i_ds[i]
+			v[i] = ids[i]
 		}
 		p.In(FieldID.Name.String(), v...)
 	}
 }
 
-func (f *PredID) NotIn(i_ds ...int64) func(*entitysql.Predicate) {
+func (f *PredID) NotIn(ids ...int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		v := make([]any, len(i_ds))
+		v := make([]any, len(ids))
 		for i := range v {
-			v[i] = i_ds[i]
+			v[i] = ids[i]
 		}
 		p.NotIn(FieldID.Name.String(), v...)
 	}
 }
 
-func (f *PredID) Like(i_d string) func(*entitysql.Predicate) {
+func (f *PredID) Like(id string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
-		p.Like(FieldID.Name.String(), i_d)
+		p.Like(FieldID.Name.String(), id)
 	}
 }
 
@@ -120,7 +120,7 @@ func (f *PredUUID) LTE(uuid string) func(*entitysql.Predicate) {
 	}
 }
 
-func (f *PredUUID) IN(uuids ...string) func(*entitysql.Predicate) {
+func (f *PredUUID) In(uuids ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(uuids))
 		for i := range v {
@@ -189,7 +189,7 @@ func (f *PredDesc) LTE(desc string) func(*entitysql.Predicate) {
 	}
 }
 
-func (f *PredDesc) IN(descs ...string) func(*entitysql.Predicate) {
+func (f *PredDesc) In(descs ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(descs))
 		for i := range v {
@@ -270,7 +270,7 @@ func (f *PredCreatedTime) LTE(created_time time.Time) func(*entitysql.Predicate)
 	}
 }
 
-func (f *PredCreatedTime) IN(created_times ...time.Time) func(*entitysql.Predicate) {
+func (f *PredCreatedTime) In(created_times ...time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(created_times))
 		for i := range v {

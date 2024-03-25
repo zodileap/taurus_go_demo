@@ -35,14 +35,14 @@ BEGIN
         -- Check for any extra columns, and delete them if there are any.
         -- 检查是否有多余的列，如果有则删除。
         FOR column_rec IN SELECT tbl.column_name, tbl.data_type FROM information_schema.columns tbl WHERE table_schema = 'public' AND table_name = 'blog' LOOP
-            IF column_rec.column_name NOT IN ('i_d','uuid','desc','created_time') THEN
+            IF column_rec.column_name NOT IN ('id','uuid','desc','created_time') THEN
                 EXECUTE 'ALTER TABLE "public"."blog" DROP COLUMN IF EXISTS ' || quote_ident(column_rec.column_name) || ' CASCADE;';
             END IF;
         END LOOP;
         -- Check for missing columns, and add them if any are missing.
         -- 检查是否缺少列，如果缺少则添加
-        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'blog' AND column_name = 'i_d' ) THEN
-            ALTER TABLE "public"."blog" ADD COLUMN "i_d" int8 NOT NULL DEFAULT nextval('blog_id_seq'::regclass);
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'blog' AND column_name = 'id' ) THEN
+            ALTER TABLE "public"."blog" ADD COLUMN "id" int8 NOT NULL DEFAULT nextval('blog_id_seq'::regclass);
         END IF;
         IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'blog' AND column_name = 'uuid' ) THEN
             ALTER TABLE "public"."blog" ADD COLUMN "uuid" uuid NOT NULL;
@@ -66,24 +66,24 @@ BEGIN
         IF v_constraint_name IS NOT NULL THEN
             EXECUTE 'ALTER TABLE "public"."blog" DROP CONSTRAINT IF EXISTS ' || quote_ident(v_constraint_name);
         END IF;
-        ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("i_d");
+        ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("id");
     ELSE
         -- If the table does not exist, then create the table.
         -- 如果表不存在，则创建表。
         CREATE TABLE "public"."blog" (
-            "i_d" int8 NOT NULL DEFAULT nextval('blog_id_seq'::regclass),
+            "id" int8 NOT NULL DEFAULT nextval('blog_id_seq'::regclass),
             "uuid" uuid NOT NULL,
             "desc" varchar(255),
             "created_time" timestamptz(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
         -- Field Comment.
         -- 字段备注。
-        COMMENT ON COLUMN "public"."blog"."i_d" IS  'Blog primary key';
+        COMMENT ON COLUMN "public"."blog"."id" IS  'Blog primary key';
         
         
         -- Primary Key.
         -- 主键。
-        ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("i_d");
+        ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("id");
     END IF;
 END
 $$;

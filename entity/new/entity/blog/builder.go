@@ -5,6 +5,7 @@ package blog
 import (
 	"context"
 	"taurus_go_demo/entity/new/entity/internal"
+	"time"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
@@ -64,6 +65,13 @@ func (s *BlogEntityBuilder) Where(conditions ...func(*entitysql.Predicate)) *Blo
 func (s *BlogEntityBuilder) WithDesc(desc string) func(*BlogEntity) {
 	return func(e *BlogEntity) {
 		e.Desc.Set(desc)
+	}
+}
+
+// WithCreatedTime sets the "created_time" field of the BlogEntity.
+func (s *BlogEntityBuilder) WithCreatedTime(createdtime time.Time) func(*BlogEntity) {
+	return func(e *BlogEntity) {
+		e.CreatedTime.Set(createdtime)
 	}
 }
 
@@ -165,10 +173,10 @@ func (ms *mutations) SetEntityState(e *BlogEntity, state entity.EntityState) err
 // but will not do so if the conditions are not met.
 func (ms *mutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
 	e := ms.getEntity(m)
+	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
 		return
 	}
-	ms.set(e, m.State())
 }
 
 func (ms *mutations) getEntity(m *entity.Mutation) *BlogEntity {
