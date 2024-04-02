@@ -5,10 +5,6 @@
     Schema: public
 */
 
-
-
-
-
 -- ********
 -- Sequence blog_id_seq
 -- ********
@@ -22,7 +18,6 @@ BEGIN
     CACHE 1;
 END
 $$;
-
 -- ********
 -- Table "blog"
 -- ********
@@ -66,6 +61,16 @@ BEGIN
         IF v_constraint_name IS NOT NULL THEN
             EXECUTE 'ALTER TABLE "public"."blog" DROP CONSTRAINT IF EXISTS ' || quote_ident(v_constraint_name);
         END IF;
+
+        -- Field Comment.
+        -- 字段备注。
+        COMMENT ON COLUMN "public"."blog"."id" IS  'Blog primary key';
+        
+        
+        
+        
+        -- Primary Key.
+        -- 主键。
         ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("id");
     ELSE
         -- If the table does not exist, then create the table.
@@ -79,6 +84,8 @@ BEGIN
         -- Field Comment.
         -- 字段备注。
         COMMENT ON COLUMN "public"."blog"."id" IS  'Blog primary key';
+        
+        
         
         
         -- Primary Key.

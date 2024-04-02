@@ -27,30 +27,40 @@ func (f *PredID) NEQ(id int64) func(*entitysql.Predicate) {
 	}
 }
 
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
 func (f *PredID) GT(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldID.Name.String(), id)
 	}
 }
 
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
 func (f *PredID) GTE(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldID.Name.String(), id)
 	}
 }
 
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
 func (f *PredID) LT(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldID.Name.String(), id)
 	}
 }
 
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
 func (f *PredID) LTE(id int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldID.Name.String(), id)
 	}
 }
 
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
 func (f *PredID) In(ids ...int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(ids))
@@ -61,6 +71,8 @@ func (f *PredID) In(ids ...int64) func(*entitysql.Predicate) {
 	}
 }
 
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
 func (f *PredID) NotIn(ids ...int64) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(ids))
@@ -71,6 +83,8 @@ func (f *PredID) NotIn(ids ...int64) func(*entitysql.Predicate) {
 	}
 }
 
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
 func (f *PredID) Like(id string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldID.Name.String(), id)
@@ -96,30 +110,40 @@ func (f *PredUUID) NEQ(uuid string) func(*entitysql.Predicate) {
 	}
 }
 
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
 func (f *PredUUID) GT(uuid string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldUUID.Name.String(), uuid)
 	}
 }
 
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
 func (f *PredUUID) GTE(uuid string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldUUID.Name.String(), uuid)
 	}
 }
 
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
 func (f *PredUUID) LT(uuid string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldUUID.Name.String(), uuid)
 	}
 }
 
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
 func (f *PredUUID) LTE(uuid string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldUUID.Name.String(), uuid)
 	}
 }
 
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
 func (f *PredUUID) In(uuids ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(uuids))
@@ -130,6 +154,8 @@ func (f *PredUUID) In(uuids ...string) func(*entitysql.Predicate) {
 	}
 }
 
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
 func (f *PredUUID) NotIn(uuids ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(uuids))
@@ -140,6 +166,8 @@ func (f *PredUUID) NotIn(uuids ...string) func(*entitysql.Predicate) {
 	}
 }
 
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
 func (f *PredUUID) Like(uuid string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldUUID.Name.String(), uuid)
@@ -165,30 +193,40 @@ func (f *PredDesc) NEQ(desc string) func(*entitysql.Predicate) {
 	}
 }
 
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
 func (f *PredDesc) GT(desc string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldDesc.Name.String(), desc)
 	}
 }
 
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
 func (f *PredDesc) GTE(desc string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldDesc.Name.String(), desc)
 	}
 }
 
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
 func (f *PredDesc) LT(desc string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldDesc.Name.String(), desc)
 	}
 }
 
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
 func (f *PredDesc) LTE(desc string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldDesc.Name.String(), desc)
 	}
 }
 
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
 func (f *PredDesc) In(descs ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(descs))
@@ -199,6 +237,8 @@ func (f *PredDesc) In(descs ...string) func(*entitysql.Predicate) {
 	}
 }
 
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
 func (f *PredDesc) NotIn(descs ...string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(descs))
@@ -209,18 +249,24 @@ func (f *PredDesc) NotIn(descs ...string) func(*entitysql.Predicate) {
 	}
 }
 
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
 func (f *PredDesc) Like(desc string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldDesc.Name.String(), desc)
 	}
 }
 
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
 func (f *PredDesc) IsNull() func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.IsNull(FieldDesc.Name.String())
 	}
 }
 
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
 func (f *PredDesc) NotNull() func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.NotNull(FieldDesc.Name.String())
@@ -246,30 +292,40 @@ func (f *PredCreatedTime) NEQ(created_time time.Time) func(*entitysql.Predicate)
 	}
 }
 
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
 func (f *PredCreatedTime) GT(created_time time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldCreatedTime.Name.String(), created_time)
 	}
 }
 
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
 func (f *PredCreatedTime) GTE(created_time time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldCreatedTime.Name.String(), created_time)
 	}
 }
 
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
 func (f *PredCreatedTime) LT(created_time time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldCreatedTime.Name.String(), created_time)
 	}
 }
 
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
 func (f *PredCreatedTime) LTE(created_time time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldCreatedTime.Name.String(), created_time)
 	}
 }
 
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
 func (f *PredCreatedTime) In(created_times ...time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(created_times))
@@ -280,6 +336,8 @@ func (f *PredCreatedTime) In(created_times ...time.Time) func(*entitysql.Predica
 	}
 }
 
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
 func (f *PredCreatedTime) NotIn(created_times ...time.Time) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(created_times))
@@ -290,6 +348,8 @@ func (f *PredCreatedTime) NotIn(created_times ...time.Time) func(*entitysql.Pred
 	}
 }
 
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
 func (f *PredCreatedTime) Like(created_time string) func(*entitysql.Predicate) {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldCreatedTime.Name.String(), created_time)

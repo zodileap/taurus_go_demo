@@ -12,13 +12,19 @@ import (
 )
 
 type BlogEntity struct {
-	config      *BlogEntityConfig
-	ID          *IDType
-	UUID        *UUIDType
-	Desc        *DescType
+	config *BlogEntityConfig
+
+	// ID Blog primary key
+	ID *IDType
+
+	UUID *UUIDType
+
+	Desc *DescType
+
 	CreatedTime *CreatedTimeType
 }
 
+// BlogEntityConfig holds the configuration for the BlogEntity.
 type BlogEntityConfig struct {
 	*mutations
 	*entity.Mutation
@@ -58,6 +64,7 @@ func (e *BlogEntity) State() entity.EntityState {
 	return e.config.State()
 }
 
+// remove removes the BlogEntity from the database.
 func (e *BlogEntity) remove() error {
 	return e.setState(entity.Deleted)
 }
@@ -72,14 +79,17 @@ func (e *BlogEntity) create(uuid string, options ...func(*BlogEntity)) (*BlogEnt
 	return e, nil
 }
 
+// setUnchanged sets the state of the BlogEntity to unchanged.
 func (e *BlogEntity) setUnchanged() error {
 	return e.setState(entity.Unchanged)
 }
 
+// setState sets the state of the BlogEntity.
 func (e *BlogEntity) setState(state entity.EntityState) error {
 	return e.config.mutations.SetEntityState(e, state)
 }
 
+// scan scans the database for the BlogEntity.
 func scan(e *BlogEntity, fields []entitysql.FieldName, rows dialect.Rows) error {
 	args := make([]interface{}, len(fields))
 	for i := range fields {

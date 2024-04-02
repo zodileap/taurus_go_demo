@@ -37,6 +37,26 @@ func TestQuery(t *testing.T) {
 		fmt.Println(u)
 	})
 
+	t.Run("eq_single", func(t *testing.T) {
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.EQ("desc"),
+		).Single(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+	})
+
+	t.Run("eq_limit", func(t *testing.T) {
+		u, err := db.Blogs.Where(
+			db.Blogs.Desc.EQ("desc"),
+		).Limit(3).ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+	})
+
 	t.Run("neq", func(t *testing.T) {
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.NEQ("single desc"),

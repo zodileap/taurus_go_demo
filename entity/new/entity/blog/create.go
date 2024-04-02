@@ -12,22 +12,24 @@ import (
 
 // BlogEntityCreate is the create action for the BlogEntity.
 type BlogEntityCreate struct {
-	*internal.Config
-	es []*BlogEntity
+	config *internal.Config
+	es     []*BlogEntity
 }
 
 // NewBlogEntityCreate creates a new BlogEntityCreate.
 func NewBlogEntityCreate(c *internal.Config, es ...*BlogEntity) *BlogEntityCreate {
 	return &BlogEntityCreate{
-		Config: c,
+		config: c,
 		es:     es,
 	}
 }
 
+// create executes the create action.
 func (o *BlogEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
+// sqlCreate executes the SQL create action.
 func (o *BlogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
@@ -50,6 +52,7 @@ func (o *BlogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	return entitysql.NewCreate(ctx, tx, spec)
 }
 
+// createSpec creates the create action spec. It checks for required fields and sets the returning fields.
 func (o *BlogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		FieldID.Name,

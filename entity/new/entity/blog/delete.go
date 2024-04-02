@@ -13,7 +13,7 @@ import (
 
 // BlogEntityDelete is the delete action for the BlogEntity.
 type BlogEntityDelete struct {
-	*internal.Config
+	config     *internal.Config
 	es         []*BlogEntity
 	predicates []func(*entitysql.Predicate)
 }
@@ -21,11 +21,12 @@ type BlogEntityDelete struct {
 // NewBlogEntityDelete creates a new BlogEntityDelete.
 func NewBlogEntityDelete(c *internal.Config, es ...*BlogEntity) *BlogEntityDelete {
 	return &BlogEntityDelete{
-		Config: c,
+		config: c,
 		es:     es,
 	}
 }
 
+// Where adds a predicate to the delete action.
 func (o *BlogEntityDelete) Where(predicates ...func(*entitysql.Predicate)) *BlogEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o

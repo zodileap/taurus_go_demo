@@ -12,19 +12,28 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
+// BlogEntityBuilder is a builder for the BlogEntity entity.
+//
+// The builder is used to create, update, and delete BlogEntity entities.
 type BlogEntityBuilder struct {
-	*internal.Config
-	*mutations
-	tracker     entity.Tracker
-	ID          PredID
-	UUID        PredUUID
-	Desc        PredDesc
+	config    *internal.Config
+	mutations *mutations
+	tracker   entity.Tracker
+
+	// ID Blog primary key
+	ID PredID
+
+	UUID PredUUID
+
+	Desc PredDesc
+
 	CreatedTime PredCreatedTime
 }
 
+// NewBlogEntityBuilder creates a new BlogEntityBuilder.
 func NewBlogEntityBuilder(c *internal.Config, t entity.Tracker) *BlogEntityBuilder {
 	return &BlogEntityBuilder{
-		Config:    c,
+		config:    c,
 		tracker:   t,
 		mutations: newMutations(),
 	}
@@ -34,7 +43,7 @@ func NewBlogEntityBuilder(c *internal.Config, t entity.Tracker) *BlogEntityBuild
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
 func (b *BlogEntityBuilder) New(uuid string, options ...func(*BlogEntity)) (*BlogEntity, error) {
-	e := New(b.Config, b.mutations)
+	e := New(b.config, b.mutations)
 	return e.create(uuid, options...)
 }
 
@@ -79,21 +88,21 @@ func (s *BlogEntityBuilder) WithCreatedTime(createdtime time.Time) func(*BlogEnt
 func (s *BlogEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	if len(s.mutations.Addeds) > 0 {
 		e := s.mutations.Get(entity.Added)
-		n := NewBlogEntityCreate(s.Config, e...)
+		n := NewBlogEntityCreate(s.config, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.mutations.Modifieds) > 0 {
 		e := s.mutations.Get(entity.Modified)
-		n := NewBlogEntityUpdate(s.Config, e...)
+		n := NewBlogEntityUpdate(s.config, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.mutations.Deleteds) > 0 {
 		e := s.mutations.Get(entity.Deleted)
-		n := NewBlogEntityDelete(s.Config, e...)
+		n := NewBlogEntityDelete(s.config, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
 		}
@@ -102,9 +111,10 @@ func (s *BlogEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 }
 
 func (s *BlogEntityBuilder) initQuery() *BlogEntityQuery {
-	return NewBlogEntityQuery(s.Config, s.tracker, s.mutations)
+	return NewBlogEntityQuery(s.config, s.tracker, s.mutations)
 }
 
+// mutations is a collection of BlogEntity mutation.
 type mutations struct {
 	Detacheds  map[string]*BlogEntity
 	Unchangeds map[string]*BlogEntity
@@ -113,6 +123,7 @@ type mutations struct {
 	Addeds     map[string]*BlogEntity
 }
 
+// newMutations creates a new mutations.
 func newMutations() *mutations {
 	return &mutations{
 		Detacheds:  make(map[string]*BlogEntity),
@@ -123,6 +134,7 @@ func newMutations() *mutations {
 	}
 }
 
+// Get returns all the BlogEntity in the specified state.
 func (ms *mutations) Get(state entity.EntityState) []*BlogEntity {
 	switch state {
 	case entity.Detached:
@@ -159,7 +171,7 @@ func (ms *mutations) Get(state entity.EntityState) []*BlogEntity {
 	return nil
 }
 
-// SetEntityState
+// SetEntityState sets the state of the entity.
 func (ms *mutations) SetEntityState(e *BlogEntity, state entity.EntityState) error {
 	m := e.config.Mutation
 	ms.set(e, state)
@@ -179,6 +191,7 @@ func (ms *mutations) ChangeEntityState(m *entity.Mutation, state entity.EntitySt
 	}
 }
 
+// getEntity returns the entity in the specified state.
 func (ms *mutations) getEntity(m *entity.Mutation) *BlogEntity {
 	key := m.Key()
 	switch m.State() {
@@ -196,7 +209,7 @@ func (ms *mutations) getEntity(m *entity.Mutation) *BlogEntity {
 	return nil
 }
 
-// Set 设置实体的状态。
+// Set sets the entity in the specified state.
 func (ms *mutations) set(e *BlogEntity, state entity.EntityState) {
 	m := e.config.Mutation
 	key := m.Key()

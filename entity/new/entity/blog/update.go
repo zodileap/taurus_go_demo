@@ -13,7 +13,7 @@ import (
 
 // BlogEntityUpdate is the update action for the BlogEntity.
 type BlogEntityUpdate struct {
-	*internal.Config
+	config     *internal.Config
 	ctx        *entitysql.QueryContext
 	tracker    entity.Tracker
 	es         []*BlogEntity
@@ -26,7 +26,7 @@ type BlogEntityUpdate struct {
 // NewBlogEntityUpdate creates a new BlogEntityUpdate.
 func NewBlogEntityUpdate(c *internal.Config, es ...*BlogEntity) *BlogEntityUpdate {
 	return &BlogEntityUpdate{
-		Config:     c,
+		config:     c,
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
 		predicates: [][]func(*entitysql.Predicate){},
