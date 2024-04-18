@@ -169,7 +169,7 @@ func TestQuery(t *testing.T) {
 
 	t.Run("link", func(t *testing.T) {
 		u, err := db.Posts.Include(
-			db.Posts.Blogs.Include(
+			db.Posts.Blog.Include(
 				db.Blogs.Posts,
 			).Where(db.Blogs.ID.EQ(4077)),
 		).ToList(ctx)
@@ -179,8 +179,8 @@ func TestQuery(t *testing.T) {
 		fmt.Println(u)
 
 		u, err = db.Posts.Include(
-			db.Posts.Blogs,
-			db.Posts.Authors,
+			db.Posts.Blog,
+			db.Posts.Author,
 			// db.Posts.Blogs,
 		).ToList(ctx)
 		if err != nil {
