@@ -17,7 +17,7 @@ func TestCreate(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("single", func(t *testing.T) {
-		u, err := db.Blogs.New(
+		u, err := db.Blogs.Create(
 			uuid.New().String(),
 			db.Blogs.WithCreatedTime(time.Now()),
 		)
@@ -31,7 +31,7 @@ func TestCreate(t *testing.T) {
 
 	t.Run("multi_1", func(t *testing.T) {
 		for i := 0; i < 2; i++ {
-			_, err := db.Blogs.New(
+			_, err := db.Blogs.Create(
 				uuid.New().String(),
 				db.Blogs.WithDesc("desc"),
 			)

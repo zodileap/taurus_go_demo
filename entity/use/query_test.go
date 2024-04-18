@@ -156,4 +156,56 @@ func TestQuery(t *testing.T) {
 		}
 		fmt.Println(u)
 	})
+
+	t.Run("order", func(t *testing.T) {
+		u, err := db.Posts.Order(
+			db.Posts.ByID.Asc(),
+		).ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+	})
+
+	t.Run("link", func(t *testing.T) {
+		u, err := db.Posts.Include(
+			db.Posts.Blogs.Include(
+				db.Blogs.Posts,
+			).Where(db.Blogs.ID.EQ(4077)),
+		).ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+
+		u, err = db.Posts.Include(
+			db.Posts.Blogs,
+			db.Posts.Authors,
+			// db.Posts.Blogs,
+		).ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+	})
+
+	t.Run("mulit", func(t *testing.T) {
+		u, err := db.Posts.Where(
+			db.Posts.ID.EQ(1),
+		).Order(db.Posts.ByID.Desc()).
+			ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+
+		u, err = db.Posts.Where(
+			db.Posts.ID.EQ(2),
+		).Order(db.Posts.ByBlogID.Asc()).
+			ToList(ctx)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		fmt.Println(u)
+	})
 }

@@ -9,14 +9,14 @@ import (
 	"github.com/yohobala/taurus_go/entity/dialect"
 )
 
-type Config struct {
+type Dialect struct {
 	Tag    string
 	Driver dialect.Driver
 }
 
-// NewConfig creates a new Config.
-func NewConfig(tag string) (*Config, error) {
-	c := &Config{
+// NewDialect creates a new Config.
+func NewDialect(tag string) (*Dialect, error) {
+	c := &Dialect{
 		Tag:    tag,
 		Driver: nil,
 	}
@@ -27,7 +27,7 @@ func NewConfig(tag string) (*Config, error) {
 	return c, nil
 }
 
-func (c *Config) initDriver() error {
+func (c *Dialect) initDriver() error {
 	driver, err := entity.GetConnection(c.Tag)
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func (c *Config) initDriver() error {
 	return nil
 }
 
-func (b *Config) MayTx(ctx context.Context) (dialect.Tx, error) {
+func (b *Dialect) MayTx(ctx context.Context) (dialect.Tx, error) {
 	tx, err := b.Driver.Tx(ctx)
 	if err != nil {
 		return nil, err
@@ -81,4 +81,23 @@ func SetEntityState(m *entity.Mutation, state entity.EntityState) error {
 		}
 	}
 	return nil
+}
+
+type Entity interface {
+}
+
+
+type EntityConfig interface {
+	New () Entity
+	Desc() EntityConfigDesc
+}
+
+type EntityConfigDesc struct {
+	Name string
+}
+
+type QueryScanner struct {
+	Config EntityConfig
+	Children []*QueryScanner
+	TableNum int
 }
