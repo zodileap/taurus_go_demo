@@ -4,50 +4,50 @@ package entity
 
 import (
 	"fmt"
+	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
 type AuthorEntity struct {
 	internal.Entity
-	config *AuthorEntityConfig
+	config *authorEntityConfig
 
 	// ID Author primary key
-	ID *AuthorID
+	ID *authorID
 
-	Name *AuthorName
+	Name *authorName
 
-	Post *PostEntity
+	Posts []*PostEntity
 }
 
-// AuthorEntityConfig holds the configuration for the AuthorEntity.
-type AuthorEntityConfig struct {
+// authorEntityConfig holds the configuration for the AuthorEntity.
+type authorEntityConfig struct {
 	internal.EntityConfig
-	*aothorMutations
-	*entity.Mutation
 	*internal.Dialect
+	*entity.Mutation
+	*authorEntityMutations
 	name string
 }
 
-func NewAuthorConfig(c *internal.Dialect) *AuthorEntityConfig {
-	return &AuthorEntityConfig{
-		Dialect:    c,
-		aothorMutations: newAuthorMutations(),
-		name: "author",
+func newAuthorEntityConfig(c *internal.Dialect) *authorEntityConfig {
+	return &authorEntityConfig{
+		Dialect:               c,
+		authorEntityMutations: newAuthorEntityMutations(),
+		name:                  "author",
 	}
 }
 
-func (c *AuthorEntityConfig) New() internal.Entity {
+// New creates a new AuthorEntity, but does not add tracking.
+func (c *authorEntityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &AuthorEntity{
-		config: &AuthorEntityConfig{
-			Mutation:  b,
-			Dialect:    c.Dialect,
-			aothorMutations: c.aothorMutations,
+		config: &authorEntityConfig{
+			Mutation:              b,
+			Dialect:               c.Dialect,
+			authorEntityMutations: c.authorEntityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -56,7 +56,7 @@ func (c *AuthorEntityConfig) New() internal.Entity {
 	return e
 }
 
-func (c *AuthorEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *authorEntityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -64,10 +64,10 @@ func (c *AuthorEntityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *AuthorEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Name: %v, Post: %v}",
+	return fmt.Sprintf("{ ID: %v, Name: %v, Posts: %v}",
 		e.ID,
 		e.Name,
-		e.Post,
+		e.Posts,
 	)
 }
 
@@ -98,13 +98,13 @@ func (e *AuthorEntity) setUnchanged() error {
 
 // setState sets the state of the AuthorEntity.
 func (e *AuthorEntity) setState(state entity.EntityState) error {
-	return e.config.aothorMutations.SetEntityState(e, state)
+	return e.config.authorEntityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the AuthorEntity.
-func (e *AuthorEntity) scan( fields []entitysql.ScannerField) []any {
+func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 	if len(fields) == 0 {
-		args := make([]interface{}, len(author.Columns))
+		args := make([]any, len(author.Columns))
 		for i, c := range author.Columns {
 			switch c.String() {
 			case author.FieldID.Name.String():
@@ -115,7 +115,7 @@ func (e *AuthorEntity) scan( fields []entitysql.ScannerField) []any {
 		}
 		return args
 	} else {
-		args := make([]interface{}, len(fields))
+		args := make([]any, len(fields))
 		for i := range fields {
 			switch fields[i].String() {
 			case author.FieldID.Name.String():
@@ -131,33 +131,36 @@ func (e *AuthorEntity) scan( fields []entitysql.ScannerField) []any {
 func (e *AuthorEntity) createRel(buidler *entitysql.ScannerBuilder, scanner *internal.QueryScanner) {
 	switch scanner.Config.Desc().Name {
 	case "post":
-		post := scanner.Config.New().(*PostEntity)
-		buidler.Append(scanner.TableNum - 1, post.scan([]entitysql.ScannerField{})...)
-		e.Post = post
+		postEntity := scanner.Config.New().(*PostEntity)
+		buidler.Append(scanner.TableNum-1, postEntity.scan([]entitysql.ScannerField{})...)
+		e.Posts = append(e.Posts, postEntity)
 		for _, c := range scanner.Children {
-			post.createRel(buidler, c)
+			postEntity.createRel(buidler, c)
 		}
 	}
 }
 
 func mergeAuthorEntity(es []*AuthorEntity, e *AuthorEntity) []*AuthorEntity {
-	if e == nil{
+	if e == nil {
 		return es
 	}
 	if len(es) == 0 {
 		es = append(es, e)
-	}else{
-		v := es[len(es) - 1]
+	} else {
+		v := es[len(es)-1]
+
 		if e.ID.Get() != nil {
 			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-			posts := mergePostEntity([]*PostEntity{v.Post}, e.Post)
-			if len(posts) > 0 {
-				v.Post = posts[0]
+				for _, post := range e.Posts {
+					posts := mergePostEntity(v.Posts, post)
+					if len(posts) > 0 {
+						v.Posts = posts
+					}
+				}
+			} else {
+				es = append(es, e)
 			}
-		}else{
-			es = append(es, e)
 		}
-	}
 	}
 	return es
 }

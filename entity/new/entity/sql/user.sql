@@ -12,7 +12,25 @@ DO $$
 BEGIN
 
 
+IF EXISTS (
+    SELECT 1
+    FROM information_schema.table_constraints
+    WHERE table_schema = 'public'
+    AND table_name = 'post'
+    AND constraint_name = 'fk_author_id'
+) THEN
+    ALTER TABLE "public"."post" DROP CONSTRAINT "fk_author_id";
+END IF;
 
+IF EXISTS (
+    SELECT 1
+    FROM information_schema.table_constraints
+    WHERE table_schema = 'public'
+    AND table_name = 'post'
+    AND constraint_name = 'fk_blog_id'
+) THEN
+    ALTER TABLE "public"."post" DROP CONSTRAINT "fk_blog_id";
+END IF;
 
 IF EXISTS (
     SELECT 1
@@ -112,6 +130,9 @@ BEGIN
     ALTER TABLE "public"."author" ADD CONSTRAINT author_pkey PRIMARY KEY ("id");
 
     
+    -- Foreign Key.
+    -- 外键。
+    
 END
 $$;
 
@@ -208,6 +229,9 @@ BEGIN
      -- 主键。
     ALTER TABLE "public"."blog" ADD CONSTRAINT blog_pkey PRIMARY KEY ("id");
 
+    
+    -- Foreign Key.
+    -- 外键。
     
 END
 $$;
@@ -308,12 +332,16 @@ BEGIN
     
     -- Foreign Key.
     -- 外键。
+    
     ALTER TABLE "public"."post"
     ADD CONSTRAINT fk_blog_id FOREIGN KEY ("blog_id")
     REFERENCES "public"."blog" ("id");
+    
+    
     ALTER TABLE "public"."post"
     ADD CONSTRAINT fk_author_id FOREIGN KEY ("author_id")
     REFERENCES "public"."author" ("id");
+    
 END
 $$;
 

@@ -5,23 +5,21 @@ package entity
 import (
 	"context"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/post"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-	"github.com/yohobala/taurus_go/tlog"
-
-	"taurus_go_demo/entity/new/entity/post"
 )
 
 // PostEntityQuery is the query action for the PostEntity.
 type PostEntityQuery struct {
-	config     *PostEntityConfig
-	ctx        *entitysql.QueryContext
-	predicates []func(*entitysql.Predicate)
-	rels      []PostEntityRel
-	order      []post.OrderTerm
-	scanner    []*internal.QueryScanner
+	config       *postEntityConfig
+	ctx          *entitysql.QueryContext
+	predicates   []entitysql.PredicateFunc
+	rels         []PostEntityRel
+	order        []post.OrderTerm
+	scanner      []*internal.QueryScanner
 	scannerTotal int
 }
 
@@ -35,23 +33,22 @@ func (o *PostEntityQuery) First(ctx context.Context) (*PostEntity, error) {
 }
 
 // NewPostEntityQuery creates a new PostEntityQuery.
-func NewPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postMutations) *PostEntityQuery {
+func NewPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postEntityMutations) *PostEntityQuery {
 	return &PostEntityQuery{
-		config: &PostEntityConfig{
-			Dialect:    c,
-			postMutations: ms,
+		config: &postEntityConfig{
+			Dialect:             c,
+			postEntityMutations: ms,
 		},
-		ctx: &entitysql.QueryContext{},
-		predicates: []func(*entitysql.Predicate){},
-		rels: []PostEntityRel{},
-		order: []post.OrderTerm{},
-		scanner: []*internal.QueryScanner{},
+		ctx:          &entitysql.QueryContext{},
+		predicates:   []entitysql.PredicateFunc{},
+		rels:         []PostEntityRel{},
+		order:        []post.OrderTerm{},
+		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
 	}
 }
 
-
-func (o *PostEntityQuery) Where(predicates ...func(*entitysql.Predicate)) *PostEntityQuery {
+func (o *PostEntityQuery) Where(predicates ...entitysql.PredicateFunc) *PostEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
@@ -62,9 +59,9 @@ func (o *PostEntityQuery) Limit(limit int) *PostEntityQuery {
 	return o
 }
 
-func (pq *PostEntityQuery) Order(o ...post.OrderTerm) *PostEntityQuery {
-	pq.order = append(pq.order, o...)
-	return pq
+func (o *PostEntityQuery) Order(term ...post.OrderTerm) *PostEntityQuery {
+	o.order = append(o.order, term...)
+	return o
 }
 
 func (o *PostEntityQuery) Include(rels ...PostEntityRel) *PostEntityQuery {
@@ -93,7 +90,7 @@ func (o *PostEntityQuery) sqlSingle(ctx context.Context) (*PostEntity, error) {
 	case *PostEntity:
 		spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 			builder := entitysql.NewScannerBuilder(o.scannerTotal)
-			builder.Append(0,res.scan(fields)...)
+			builder.Append(0, res.scan(fields)...)
 			for _, s := range o.scanner {
 				res.createRel(builder, s)
 			}
@@ -113,7 +110,6 @@ func (o *PostEntityQuery) sqlSingle(ctx context.Context) (*PostEntity, error) {
 	default:
 		return nil, entity.Err_0100030006
 	}
-	
 }
 
 func (o *PostEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
@@ -121,13 +117,12 @@ func (o *PostEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
 		spec = o.querySpec()
 		res  = []*PostEntity{}
 	)
-	tlog.Print(len(spec.Rels))
 	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 		e := o.config.New()
 		switch e := e.(type) {
 		case *PostEntity:
 			builder := entitysql.NewScannerBuilder(o.scannerTotal + 1)
-			builder.Append(0,e.scan([]entitysql.ScannerField{})...)
+			builder.Append(0, e.scan([]entitysql.ScannerField{})...)
 			for _, s := range o.scanner {
 				e.createRel(builder, s)
 			}
@@ -158,7 +153,6 @@ func (o *PostEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
 }
 
 func (o *PostEntityQuery) querySpec() *entitysql.QuerySpec {
-	tlog.Print(len(o.rels))
 	s := entitysql.NewQuerySpec(post.Entity, post.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -168,9 +162,9 @@ func (o *PostEntityQuery) querySpec() *entitysql.QuerySpec {
 		s.Entity.Columns = append(s.Entity.Columns, fields...)
 	}
 	if ps := o.predicates; len(ps) > 0 {
-		s.Predicate = func(p *entitysql.Predicate) {
-			for _, f := range ps { 
-				f(p)
+		s.Predicate = func(p *entitysql.Predicate, as string) {
+			for _, f := range ps {
+				f(p, as)
 			}
 		}
 	}
@@ -179,24 +173,24 @@ func (o *PostEntityQuery) querySpec() *entitysql.QuerySpec {
 		s.Orders = append(s.Orders, post.ByPrimary)
 		for _, r := range rs {
 			rel := r
-			s.Rels = append(s.Rels, func (s *entitysql.Selector)  {
-				o.scanner =  o.addRels(s, s.Table(), rel, o.scanner)
+			s.Rels = append(s.Rels, func(s *entitysql.Selector) {
+				o.scanner = o.addRels(s, s.Table(), rel, o.scanner)
 			})
 		}
 	}
 	for _, o := range o.order {
-		s.Orders = append(s.Orders, func (order *entitysql.Order)  {
+		s.Orders = append(s.Orders, func(order *entitysql.Order) {
 			o.Apply(order)
 		})
 	}
-	
 	return s
 }
-func (o *PostEntityQuery) addRels(s *entitysql.Selector,t *entitysql.SelectTable, rel Rel, scanner []*internal.QueryScanner)  []*internal.QueryScanner {
+
+func (o *PostEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel Rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
-	_, tbaleNum := join.GetAs()
-	qs := internal.QueryScanner{Config: config,Children: []*internal.QueryScanner{}, TableNum: tbaleNum}
+	_, tableNum := join.GetAs()
+	qs := internal.QueryScanner{Config: config, Children: []*internal.QueryScanner{}, TableNum: tableNum}
 	scanner = append(scanner, &qs)
 	o.scannerTotal++
 	if len(children) > 0 {

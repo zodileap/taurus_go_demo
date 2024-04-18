@@ -5,59 +5,55 @@ package entity
 import (
 	"fmt"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/post"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/post"
 )
 
 type PostEntity struct {
 	internal.Entity
-	config *PostEntityConfig
+	config *postEntityConfig
 
 	// ID Post primary key
-	ID *PostID
+	ID *postID
 
-	Content *PostContent
+	Content *postContent
 
-	BlogID *PostBlogID
+	BlogID *postBlogID
 
-	AuthorID *PostAuthorID
+	AuthorID *postAuthorID
 
-	Blog   *BlogEntity
+	Blog *BlogEntity
 
 	Author *AuthorEntity
 }
 
-
-// PostEntityConfig holds the configuration for the PostEntity.
-type PostEntityConfig struct {
+// postEntityConfig holds the configuration for the PostEntity.
+type postEntityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*postMutations
+	*postEntityMutations
 	name string
 }
 
-func NewPostConfig(c *internal.Dialect) *PostEntityConfig {
-	return &PostEntityConfig{
-		Dialect:    c,
-		postMutations: newPostMutations(),
-		name: "post",
+func newPostEntityConfig(c *internal.Dialect) *postEntityConfig {
+	return &postEntityConfig{
+		Dialect:             c,
+		postEntityMutations: newPostEntityMutations(),
+		name:                "post",
 	}
 }
 
-
-
 // New creates a new PostEntity, but does not add tracking.
-func (c *PostEntityConfig) New () internal.Entity {
+func (c *postEntityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &PostEntity{
-		config: &PostEntityConfig{
-			Mutation:  b,
-			Dialect:    c.Dialect,
-			postMutations: c.postMutations,
+		config: &postEntityConfig{
+			Mutation:            b,
+			Dialect:             c.Dialect,
+			postEntityMutations: c.postEntityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -68,17 +64,15 @@ func (c *PostEntityConfig) New () internal.Entity {
 	return e
 }
 
-
-func (c *PostEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *postEntityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
 }
 
-
 // String implements the fmt.Stringer interface.
 func (e *PostEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Content: %v, BlogID: %v, AuthorID: %v, Blogs: %v, Authors: %v}",
+	return fmt.Sprintf("{ ID: %v, Content: %v, BlogID: %v, AuthorID: %v, Blog: %v, Author: %v}",
 		e.ID,
 		e.Content,
 		e.BlogID,
@@ -117,11 +111,11 @@ func (e *PostEntity) setUnchanged() error {
 
 // setState sets the state of the PostEntity.
 func (e *PostEntity) setState(state entity.EntityState) error {
-	return e.config.postMutations.SetEntityState(e, state)
+	return e.config.postEntityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the PostEntity.
-func (e *PostEntity)scan( fields []entitysql.ScannerField) []any {
+func (e *PostEntity) scan(fields []entitysql.ScannerField) []any {
 	if len(fields) == 0 {
 		args := make([]any, len(post.Columns))
 		for i, c := range post.Columns {
@@ -137,7 +131,7 @@ func (e *PostEntity)scan( fields []entitysql.ScannerField) []any {
 			}
 		}
 		return args
-	} else{
+	} else {
 		args := make([]any, len(fields))
 		for i := range fields {
 			switch fields[i].String() {
@@ -155,45 +149,45 @@ func (e *PostEntity)scan( fields []entitysql.ScannerField) []any {
 	}
 }
 
-
 func (e *PostEntity) createRel(buidler *entitysql.ScannerBuilder, scanner *internal.QueryScanner) {
 	switch scanner.Config.Desc().Name {
-	case "author":
-		author := scanner.Config.New().(*AuthorEntity)
-		buidler.Append(scanner.TableNum - 1 , author.scan([]entitysql.ScannerField{})...)
-		e.Author = author
-		for _, c := range scanner.Children {
-			author.createRel(buidler, c)
-		}
 	case "blog":
-		blog := scanner.Config.New().(*BlogEntity)
-		buidler.Append(scanner.TableNum - 1, blog.scan([]entitysql.ScannerField{})...)
-		e.Blog = blog
+		blogEntity := scanner.Config.New().(*BlogEntity)
+		buidler.Append(scanner.TableNum-1, blogEntity.scan([]entitysql.ScannerField{})...)
+		e.Blog = blogEntity
 		for _, c := range scanner.Children {
-			blog.createRel(buidler, c)
+			blogEntity.createRel(buidler, c)
+		}
+	case "author":
+		authorEntity := scanner.Config.New().(*AuthorEntity)
+		buidler.Append(scanner.TableNum-1, authorEntity.scan([]entitysql.ScannerField{})...)
+		e.Author = authorEntity
+		for _, c := range scanner.Children {
+			authorEntity.createRel(buidler, c)
 		}
 	}
 }
 
 func mergePostEntity(es []*PostEntity, e *PostEntity) []*PostEntity {
-	if e == nil{
+	if e == nil {
 		return es
 	}
 	if len(es) == 0 {
 		es = append(es, e)
-	}else{
-		v := es[len(es) - 1]
+	} else {
+		v := es[len(es)-1]
+
 		if e.ID.Get() != nil {
 			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-				bs := mergeBlogEntity([]*BlogEntity{v.Blog}, e.Blog)
-				if len(bs) > 0 {
-					v.Blog = bs[0]
+				blogs := mergeBlogEntity([]*BlogEntity{v.Blog}, e.Blog)
+				if len(blogs) > 0 {
+					v.Blog = blogs[0]
 				}
-				as := mergeAuthorEntity([]*AuthorEntity{v.Author}, e.Author)
-				if len(as) > 0 {
-					v.Author = as[0]
+				authors := mergeAuthorEntity([]*AuthorEntity{v.Author}, e.Author)
+				if len(authors) > 0 {
+					v.Author = authors[0]
 				}
-			}else{
+			} else {
 				es = append(es, e)
 			}
 		}

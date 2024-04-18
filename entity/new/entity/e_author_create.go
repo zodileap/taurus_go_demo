@@ -4,12 +4,11 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
 // AuthorEntityCreate is the create action for the AuthorEntity.
@@ -44,7 +43,7 @@ func (o *AuthorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error
 	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 		e := res[cursor]
 		cursor++
-		args := e.scan( fields)
+		args := e.scan(fields)
 		if err := rows.Scan(args...); err != nil {
 			return err
 		} else {
@@ -60,7 +59,9 @@ func (o *AuthorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		author.FieldID.Name,
 	}
-	spec := entitysql.NewCreateSpec(author.Entity, author.Columns)
+	entity := author.Entity
+	columns := author.Columns
+	spec := entitysql.NewCreateSpec(entity, columns)
 	spec.Fields = make([][]*entitysql.FieldSpec, 0, len(o.es))
 	for _, e := range o.es {
 		fields := make([]*entitysql.FieldSpec, 0, len(author.Columns))

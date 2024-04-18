@@ -3,116 +3,116 @@
 package entity
 
 import (
+	"taurus_go_demo/entity/new/entity/post"
+
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/field"
-
-	"taurus_go_demo/entity/new/entity/post"
 )
 
-// PostID is ID field
-type PostID struct {
+// postID is ID field
+type postID struct {
 	field.IntStorage[int64]
-	config *PostEntityConfig
+	config *postEntityConfig
 }
 
-// newPostID creates a new IDType
-func newPostID(c *PostEntityConfig) *PostID {
-	t := &PostID{}
+// newpostID creates a new postID
+func newPostID(c *postEntityConfig) *postID {
+	t := &postID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of ID field
-func (t *PostID) Set(v int64) {
+func (t *postID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.postMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldID.Name.String())
 	}
 }
 
 // Get gets the value of ID field
-func (t *PostID) Get() *int64 {
+func (t *postID) Get() *int64 {
 	return t.IntStorage.Get()
 }
 
-// PostContent is Content field
-type PostContent struct {
+// postContent is Content field
+type postContent struct {
 	field.StringStorage
-	config *PostEntityConfig
+	config *postEntityConfig
 }
 
-// newPostContent creates a new ContentType
-func newPostContent(c *PostEntityConfig) *PostContent {
-	t := &PostContent{}
+// newpostContent creates a new postContent
+func newPostContent(c *postEntityConfig) *postContent {
+	t := &postContent{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Content field
-func (t *PostContent) Set(v string) {
+func (t *postContent) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.postMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldContent.Name.String())
 	}
 }
 
 // Get gets the value of Content field
-func (t *PostContent) Get() *string {
+func (t *postContent) Get() *string {
 	return t.StringStorage.Get()
 }
 
-// PostBlogID is BlogID field
-type PostBlogID struct {
+// postBlogID is BlogID field
+type postBlogID struct {
 	field.IntStorage[int64]
-	config *PostEntityConfig
+	config *postEntityConfig
 }
 
-// newPostBlogID creates a new BlogIDType
-func newPostBlogID(c *PostEntityConfig) *PostBlogID {
-	t := &PostBlogID{}
+// newpostBlogID creates a new postBlogID
+func newPostBlogID(c *postEntityConfig) *postBlogID {
+	t := &postBlogID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of BlogID field
-func (t *PostBlogID) Set(v int64) {
+func (t *postBlogID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.postMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldBlogID.Name.String())
 	}
 }
 
 // Get gets the value of BlogID field
-func (t *PostBlogID) Get() *int64 {
+func (t *postBlogID) Get() *int64 {
 	return t.IntStorage.Get()
 }
 
-// PostAuthorID is AuthorID field
-type PostAuthorID struct {
+// postAuthorID is AuthorID field
+type postAuthorID struct {
 	field.IntStorage[int64]
-	config *PostEntityConfig
+	config *postEntityConfig
 }
 
-// newPostAuthorID creates a new AuthorIDType
-func newPostAuthorID(c *PostEntityConfig) *PostAuthorID {
-	t := &PostAuthorID{}
+// newpostAuthorID creates a new postAuthorID
+func newPostAuthorID(c *postEntityConfig) *postAuthorID {
+	t := &postAuthorID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of AuthorID field
-func (t *PostAuthorID) Set(v int64) {
+func (t *postAuthorID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.postMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldAuthorID.Name.String())
 	}
 }
 
 // Get gets the value of AuthorID field
-func (t *PostAuthorID) Get() *int64 {
+func (t *postAuthorID) Get() *int64 {
 	return t.IntStorage.Get()
 }

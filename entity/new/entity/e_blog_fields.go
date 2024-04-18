@@ -3,118 +3,117 @@
 package entity
 
 import (
+	"taurus_go_demo/entity/new/entity/blog"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/field"
-
-	"taurus_go_demo/entity/new/entity/blog"
 )
 
-// BlogID is ID field
-type BlogID struct {
+// blogID is ID field
+type blogID struct {
 	field.IntStorage[int64]
-	config *BlogEntityConfig
+	config *blogEntityConfig
 }
 
-// newBlogID creates a new IDType
-func newBlogID(c *BlogEntityConfig) *BlogID {
-	t := &BlogID{}
+// newblogID creates a new blogID
+func newBlogID(c *blogEntityConfig) *blogID {
+	t := &blogID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of ID field
-func (t *BlogID) Set(v int64) {
+func (t *blogID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.blogMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.blogEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(blog.FieldID.Name.String())
 	}
 }
 
 // Get gets the value of ID field
-func (t *BlogID) Get() *int64 {
+func (t *blogID) Get() *int64 {
 	return t.IntStorage.Get()
 }
 
-// BlogUUID is UUID field
-type BlogUUID struct {
+// blogUUID is UUID field
+type blogUUID struct {
 	field.StringStorage
-	config *BlogEntityConfig
+	config *blogEntityConfig
 }
 
-// newBlogUUID creates a new UUIDType
-func newBlogUUID(c *BlogEntityConfig) *BlogUUID {
-	t := &BlogUUID{}
+// newblogUUID creates a new blogUUID
+func newBlogUUID(c *blogEntityConfig) *blogUUID {
+	t := &blogUUID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of UUID field
-func (t *BlogUUID) Set(v string) {
+func (t *blogUUID) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.blogMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.blogEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(blog.FieldUUID.Name.String())
 	}
 }
 
 // Get gets the value of UUID field
-func (t *BlogUUID) Get() *string {
+func (t *blogUUID) Get() *string {
 	return t.StringStorage.Get()
 }
 
-// BlogDesc is Desc field
-type BlogDesc struct {
+// blogDesc is Desc field
+type blogDesc struct {
 	field.StringStorage
-	config *BlogEntityConfig
+	config *blogEntityConfig
 }
 
-// newBlogDesc creates a new DescType
-func newBlogDesc(c *BlogEntityConfig) *BlogDesc {
-	t := &BlogDesc{}
+// newblogDesc creates a new blogDesc
+func newBlogDesc(c *blogEntityConfig) *blogDesc {
+	t := &blogDesc{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Desc field
-func (t *BlogDesc) Set(v string) {
+func (t *blogDesc) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.blogMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.blogEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(blog.FieldDesc.Name.String())
 	}
 }
 
 // Get gets the value of Desc field
-func (t *BlogDesc) Get() *string {
+func (t *blogDesc) Get() *string {
 	return t.StringStorage.Get()
 }
 
-// BlogCreatedTime is CreatedTime field
-type BlogCreatedTime struct {
+// blogCreatedTime is CreatedTime field
+type blogCreatedTime struct {
 	field.TimestampStorage
-	config *BlogEntityConfig
+	config *blogEntityConfig
 }
 
-// newBlogCreatedTime creates a new CreatedTimeType
-func newBlogCreatedTime(c *BlogEntityConfig) *BlogCreatedTime {
-	t := &BlogCreatedTime{}
+// newblogCreatedTime creates a new blogCreatedTime
+func newBlogCreatedTime(c *blogEntityConfig) *blogCreatedTime {
+	t := &blogCreatedTime{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of CreatedTime field
-func (t *BlogCreatedTime) Set(v time.Time) {
+func (t *blogCreatedTime) Set(v time.Time) {
 	t.TimestampStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.blogMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.blogEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(blog.FieldCreatedTime.Name.String())
 	}
 }
 
 // Get gets the value of CreatedTime field
-func (t *BlogCreatedTime) Get() *time.Time {
+func (t *blogCreatedTime) Get() *time.Time {
 	return t.TimestampStorage.Get()
 }

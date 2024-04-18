@@ -3,62 +3,62 @@
 package entity
 
 import (
+	"taurus_go_demo/entity/new/entity/author"
+
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/field"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
-// AuthorID is ID field
-type AuthorID struct {
+// authorID is ID field
+type authorID struct {
 	field.IntStorage[int64]
-	config *AuthorEntityConfig
+	config *authorEntityConfig
 }
 
-// newAuthorID creates a new IDType
-func newAuthorID(c *AuthorEntityConfig) *AuthorID {
-	t := &AuthorID{}
+// newauthorID creates a new authorID
+func newAuthorID(c *authorEntityConfig) *authorID {
+	t := &authorID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of ID field
-func (t *AuthorID) Set(v int64) {
+func (t *authorID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.aothorMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.authorEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(author.FieldID.Name.String())
 	}
 }
 
 // Get gets the value of ID field
-func (t *AuthorID) Get() *int64 {
+func (t *authorID) Get() *int64 {
 	return t.IntStorage.Get()
 }
 
-// AuthorName is Name field
-type AuthorName struct {
+// authorName is Name field
+type authorName struct {
 	field.StringStorage
-	config *AuthorEntityConfig
+	config *authorEntityConfig
 }
 
-// newAuthorName creates a new NameType
-func newAuthorName(c *AuthorEntityConfig) *AuthorName {
-	t := &AuthorName{}
+// newauthorName creates a new authorName
+func newAuthorName(c *authorEntityConfig) *authorName {
+	t := &authorName{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Name field
-func (t *AuthorName) Set(v string) {
+func (t *authorName) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged {
-		t.config.aothorMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.authorEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(author.FieldName.Name.String())
 	}
 }
 
 // Get gets the value of Name field
-func (t *AuthorName) Get() *string {
+func (t *authorName) Get() *string {
 	return t.StringStorage.Get()
 }

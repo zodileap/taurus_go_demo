@@ -4,23 +4,21 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/blog"
 )
 
 // BlogEntityBuilder is a builder for the BlogEntity entity.
 //
 // The builder is used to create, update, and delete BlogEntity entities.
 type BlogEntityBuilder struct {
-	config    *BlogEntityConfig
-	mutations *blogMutations
-	tracker   entity.Tracker
+	config  *blogEntityConfig
+	tracker entity.Tracker
 
 	// ID Blog primary key
 	ID blog.PredID
@@ -30,17 +28,31 @@ type BlogEntityBuilder struct {
 	Desc blog.PredDesc
 
 	CreatedTime blog.PredCreatedTime
+	// ByID configures the query to sort results based on the 'id' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByID blog.ByID
+	// ByUUID configures the query to sort results based on the 'uuid' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByUUID blog.ByUUID
+	// ByDesc configures the query to sort results based on the 'desc' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByDesc blog.ByDesc
+	// ByCreatedTime configures the query to sort results based on the 'created_time' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByCreatedTime blog.ByCreatedTime
 
+	// Posts configures the query to include data from the 'post' table.
+	// The method modifies the existing query to include a LEFT JOIN clause.
+	// Posts be used as an argument to the Include method。
 	Posts *PostEntityRelation
 }
 
-// NewBlogEntityBuilder creates a new BlogEntityBuilder.
-func NewBlogEntityBuilder(c *BlogEntityConfig, t entity.Tracker, posts PostEntityRelation) *BlogEntityBuilder {
+// newBlogEntityBuilder creates a new BlogEntityBuilder.
+func newBlogEntityBuilder(c *blogEntityConfig, t entity.Tracker, Posts PostEntityRelation) *BlogEntityBuilder {
 	return &BlogEntityBuilder{
-		config:    c,
-		tracker:   t,
-		mutations: newBlogMutations(),
-		Posts: &posts,
+		config:  c,
+		tracker: t,
+		Posts:   &Posts,
 	}
 }
 
@@ -75,11 +87,17 @@ func (s *BlogEntityBuilder) ToList(ctx context.Context) ([]*BlogEntity, error) {
 	return query.ToList(ctx)
 }
 
-func (s *BlogEntityBuilder) Include(rels ...BlogEntityRel) *BlogEntityBuilder {
-	return s
+func (s *BlogEntityBuilder) Include(rels ...BlogEntityRel) *BlogEntityQuery {
+	query := s.initQuery()
+	return query.Include(rels...)
 }
 
-func (s *BlogEntityBuilder) Where(conditions ...func(*entitysql.Predicate)) *BlogEntityQuery {
+func (s *BlogEntityBuilder) Order(o ...blog.OrderTerm) *BlogEntityQuery {
+	query := s.initQuery()
+	return query.Order(o...)
+}
+
+func (s *BlogEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *BlogEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -98,24 +116,24 @@ func (s *BlogEntityBuilder) WithCreatedTime(createdtime time.Time) func(*BlogEnt
 	}
 }
 
-// Exec executes all the mutations for the BlogEntity.
+// Exec executes all the blogEntityMutations for the BlogEntity.
 func (s *BlogEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
-	if len(s.mutations.Addeds) > 0 {
-		e := s.mutations.Get(entity.Added)
+	if len(s.config.blogEntityMutations.Addeds) > 0 {
+		e := s.config.blogEntityMutations.Get(entity.Added)
 		n := NewBlogEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.mutations.Modifieds) > 0 {
-		e := s.mutations.Get(entity.Modified)
+	if len(s.config.blogEntityMutations.Modifieds) > 0 {
+		e := s.config.blogEntityMutations.Get(entity.Modified)
 		n := NewBlogEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.mutations.Deleteds) > 0 {
-		e := s.mutations.Get(entity.Deleted)
+	if len(s.config.blogEntityMutations.Deleteds) > 0 {
+		e := s.config.blogEntityMutations.Get(entity.Deleted)
 		n := NewBlogEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
@@ -125,11 +143,11 @@ func (s *BlogEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 }
 
 func (s *BlogEntityBuilder) initQuery() *BlogEntityQuery {
-	return NewBlogEntityQuery(s.config.Dialect, s.tracker, s.mutations)
+	return NewBlogEntityQuery(s.config.Dialect, s.tracker, s.config.blogEntityMutations)
 }
 
-// blogMutations is a collection of BlogEntity mutation.
-type blogMutations struct {
+// blogEntityMutations is a collection of BlogEntity mutation.
+type blogEntityMutations struct {
 	Detacheds  map[string]*BlogEntity
 	Unchangeds map[string]*BlogEntity
 	Deleteds   map[string]*BlogEntity
@@ -137,9 +155,9 @@ type blogMutations struct {
 	Addeds     map[string]*BlogEntity
 }
 
-// newBlogMutations creates a new mutations.
-func newBlogMutations() *blogMutations {
-	return &blogMutations{
+// newBlogEntityMutations creates a new mutations.
+func newBlogEntityMutations() *blogEntityMutations {
+	return &blogEntityMutations{
 		Detacheds:  make(map[string]*BlogEntity),
 		Unchangeds: make(map[string]*BlogEntity),
 		Deleteds:   make(map[string]*BlogEntity),
@@ -149,7 +167,7 @@ func newBlogMutations() *blogMutations {
 }
 
 // Get returns all the BlogEntity in the specified state.
-func (ms *blogMutations) Get(state entity.EntityState) []*BlogEntity {
+func (ms *blogEntityMutations) Get(state entity.EntityState) []*BlogEntity {
 	switch state {
 	case entity.Detached:
 		s := make([]*BlogEntity, 0, len(ms.Detacheds))
@@ -186,7 +204,7 @@ func (ms *blogMutations) Get(state entity.EntityState) []*BlogEntity {
 }
 
 // SetEntityState sets the state of the entity.
-func (ms *blogMutations) SetEntityState(e *BlogEntity, state entity.EntityState) error {
+func (ms *blogEntityMutations) SetEntityState(e *BlogEntity, state entity.EntityState) error {
 	m := e.config.Mutation
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -197,7 +215,7 @@ func (ms *blogMutations) SetEntityState(e *BlogEntity, state entity.EntityState)
 
 // ChangeEntityState attempts to set the desired entity state,
 // but will not do so if the conditions are not met.
-func (ms *blogMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
+func (ms *blogEntityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
 	e := ms.getEntity(m)
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -206,7 +224,7 @@ func (ms *blogMutations) ChangeEntityState(m *entity.Mutation, state entity.Enti
 }
 
 // getEntity returns the entity in the specified state.
-func (ms *blogMutations) getEntity(m *entity.Mutation) *BlogEntity {
+func (ms *blogEntityMutations) getEntity(m *entity.Mutation) *BlogEntity {
 	key := m.Key()
 	switch m.State() {
 	case entity.Detached:
@@ -224,7 +242,7 @@ func (ms *blogMutations) getEntity(m *entity.Mutation) *BlogEntity {
 }
 
 // Set sets the entity in the specified state.
-func (ms *blogMutations) set(e *BlogEntity, state entity.EntityState) {
+func (ms *blogEntityMutations) set(e *BlogEntity, state entity.EntityState) {
 	m := e.config.Mutation
 	key := m.Key()
 	switch m.State() {

@@ -4,12 +4,11 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/blog"
 )
 
 // BlogEntityCreate is the create action for the BlogEntity.
@@ -44,7 +43,7 @@ func (o *BlogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 		e := res[cursor]
 		cursor++
-		args := e.scan( fields)
+		args := e.scan(fields)
 		if err := rows.Scan(args...); err != nil {
 			return err
 		} else {
@@ -61,7 +60,9 @@ func (o *BlogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		blog.FieldID.Name,
 		blog.FieldCreatedTime.Name,
 	}
-	spec := entitysql.NewCreateSpec(blog.Entity, blog.Columns)
+	entity := blog.Entity
+	columns := blog.Columns
+	spec := entitysql.NewCreateSpec(entity, columns)
 	spec.Fields = make([][]*entitysql.FieldSpec, 0, len(o.es))
 	for _, e := range o.es {
 		fields := make([]*entitysql.FieldSpec, 0, len(blog.Columns))

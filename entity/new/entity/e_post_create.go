@@ -5,11 +5,10 @@ package entity
 import (
 	"context"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/post"
 
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/post"
 )
 
 // PostEntityCreate is the create action for the PostEntity.
@@ -67,7 +66,7 @@ func (o *PostEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	for _, e := range o.es {
 		fields := make([]*entitysql.FieldSpec, 0, len(post.Columns))
 		for j := range post.Columns {
-			switch columns[j] {
+			switch post.Columns[j] {
 			case post.FieldContent.Name:
 				if err := spec.CheckRequired(post.FieldContent.Name, e.Content); err != nil {
 					return nil, err

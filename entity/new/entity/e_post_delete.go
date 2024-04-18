@@ -5,19 +5,18 @@ package entity
 import (
 	"context"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/post"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/post"
 )
 
 // PostEntityDelete is the delete action for the PostEntity.
 type PostEntityDelete struct {
 	config     *internal.Dialect
 	es         []*PostEntity
-	predicates []func(*entitysql.Predicate)
+	predicates []entitysql.PredicateFunc
 }
 
 // NewPostEntityDelete creates a new PostEntityDelete.
@@ -29,7 +28,7 @@ func NewPostEntityDelete(c *internal.Dialect, es ...*PostEntity) *PostEntityDele
 }
 
 // Where adds a predicate to the delete action.
-func (o *PostEntityDelete) Where(predicates ...func(*entitysql.Predicate)) *PostEntityDelete {
+func (o *PostEntityDelete) Where(predicates ...entitysql.PredicateFunc) *PostEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
@@ -61,15 +60,15 @@ func (o *PostEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 func (o *PostEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(post.Entity)
 	if ps := o.predicates; len(ps) > 0 {
-		spec.Predicate = func(p *entitysql.Predicate) {
+		spec.Predicate = func(p *entitysql.Predicate, as string) {
 			for _, f := range ps {
-				f(p)
+				f(p, as)
 			}
 		}
 	}
 	predID := &post.PredID{}
 	if o.predicates == nil {
-		o.predicates = make([]func(*entitysql.Predicate), 0, len(o.es))
+		o.predicates = make([]entitysql.PredicateFunc, 0, len(o.es))
 	}
 	for i, e := range o.es {
 		if e.ID.Get() != nil {
@@ -80,9 +79,9 @@ func (o *PostEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 		}
 	}
 	if ps := o.predicates; len(ps) > 0 {
-		spec.Predicate = func(p *entitysql.Predicate) {
+		spec.Predicate = func(p *entitysql.Predicate, as string) {
 			for _, f := range ps {
-				f(p)
+				f(p, as)
 			}
 		}
 	}

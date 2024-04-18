@@ -4,35 +4,44 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
 // AuthorEntityBuilder is a builder for the AuthorEntity entity.
 //
 // The builder is used to create, update, and delete AuthorEntity entities.
 type AuthorEntityBuilder struct {
-	config    *AuthorEntityConfig
-	mutations *aothorMutations
-	tracker   entity.Tracker
+	config  *authorEntityConfig
+	tracker entity.Tracker
 
 	// ID Author primary key
 	ID author.PredID
 
 	Name author.PredName
+	// ByID configures the query to sort results based on the 'id' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByID author.ByID
+	// ByName configures the query to sort results based on the 'name' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByName author.ByName
+
+	// Posts configures the query to include data from the 'post' table.
+	// The method modifies the existing query to include a LEFT JOIN clause.
+	// Posts be used as an argument to the Include method。
+	Posts *PostEntityRelation
 }
 
-// NewAuthorEntityBuilder creates a new AuthorEntityBuilder.
-func NewAuthorEntityBuilder(c *AuthorEntityConfig, t entity.Tracker) *AuthorEntityBuilder {
+// newAuthorEntityBuilder creates a new AuthorEntityBuilder.
+func newAuthorEntityBuilder(c *authorEntityConfig, t entity.Tracker, Posts PostEntityRelation) *AuthorEntityBuilder {
 	return &AuthorEntityBuilder{
-		config:    c,
-		tracker:   t,
-		mutations: newAuthorMutations(),
+		config:  c,
+		tracker: t,
+		Posts:   &Posts,
 	}
 }
 
@@ -67,29 +76,39 @@ func (s *AuthorEntityBuilder) ToList(ctx context.Context) ([]*AuthorEntity, erro
 	return query.ToList(ctx)
 }
 
-func (s *AuthorEntityBuilder) Where(conditions ...func(*entitysql.Predicate)) *AuthorEntityQuery {
+func (s *AuthorEntityBuilder) Include(rels ...AuthorEntityRel) *AuthorEntityQuery {
+	query := s.initQuery()
+	return query.Include(rels...)
+}
+
+func (s *AuthorEntityBuilder) Order(o ...author.OrderTerm) *AuthorEntityQuery {
+	query := s.initQuery()
+	return query.Order(o...)
+}
+
+func (s *AuthorEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *AuthorEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
 
-// Exec executes all the mutations for the AuthorEntity.
+// Exec executes all the authorEntityMutations for the AuthorEntity.
 func (s *AuthorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
-	if len(s.mutations.Addeds) > 0 {
-		e := s.mutations.Get(entity.Added)
+	if len(s.config.authorEntityMutations.Addeds) > 0 {
+		e := s.config.authorEntityMutations.Get(entity.Added)
 		n := NewAuthorEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.mutations.Modifieds) > 0 {
-		e := s.mutations.Get(entity.Modified)
+	if len(s.config.authorEntityMutations.Modifieds) > 0 {
+		e := s.config.authorEntityMutations.Get(entity.Modified)
 		n := NewAuthorEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.mutations.Deleteds) > 0 {
-		e := s.mutations.Get(entity.Deleted)
+	if len(s.config.authorEntityMutations.Deleteds) > 0 {
+		e := s.config.authorEntityMutations.Get(entity.Deleted)
 		n := NewAuthorEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
@@ -99,11 +118,11 @@ func (s *AuthorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 }
 
 func (s *AuthorEntityBuilder) initQuery() *AuthorEntityQuery {
-	return NewAuthorEntityQuery(s.config.Dialect, s.tracker, s.mutations)
+	return NewAuthorEntityQuery(s.config.Dialect, s.tracker, s.config.authorEntityMutations)
 }
 
-// aothorMutations is a collection of AuthorEntity mutation.
-type aothorMutations struct {
+// authorEntityMutations is a collection of AuthorEntity mutation.
+type authorEntityMutations struct {
 	Detacheds  map[string]*AuthorEntity
 	Unchangeds map[string]*AuthorEntity
 	Deleteds   map[string]*AuthorEntity
@@ -111,9 +130,9 @@ type aothorMutations struct {
 	Addeds     map[string]*AuthorEntity
 }
 
-// newAuthorMutations creates a new mutations.
-func newAuthorMutations() *aothorMutations {
-	return &aothorMutations{
+// newAuthorEntityMutations creates a new mutations.
+func newAuthorEntityMutations() *authorEntityMutations {
+	return &authorEntityMutations{
 		Detacheds:  make(map[string]*AuthorEntity),
 		Unchangeds: make(map[string]*AuthorEntity),
 		Deleteds:   make(map[string]*AuthorEntity),
@@ -123,7 +142,7 @@ func newAuthorMutations() *aothorMutations {
 }
 
 // Get returns all the AuthorEntity in the specified state.
-func (ms *aothorMutations) Get(state entity.EntityState) []*AuthorEntity {
+func (ms *authorEntityMutations) Get(state entity.EntityState) []*AuthorEntity {
 	switch state {
 	case entity.Detached:
 		s := make([]*AuthorEntity, 0, len(ms.Detacheds))
@@ -160,7 +179,7 @@ func (ms *aothorMutations) Get(state entity.EntityState) []*AuthorEntity {
 }
 
 // SetEntityState sets the state of the entity.
-func (ms *aothorMutations) SetEntityState(e *AuthorEntity, state entity.EntityState) error {
+func (ms *authorEntityMutations) SetEntityState(e *AuthorEntity, state entity.EntityState) error {
 	m := e.config.Mutation
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -171,7 +190,7 @@ func (ms *aothorMutations) SetEntityState(e *AuthorEntity, state entity.EntitySt
 
 // ChangeEntityState attempts to set the desired entity state,
 // but will not do so if the conditions are not met.
-func (ms *aothorMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
+func (ms *authorEntityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
 	e := ms.getEntity(m)
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -180,7 +199,7 @@ func (ms *aothorMutations) ChangeEntityState(m *entity.Mutation, state entity.En
 }
 
 // getEntity returns the entity in the specified state.
-func (ms *aothorMutations) getEntity(m *entity.Mutation) *AuthorEntity {
+func (ms *authorEntityMutations) getEntity(m *entity.Mutation) *AuthorEntity {
 	key := m.Key()
 	switch m.State() {
 	case entity.Detached:
@@ -198,7 +217,7 @@ func (ms *aothorMutations) getEntity(m *entity.Mutation) *AuthorEntity {
 }
 
 // Set sets the entity in the specified state.
-func (ms *aothorMutations) set(e *AuthorEntity, state entity.EntityState) {
+func (ms *authorEntityMutations) set(e *AuthorEntity, state entity.EntityState) {
 	m := e.config.Mutation
 	key := m.Key()
 	switch m.State() {

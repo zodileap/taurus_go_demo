@@ -4,13 +4,12 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
 // AuthorEntityUpdate is the update action for the AuthorEntity.
@@ -19,7 +18,7 @@ type AuthorEntityUpdate struct {
 	ctx        *entitysql.QueryContext
 	tracker    entity.Tracker
 	es         []*AuthorEntity
-	predicates [][]func(*entitysql.Predicate)
+	predicates [][]entitysql.PredicateFunc
 	sets       []map[string]entitysql.CaseSpec
 	total      int
 	batchIndex []int
@@ -31,7 +30,7 @@ func NewAuthorEntityUpdate(c *internal.Dialect, es ...*AuthorEntity) *AuthorEnti
 		config:     c,
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
-		predicates: [][]func(*entitysql.Predicate){},
+		predicates: [][]entitysql.PredicateFunc{},
 		batchIndex: []int{0},
 	}
 }
@@ -52,7 +51,7 @@ func (o *AuthorEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error
 	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 		e := res[cursor]
 		cursor++
-		args := e.scan( fields)
+		args := e.scan(fields)
 		if err := rows.Scan(args...); err != nil {
 			return err
 		} else {
@@ -85,7 +84,7 @@ func (o *AuthorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		if len(fields) == 0 {
 			return entity.Err_0100030002.Sprintf(e.config.Tag)
 		}
-		o.predicates = append(o.predicates, []func(*entitysql.Predicate){})
+		o.predicates = append(o.predicates, []entitysql.PredicateFunc{})
 		o.sets = append(o.sets, map[string]entitysql.CaseSpec{})
 		// 因为判断过predicates和set长度，所以这里默认等长
 		index := len(o.predicates) - 1
@@ -130,7 +129,7 @@ func (o *AuthorEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
 		} else {
 			begin = o.batchIndex[i-1]
 		}
-		pred := []func(*entitysql.Predicate){}
+		pred := []entitysql.PredicateFunc{}
 		set := map[string][]entitysql.CaseSpec{}
 		for _, ps := range o.predicates[begin:end] {
 			pred = append(pred, ps...)
@@ -140,9 +139,9 @@ func (o *AuthorEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
 				set[k] = append(set[k], v)
 			}
 		}
-		spec.Predicate = append(spec.Predicate, func(p *entitysql.Predicate) {
+		spec.Predicate = append(spec.Predicate, func(p *entitysql.Predicate, as string) {
 			for _, f := range pred {
-				f(p)
+				f(p, as)
 			}
 		})
 		spec.Sets = append(spec.Sets, set)

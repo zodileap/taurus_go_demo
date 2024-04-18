@@ -20,22 +20,19 @@ const UserTag = "UserTag"
 type User struct {
 	*internal.Dialect
 	tracker entity.Tracker
-
 	Authors *AuthorEntityBuilder
-
-	Blogs *BlogEntityBuilder
-
-	Posts *PostEntityBuilder
+	Blogs   *BlogEntityBuilder
+	Posts   *PostEntityBuilder
 }
 
 // NewUser creates a new User instance.
 func NewUser() (*User, error) {
-	config, err := internal.NewDialect(UserTag)
+	dialect, err := internal.NewDialect(UserTag)
 	if err != nil {
 		return nil, err
 	}
 	user := &User{
-		Dialect:  config,
+		Dialect: dialect,
 		tracker: &entity.Tracking{},
 	}
 	user.init()
@@ -67,68 +64,98 @@ func (d *User) Save(ctx context.Context) error {
 }
 
 func (d *User) init() {
-	authorConfig := NewAuthorConfig(d.Dialect)
-	blogConfig := NewBlogConfig(d.Dialect)
-	postConfig := NewPostConfig(d.Dialect)
+	authorEntityConfig := newAuthorEntityConfig(d.Dialect)
+	blogEntityConfig := newBlogEntityConfig(d.Dialect)
+	postEntityConfig := newPostEntityConfig(d.Dialect)
 
-
-	d.Authors = NewAuthorEntityBuilder(authorConfig, d.tracker)
-	d.tracker.Add(d.Authors)
-
-	d.Blogs = NewBlogEntityBuilder(blogConfig, d.tracker,
+	d.Authors = newAuthorEntityBuilder(
+		authorEntityConfig,
+		d.tracker,
 		*NewPostEntityRelation(
-			postConfig,
+			postEntityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
 					post.ByPrimary,
 				},
 				To: entitysql.RelationTable{
-					Table: "blog",
-					Field: "id",
+					Table:   "author",
+					Field:   "id",
+					Columns: author.Columns,
+				},
+				Join: entitysql.RelationTable{
+					Table:   "post",
+					Field:   "author_id",
+					Columns: post.Columns,
+				},
+			},
+		),
+	)
+	d.tracker.Add(d.Authors)
+
+	d.Blogs = newBlogEntityBuilder(
+		blogEntityConfig,
+		d.tracker,
+		*NewPostEntityRelation(
+			postEntityConfig,
+			entitysql.RelationDesc{
+				Orders: []entitysql.OrderFunc{
+					post.ByPrimary,
+				},
+				To: entitysql.RelationTable{
+					Table:   "blog",
+					Field:   "id",
 					Columns: blog.Columns,
 				},
 				Join: entitysql.RelationTable{
-					Table: "post",
-					Field: "blog_id",
+					Table:   "post",
+					Field:   "blog_id",
 					Columns: post.Columns,
 				},
-			}),
+			},
+		),
 	)
 	d.tracker.Add(d.Blogs)
 
-	d.Posts = NewPostEntityBuilder(postConfig, d.tracker,
-		*NewBlogEntityRelation(blogConfig,entitysql.RelationDesc{
-			Orders: []entitysql.OrderFunc{
-				blog.ByPrimary,
-			},
-			To:  entitysql.RelationTable{
-				Table: "post",
-				Field: "blog_id",
-				Columns: post.Columns,
-			}, 
-			Join: entitysql.RelationTable{
-				Table: "blog",
-				Field: "id",
-				Columns: blog.Columns,
-			},
-		}),
-		*NewAuthorEntityRelation(
-			authorConfig,
+	d.Posts = newPostEntityBuilder(
+		postEntityConfig,
+		d.tracker,
+		*NewBlogEntityRelation(
+			blogEntityConfig,
 			entitysql.RelationDesc{
-			Orders: []entitysql.OrderFunc{
-				author.ByPrimary,
+				Orders: []entitysql.OrderFunc{
+					blog.ByPrimary,
+				},
+				To: entitysql.RelationTable{
+					Table:   "post",
+					Field:   "blog_id",
+					Columns: post.Columns,
+				},
+				Join: entitysql.RelationTable{
+					Table:   "blog",
+					Field:   "id",
+					Columns: blog.Columns,
+				},
 			},
-			To: entitysql.RelationTable{
-				Table: "post",
-				Field: "author_id",
-				Columns: post.Columns,
+		),
+
+		*NewAuthorEntityRelation(
+			authorEntityConfig,
+			entitysql.RelationDesc{
+				Orders: []entitysql.OrderFunc{
+					author.ByPrimary,
+				},
+				To: entitysql.RelationTable{
+					Table:   "post",
+					Field:   "author_id",
+					Columns: post.Columns,
+				},
+				Join: entitysql.RelationTable{
+					Table:   "author",
+					Field:   "id",
+					Columns: author.Columns,
+				},
 			},
-			Join:  entitysql.RelationTable{
-				Table: "author",
-				Field: "id",
-				Columns: author.Columns,
-			},
-		}),
+		),
 	)
 	d.tracker.Add(d.Posts)
 }

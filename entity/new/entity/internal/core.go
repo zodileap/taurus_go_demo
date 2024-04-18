@@ -14,7 +14,7 @@ type Dialect struct {
 	Driver dialect.Driver
 }
 
-// NewDialect creates a new Config.
+// NewDialect creates a new Dialect.
 func NewDialect(tag string) (*Dialect, error) {
 	c := &Dialect{
 		Tag:    tag,
@@ -83,21 +83,24 @@ func SetEntityState(m *entity.Mutation, state entity.EntityState) error {
 	return nil
 }
 
+// Entity is the interface that wraps the basic methods for an entity.
 type Entity interface {
 }
 
-
+// EntityConfig is the interface that wraps the basic methods for an entity config.
 type EntityConfig interface {
-	New () Entity
+	New() Entity
 	Desc() EntityConfigDesc
 }
 
+// EntityConfigDesc is the entity config description.
 type EntityConfigDesc struct {
 	Name string
 }
 
+// QueryScanner is a struct that contains the configuration of the query scanner.
 type QueryScanner struct {
-	Config EntityConfig
+	Config   EntityConfig
 	Children []*QueryScanner
 	TableNum int
 }

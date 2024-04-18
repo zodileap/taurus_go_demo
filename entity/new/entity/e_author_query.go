@@ -4,21 +4,22 @@ package entity
 
 import (
 	"context"
+	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
-
-	"taurus_go_demo/entity/new/entity/author"
 )
 
 // AuthorEntityQuery is the query action for the AuthorEntity.
 type AuthorEntityQuery struct {
-	config     *AuthorEntityConfig
-	ctx        *entitysql.QueryContext
-	predicates []func(*entitysql.Predicate)
-	scanner    []*internal.QueryScanner
+	config       *authorEntityConfig
+	ctx          *entitysql.QueryContext
+	predicates   []entitysql.PredicateFunc
+	rels         []AuthorEntityRel
+	order        []author.OrderTerm
+	scanner      []*internal.QueryScanner
 	scannerTotal int
 }
 
@@ -32,17 +33,22 @@ func (o *AuthorEntityQuery) First(ctx context.Context) (*AuthorEntity, error) {
 }
 
 // NewAuthorEntityQuery creates a new AuthorEntityQuery.
-func NewAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *aothorMutations) *AuthorEntityQuery {
+func NewAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *authorEntityMutations) *AuthorEntityQuery {
 	return &AuthorEntityQuery{
-		config: &AuthorEntityConfig{
-			Dialect:    c,
-			aothorMutations: ms,
+		config: &authorEntityConfig{
+			Dialect:               c,
+			authorEntityMutations: ms,
 		},
-		ctx: &entitysql.QueryContext{},
+		ctx:          &entitysql.QueryContext{},
+		predicates:   []entitysql.PredicateFunc{},
+		rels:         []AuthorEntityRel{},
+		order:        []author.OrderTerm{},
+		scanner:      []*internal.QueryScanner{},
+		scannerTotal: 0,
 	}
 }
 
-func (o *AuthorEntityQuery) Where(predicates ...func(*entitysql.Predicate)) *AuthorEntityQuery {
+func (o *AuthorEntityQuery) Where(predicates ...entitysql.PredicateFunc) *AuthorEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
@@ -50,6 +56,16 @@ func (o *AuthorEntityQuery) Where(predicates ...func(*entitysql.Predicate)) *Aut
 // Limit sets the limit of the query.
 func (o *AuthorEntityQuery) Limit(limit int) *AuthorEntityQuery {
 	o.ctx.Limit = &limit
+	return o
+}
+
+func (o *AuthorEntityQuery) Order(term ...author.OrderTerm) *AuthorEntityQuery {
+	o.order = append(o.order, term...)
+	return o
+}
+
+func (o *AuthorEntityQuery) Include(rels ...AuthorEntityRel) *AuthorEntityQuery {
+	o.rels = append(o.rels, rels...)
 	return o
 }
 
@@ -74,7 +90,11 @@ func (o *AuthorEntityQuery) sqlSingle(ctx context.Context) (*AuthorEntity, error
 	case *AuthorEntity:
 		spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
 			builder := entitysql.NewScannerBuilder(o.scannerTotal)
-			builder.Append(0,res.scan(fields)...)
+			builder.Append(0, res.scan(fields)...)
+			for _, s := range o.scanner {
+				res.createRel(builder, s)
+			}
+
 			return rows.Scan(builder.Flatten()...)
 		}
 		if err := entitysql.NewQuery(ctx, o.config.Driver, spec); err != nil {
@@ -82,6 +102,9 @@ func (o *AuthorEntityQuery) sqlSingle(ctx context.Context) (*AuthorEntity, error
 		}
 		if err := res.setUnchanged(); err != nil {
 			return nil, err
+		}
+		for _, r := range o.rels {
+			r.reset()
 		}
 		return res, nil
 	default:
@@ -98,8 +121,8 @@ func (o *AuthorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error)
 		e := o.config.New()
 		switch e := e.(type) {
 		case *AuthorEntity:
-			builder := entitysql.NewScannerBuilder(o.scannerTotal)
-			builder.Append(0,e.scan([]entitysql.ScannerField{})...)
+			builder := entitysql.NewScannerBuilder(o.scannerTotal + 1)
+			builder.Append(0, e.scan([]entitysql.ScannerField{})...)
 			for _, s := range o.scanner {
 				e.createRel(builder, s)
 			}
@@ -107,7 +130,7 @@ func (o *AuthorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error)
 			if err := rows.Scan(builder.Flatten()...); err != nil {
 				return err
 			} else {
-				res = append(res, e)
+				res = mergeAuthorEntity(res, e)
 				return nil
 			}
 		default:
@@ -122,6 +145,10 @@ func (o *AuthorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error)
 			return nil, err
 		}
 	}
+	for _, r := range o.rels {
+		rel := r
+		rel.reset()
+	}
 	return res, nil
 }
 
@@ -135,11 +162,41 @@ func (o *AuthorEntityQuery) querySpec() *entitysql.QuerySpec {
 		s.Entity.Columns = append(s.Entity.Columns, fields...)
 	}
 	if ps := o.predicates; len(ps) > 0 {
-		s.Predicate = func(p *entitysql.Predicate) {
+		s.Predicate = func(p *entitysql.Predicate, as string) {
 			for _, f := range ps {
-				f(p)
+				f(p, as)
 			}
 		}
 	}
+	if rs := o.rels; len(rs) > 0 {
+		s.Rels = make([]entitysql.Relation, 0, len(rs))
+		s.Orders = append(s.Orders, author.ByPrimary)
+		for _, r := range rs {
+			rel := r
+			s.Rels = append(s.Rels, func(s *entitysql.Selector) {
+				o.scanner = o.addRels(s, s.Table(), rel, o.scanner)
+			})
+		}
+	}
+	for _, o := range o.order {
+		s.Orders = append(s.Orders, func(order *entitysql.Order) {
+			o.Apply(order)
+		})
+	}
 	return s
+}
+
+func (o *AuthorEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel Rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+	desc, children, config := rel.Desc()
+	join := entitysql.AddRelBySelector(s, t, desc)
+	_, tableNum := join.GetAs()
+	qs := internal.QueryScanner{Config: config, Children: []*internal.QueryScanner{}, TableNum: tableNum}
+	scanner = append(scanner, &qs)
+	o.scannerTotal++
+	if len(children) > 0 {
+		for _, c := range children {
+			qs.Children = o.addRels(s, join, c, qs.Children)
+		}
+	}
+	return scanner
 }
