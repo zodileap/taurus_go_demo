@@ -28,9 +28,9 @@ func main() {
 	}
 	defer db.Close()
 	ctx := context.Background()
-	_, err = db.Blogs.New(
+	_, err = db.Blogs.Create(
 		uuid.New().String(),
-		db.Blogs.WithUrl("http://test.com"),
+		db.Blogs.WithDesc("http://test.com"),
 	)
 	if err != nil {
 		panic(err)
