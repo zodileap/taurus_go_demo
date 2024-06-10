@@ -38,7 +38,7 @@ func (t *postID) Get() *int64 {
 
 // postContent is Content field
 type postContent struct {
-	field.StringStorage
+	field.StringStorage[string]
 	config *postEntityConfig
 }
 

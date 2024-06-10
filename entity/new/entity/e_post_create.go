@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// PostEntityCreate is the create action for the PostEntity.
-type PostEntityCreate struct {
+// postEntityCreate is the create action for the postEntity.
+type postEntityCreate struct {
 	config *internal.Dialect
 	es     []*PostEntity
 }
 
-// NewPostEntityCreate creates a new PostEntityCreate.
-func NewPostEntityCreate(c *internal.Dialect, es ...*PostEntity) *PostEntityCreate {
-	return &PostEntityCreate{
+// newPostEntityCreate creates a new postEntityCreate.
+func newPostEntityCreate(c *internal.Dialect, es ...*PostEntity) *postEntityCreate {
+	return &postEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *PostEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *postEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *PostEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *postEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *PostEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *PostEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *postEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		post.FieldID.Name,
 	}
@@ -68,28 +68,40 @@ func (o *PostEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range post.Columns {
 			switch post.Columns[j] {
 			case post.FieldContent.Name:
-				if err := spec.CheckRequired(post.FieldContent.Name, e.Content); err != nil {
+				v, err := e.Content.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), post.FieldContent.Name, e.Content); err != nil {
 					return nil, err
 				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: post.FieldContent.Name.String(),
-					Value:  e.Content.Value(),
+					Value:  v,
 				})
 			case post.FieldBlogID.Name:
-				if err := spec.CheckRequired(post.FieldBlogID.Name, e.BlogID); err != nil {
+				v, err := e.BlogID.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), post.FieldBlogID.Name, e.BlogID); err != nil {
 					return nil, err
 				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: post.FieldBlogID.Name.String(),
-					Value:  e.BlogID.Value(),
+					Value:  v,
 				})
 			case post.FieldAuthorID.Name:
-				if err := spec.CheckRequired(post.FieldAuthorID.Name, e.AuthorID); err != nil {
+				v, err := e.AuthorID.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), post.FieldAuthorID.Name, e.AuthorID); err != nil {
 					return nil, err
 				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: post.FieldAuthorID.Name.String(),
-					Value:  e.AuthorID.Value(),
+					Value:  v,
 				})
 			}
 		}

@@ -68,3 +68,34 @@ func (e *AuthorEntity) Fields() []entity.FieldBuilder {
 		e.Name.Required().Name("name"),
 	}
 }
+
+type FieldDemoEntity struct {
+	entity.Entity
+	Int64F     *field.Int64
+	VarF       *field.Varchar
+	BoolF      *field.Bool
+	IntArrayF  *field.Int64A1
+	Intarray2F *field.Int64A2
+	BoolArrayF *field.BoolA1
+	TimeF      *field.Timestamptz
+	TimeArrayF *field.TimestamptzA1
+}
+
+func (e *FieldDemoEntity) Config() entity.EntityConfig {
+	return entity.EntityConfig{
+		AttrName: "field_demo",
+	}
+}
+
+func (e *FieldDemoEntity) Fields() []entity.FieldBuilder {
+	return []entity.FieldBuilder{
+		e.Int64F.Required().Name("int64_f").Primary(1).Comment("Int64 field"),
+		e.VarF.Required().Name("var_f").Comment("Varchar field"),
+		e.BoolF.Required().Name("bool_f").Comment("Bool field"),
+		e.IntArrayF.Required().Name("int_array_f").Comment("Int array field"),
+		e.Intarray2F.Required().Name("int_array2_f").Comment("Int array2 field"),
+		e.BoolArrayF.Required().Name("bool_array_f").Comment("Bool array field"),
+		e.TimeF.Required().Name("time_f").Comment("Time field"),
+		e.TimeArrayF.Required().Name("time_array_f").Comment("Time array field"),
+	}
+}

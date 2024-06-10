@@ -12,19 +12,19 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// AuthorEntityQuery is the query action for the AuthorEntity.
-type AuthorEntityQuery struct {
+// authorEntityQuery is the query action for the authorEntity.
+type authorEntityQuery struct {
 	config       *authorEntityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []AuthorEntityRel
+	rels         []authorEntityRel
 	order        []author.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
 }
 
 // First returns the first result of the query.
-func (o *AuthorEntityQuery) First(ctx context.Context) (*AuthorEntity, error) {
+func (o *authorEntityQuery) First(ctx context.Context) (*AuthorEntity, error) {
 	result, err := o.Single(ctx)
 	if err != nil {
 		return nil, err
@@ -32,87 +32,94 @@ func (o *AuthorEntityQuery) First(ctx context.Context) (*AuthorEntity, error) {
 	return result, nil
 }
 
-// NewAuthorEntityQuery creates a new AuthorEntityQuery.
-func NewAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *authorEntityMutations) *AuthorEntityQuery {
-	return &AuthorEntityQuery{
+// newAuthorEntityQuery creates a new authorEntityQuery.
+func newAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *authorEntityMutations) *authorEntityQuery {
+	return &authorEntityQuery{
 		config: &authorEntityConfig{
 			Dialect:               c,
 			authorEntityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []AuthorEntityRel{},
+		rels:         []authorEntityRel{},
 		order:        []author.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
 	}
 }
 
-func (o *AuthorEntityQuery) Where(predicates ...entitysql.PredicateFunc) *AuthorEntityQuery {
+func (o *authorEntityQuery) Where(predicates ...entitysql.PredicateFunc) *authorEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
 // Limit sets the limit of the query.
-func (o *AuthorEntityQuery) Limit(limit int) *AuthorEntityQuery {
+func (o *authorEntityQuery) Limit(limit int) *authorEntityQuery {
 	o.ctx.Limit = &limit
 	return o
 }
 
-func (o *AuthorEntityQuery) Order(term ...author.OrderTerm) *AuthorEntityQuery {
+func (o *authorEntityQuery) Order(term ...author.OrderTerm) *authorEntityQuery {
 	o.order = append(o.order, term...)
 	return o
 }
 
-func (o *AuthorEntityQuery) Include(rels ...AuthorEntityRel) *AuthorEntityQuery {
+func (o *authorEntityQuery) Include(rels ...authorEntityRel) *authorEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
 
 // ToList returns the list of results of the query.
-func (o *AuthorEntityQuery) ToList(ctx context.Context) ([]*AuthorEntity, error) {
+func (o *authorEntityQuery) ToList(ctx context.Context) ([]*AuthorEntity, error) {
 	return o.sqlAll(ctx)
 }
 
 // Single returns the single result of the query.
-func (o *AuthorEntityQuery) Single(ctx context.Context) (*AuthorEntity, error) {
+func (o *authorEntityQuery) Single(ctx context.Context) (*AuthorEntity, error) {
 	limit := 1
 	o.ctx.Limit = &limit
 	return o.sqlSingle(ctx)
 }
 
-func (o *AuthorEntityQuery) sqlSingle(ctx context.Context) (*AuthorEntity, error) {
+func (o *authorEntityQuery) sqlSingle(ctx context.Context) (*AuthorEntity, error) {
 	var (
 		spec = o.querySpec()
-		res  = o.config.New()
+		res  *AuthorEntity
 	)
-	switch res := res.(type) {
-	case *AuthorEntity:
-		spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
-			builder := entitysql.NewScannerBuilder(o.scannerTotal)
-			builder.Append(0, res.scan(fields)...)
+	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
+		e := o.config.New()
+		switch e := e.(type) {
+		case *AuthorEntity:
+			builder := entitysql.NewScannerBuilder(o.scannerTotal + 1)
+			builder.Append(0, e.scan(fields)...)
 			for _, s := range o.scanner {
-				res.createRel(builder, s)
+				e.createRel(builder, s)
 			}
-
-			return rows.Scan(builder.Flatten()...)
+			if err := rows.Scan(builder.Flatten()...); err != nil {
+				return err
+			} else {
+				res = e
+				return nil
+			}
+		default:
+			return entity.Err_0100030006
 		}
-		if err := entitysql.NewQuery(ctx, o.config.Driver, spec); err != nil {
-			return nil, err
-		}
+	}
+	if err := entitysql.NewQuery(ctx, o.config.Driver, spec); err != nil {
+		return nil, err
+	}
+	if res != nil {
 		if err := res.setUnchanged(); err != nil {
 			return nil, err
 		}
-		for _, r := range o.rels {
-			r.reset()
-		}
-		return res, nil
-	default:
-		return nil, entity.Err_0100030006
 	}
+	for _, r := range o.rels {
+		r.reset()
+	}
+	return res, nil
 }
 
-func (o *AuthorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error) {
+func (o *authorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  = []*AuthorEntity{}
@@ -152,7 +159,7 @@ func (o *AuthorEntityQuery) sqlAll(ctx context.Context) ([]*AuthorEntity, error)
 	return res, nil
 }
 
-func (o *AuthorEntityQuery) querySpec() *entitysql.QuerySpec {
+func (o *authorEntityQuery) querySpec() *entitysql.QuerySpec {
 	s := entitysql.NewQuerySpec(author.Entity, author.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -186,7 +193,7 @@ func (o *AuthorEntityQuery) querySpec() *entitysql.QuerySpec {
 	return s
 }
 
-func (o *AuthorEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel Rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+func (o *authorEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
 	_, tableNum := join.GetAs()

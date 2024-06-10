@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// BlogEntityUpdate is the update action for the BlogEntity.
-type BlogEntityUpdate struct {
+// blogEntityUpdate is the update action for the blogEntity.
+type blogEntityUpdate struct {
 	config     *internal.Dialect
 	ctx        *entitysql.QueryContext
 	tracker    entity.Tracker
@@ -24,9 +24,9 @@ type BlogEntityUpdate struct {
 	batchIndex []int
 }
 
-// NewBlogEntityUpdate creates a new BlogEntityUpdate.
-func NewBlogEntityUpdate(c *internal.Dialect, es ...*BlogEntity) *BlogEntityUpdate {
-	return &BlogEntityUpdate{
+// newBlogEntityUpdate creates a new blogEntityUpdate.
+func newBlogEntityUpdate(c *internal.Dialect, es ...*BlogEntity) *blogEntityUpdate {
+	return &blogEntityUpdate{
 		config:     c,
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
@@ -35,11 +35,11 @@ func NewBlogEntityUpdate(c *internal.Dialect, es ...*BlogEntity) *BlogEntityUpda
 	}
 }
 
-func (o *BlogEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
+func (o *blogEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlUpdate(ctx, tx)
 }
 
-func (o *BlogEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
+func (o *blogEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.updateSpec()
 		res       = o.es
@@ -62,7 +62,7 @@ func (o *BlogEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
 	return entitysql.NewUpdate(ctx, tx, spec)
 }
 
-func (o *BlogEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
+func (o *blogEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	spec := entitysql.NewUpdateSpec(blog.Entity, blog.Columns)
 	if len(o.predicates) != len(o.sets) {
 		return nil, entity.Err_0100030005
@@ -74,9 +74,9 @@ func (o *BlogEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	return spec, nil
 }
 
-// setEntity 用于在updateSpec中设置[]*BlogEntity的配置，
+// setEntity 用于在updateSpec中设置[]*blogEntity的配置，
 // 一般来说这个setEntity里的entity都是通过状态追踪，自动添加的。
-func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
+func (o *blogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	predID := &blog.PredID{}
 	num := 0
 	for i, e := range o.es {
@@ -97,26 +97,42 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		for _, f := range fields {
 			switch f {
 			case blog.FieldID.Name.String():
+				v, err := e.ID.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
 				o.sets[index][blog.FieldID.Name.String()] = entitysql.CaseSpec{
-					Value: e.ID.Value(),
+					Value: v,
 					When:  predID.EQ(*e.ID.Get()),
 				}
 				num++
 			case blog.FieldUUID.Name.String():
+				v, err := e.UUID.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
 				o.sets[index][blog.FieldUUID.Name.String()] = entitysql.CaseSpec{
-					Value: e.UUID.Value(),
+					Value: v,
 					When:  predID.EQ(*e.ID.Get()),
 				}
 				num++
 			case blog.FieldDesc.Name.String():
+				v, err := e.Desc.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
 				o.sets[index][blog.FieldDesc.Name.String()] = entitysql.CaseSpec{
-					Value: e.Desc.Value(),
+					Value: v,
 					When:  predID.EQ(*e.ID.Get()),
 				}
 				num++
 			case blog.FieldCreatedTime.Name.String():
+				v, err := e.CreatedTime.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
 				o.sets[index][blog.FieldCreatedTime.Name.String()] = entitysql.CaseSpec{
-					Value: e.CreatedTime.Value(),
+					Value: v,
 					When:  predID.EQ(*e.ID.Get()),
 				}
 				num++
@@ -133,7 +149,7 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	return nil
 }
 
-func (o *BlogEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
+func (o *blogEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
 	for i, end := range o.batchIndex {
 		var begin int
 		if i == 0 {

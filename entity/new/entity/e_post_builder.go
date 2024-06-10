@@ -12,10 +12,10 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// PostEntityBuilder is a builder for the PostEntity entity.
+// postEntityBuilder is a builder for the PostEntity entity.
 //
 // The builder is used to create, update, and delete PostEntity entities.
-type PostEntityBuilder struct {
+type postEntityBuilder struct {
 	config  *postEntityConfig
 	tracker entity.Tracker
 
@@ -43,17 +43,17 @@ type PostEntityBuilder struct {
 	// Blog configures the query to include data from the 'blog' table.
 	// The method modifies the existing query to include a LEFT JOIN clause.
 	// Blog be used as an argument to the Include method。
-	Blog *BlogEntityRelation
+	Blog *blogEntityRelation
 
 	// Author configures the query to include data from the 'author' table.
 	// The method modifies the existing query to include a LEFT JOIN clause.
 	// Author be used as an argument to the Include method。
-	Author *AuthorEntityRelation
+	Author *authorEntityRelation
 }
 
-// newPostEntityBuilder creates a new PostEntityBuilder.
-func newPostEntityBuilder(c *postEntityConfig, t entity.Tracker, Blog BlogEntityRelation, Author AuthorEntityRelation) *PostEntityBuilder {
-	return &PostEntityBuilder{
+// newpostEntityBuilder creates a new postEntityBuilder.
+func newPostEntityBuilder(c *postEntityConfig, t entity.Tracker, Blog blogEntityRelation, Author authorEntityRelation) *postEntityBuilder {
+	return &postEntityBuilder{
 		config:  c,
 		tracker: t,
 		Blog:    &Blog, Author: &Author,
@@ -63,7 +63,7 @@ func newPostEntityBuilder(c *postEntityConfig, t entity.Tracker, Blog BlogEntity
 // Create creates a new UserEntity，and add it to the tracker.
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
-func (b *PostEntityBuilder) Create(content string, blog_id int64, author_id int64, options ...func(*PostEntity)) (*PostEntity, error) {
+func (b *postEntityBuilder) Create(content string, blog_id int64, author_id int64, options ...func(*PostEntity)) (*PostEntity, error) {
 	e := b.config.New()
 	switch t := e.(type) {
 	case *PostEntity:
@@ -73,7 +73,7 @@ func (b *PostEntityBuilder) Create(content string, blog_id int64, author_id int6
 	}
 }
 
-func (b *PostEntityBuilder) Remove(e *PostEntity) error {
+func (b *postEntityBuilder) Remove(e *PostEntity) error {
 	if e.config.Mutation == nil {
 		return nil
 	}
@@ -81,50 +81,50 @@ func (b *PostEntityBuilder) Remove(e *PostEntity) error {
 }
 
 // First returns the first PostEntity.
-func (s *PostEntityBuilder) First(ctx context.Context) (*PostEntity, error) {
+func (s *postEntityBuilder) First(ctx context.Context) (*PostEntity, error) {
 	query := s.initQuery()
 	return query.First(ctx)
 }
 
-func (s *PostEntityBuilder) ToList(ctx context.Context) ([]*PostEntity, error) {
+func (s *postEntityBuilder) ToList(ctx context.Context) ([]*PostEntity, error) {
 	query := s.initQuery()
 	return query.ToList(ctx)
 }
 
-func (s *PostEntityBuilder) Include(rels ...PostEntityRel) *PostEntityQuery {
+func (s *postEntityBuilder) Include(rels ...postEntityRel) *postEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *PostEntityBuilder) Order(o ...post.OrderTerm) *PostEntityQuery {
+func (s *postEntityBuilder) Order(o ...post.OrderTerm) *postEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *PostEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *PostEntityQuery {
+func (s *postEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *postEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
 
 // Exec executes all the postEntityMutations for the PostEntity.
-func (s *PostEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
+func (s *postEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	if len(s.config.postEntityMutations.Addeds) > 0 {
 		e := s.config.postEntityMutations.Get(entity.Added)
-		n := NewPostEntityCreate(s.config.Dialect, e...)
+		n := newPostEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.config.postEntityMutations.Modifieds) > 0 {
 		e := s.config.postEntityMutations.Get(entity.Modified)
-		n := NewPostEntityUpdate(s.config.Dialect, e...)
+		n := newPostEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.config.postEntityMutations.Deleteds) > 0 {
 		e := s.config.postEntityMutations.Get(entity.Deleted)
-		n := NewPostEntityDelete(s.config.Dialect, e...)
+		n := newPostEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
 		}
@@ -132,8 +132,8 @@ func (s *PostEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *PostEntityBuilder) initQuery() *PostEntityQuery {
-	return NewPostEntityQuery(s.config.Dialect, s.tracker, s.config.postEntityMutations)
+func (s *postEntityBuilder) initQuery() *postEntityQuery {
+	return newPostEntityQuery(s.config.Dialect, s.tracker, s.config.postEntityMutations)
 }
 
 // postEntityMutations is a collection of PostEntity mutation.

@@ -39,7 +39,7 @@ func (t *blogID) Get() *int64 {
 
 // blogUUID is UUID field
 type blogUUID struct {
-	field.StringStorage
+	field.StringStorage[string]
 	config *blogEntityConfig
 }
 
@@ -66,7 +66,7 @@ func (t *blogUUID) Get() *string {
 
 // blogDesc is Desc field
 type blogDesc struct {
-	field.StringStorage
+	field.StringStorage[string]
 	config *blogEntityConfig
 }
 
@@ -93,7 +93,7 @@ func (t *blogDesc) Get() *string {
 
 // blogCreatedTime is CreatedTime field
 type blogCreatedTime struct {
-	field.TimestampStorage
+	field.TimestampStorage[time.Time]
 	config *blogEntityConfig
 }
 

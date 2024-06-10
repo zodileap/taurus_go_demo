@@ -38,7 +38,7 @@ func (t *authorID) Get() *int64 {
 
 // authorName is Name field
 type authorName struct {
-	field.StringStorage
+	field.StringStorage[string]
 	config *authorEntityConfig
 }
 

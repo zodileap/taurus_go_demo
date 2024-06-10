@@ -12,10 +12,10 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// AuthorEntityBuilder is a builder for the AuthorEntity entity.
+// authorEntityBuilder is a builder for the AuthorEntity entity.
 //
 // The builder is used to create, update, and delete AuthorEntity entities.
-type AuthorEntityBuilder struct {
+type authorEntityBuilder struct {
 	config  *authorEntityConfig
 	tracker entity.Tracker
 
@@ -33,12 +33,12 @@ type AuthorEntityBuilder struct {
 	// Posts configures the query to include data from the 'post' table.
 	// The method modifies the existing query to include a LEFT JOIN clause.
 	// Posts be used as an argument to the Include method。
-	Posts *PostEntityRelation
+	Posts *postEntityRelation
 }
 
-// newAuthorEntityBuilder creates a new AuthorEntityBuilder.
-func newAuthorEntityBuilder(c *authorEntityConfig, t entity.Tracker, Posts PostEntityRelation) *AuthorEntityBuilder {
-	return &AuthorEntityBuilder{
+// newauthorEntityBuilder creates a new authorEntityBuilder.
+func newAuthorEntityBuilder(c *authorEntityConfig, t entity.Tracker, Posts postEntityRelation) *authorEntityBuilder {
+	return &authorEntityBuilder{
 		config:  c,
 		tracker: t,
 		Posts:   &Posts,
@@ -48,7 +48,7 @@ func newAuthorEntityBuilder(c *authorEntityConfig, t entity.Tracker, Posts PostE
 // Create creates a new UserEntity，and add it to the tracker.
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
-func (b *AuthorEntityBuilder) Create(name string, options ...func(*AuthorEntity)) (*AuthorEntity, error) {
+func (b *authorEntityBuilder) Create(name string, options ...func(*AuthorEntity)) (*AuthorEntity, error) {
 	e := b.config.New()
 	switch t := e.(type) {
 	case *AuthorEntity:
@@ -58,7 +58,7 @@ func (b *AuthorEntityBuilder) Create(name string, options ...func(*AuthorEntity)
 	}
 }
 
-func (b *AuthorEntityBuilder) Remove(e *AuthorEntity) error {
+func (b *authorEntityBuilder) Remove(e *AuthorEntity) error {
 	if e.config.Mutation == nil {
 		return nil
 	}
@@ -66,50 +66,50 @@ func (b *AuthorEntityBuilder) Remove(e *AuthorEntity) error {
 }
 
 // First returns the first AuthorEntity.
-func (s *AuthorEntityBuilder) First(ctx context.Context) (*AuthorEntity, error) {
+func (s *authorEntityBuilder) First(ctx context.Context) (*AuthorEntity, error) {
 	query := s.initQuery()
 	return query.First(ctx)
 }
 
-func (s *AuthorEntityBuilder) ToList(ctx context.Context) ([]*AuthorEntity, error) {
+func (s *authorEntityBuilder) ToList(ctx context.Context) ([]*AuthorEntity, error) {
 	query := s.initQuery()
 	return query.ToList(ctx)
 }
 
-func (s *AuthorEntityBuilder) Include(rels ...AuthorEntityRel) *AuthorEntityQuery {
+func (s *authorEntityBuilder) Include(rels ...authorEntityRel) *authorEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *AuthorEntityBuilder) Order(o ...author.OrderTerm) *AuthorEntityQuery {
+func (s *authorEntityBuilder) Order(o ...author.OrderTerm) *authorEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *AuthorEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *AuthorEntityQuery {
+func (s *authorEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *authorEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
 
 // Exec executes all the authorEntityMutations for the AuthorEntity.
-func (s *AuthorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
+func (s *authorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	if len(s.config.authorEntityMutations.Addeds) > 0 {
 		e := s.config.authorEntityMutations.Get(entity.Added)
-		n := NewAuthorEntityCreate(s.config.Dialect, e...)
+		n := newAuthorEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.config.authorEntityMutations.Modifieds) > 0 {
 		e := s.config.authorEntityMutations.Get(entity.Modified)
-		n := NewAuthorEntityUpdate(s.config.Dialect, e...)
+		n := newAuthorEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
 	if len(s.config.authorEntityMutations.Deleteds) > 0 {
 		e := s.config.authorEntityMutations.Get(entity.Deleted)
-		n := NewAuthorEntityDelete(s.config.Dialect, e...)
+		n := newAuthorEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
 		}
@@ -117,8 +117,8 @@ func (s *AuthorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *AuthorEntityBuilder) initQuery() *AuthorEntityQuery {
-	return NewAuthorEntityQuery(s.config.Dialect, s.tracker, s.config.authorEntityMutations)
+func (s *authorEntityBuilder) initQuery() *authorEntityQuery {
+	return newAuthorEntityQuery(s.config.Dialect, s.tracker, s.config.authorEntityMutations)
 }
 
 // authorEntityMutations is a collection of AuthorEntity mutation.

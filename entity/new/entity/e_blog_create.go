@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// BlogEntityCreate is the create action for the BlogEntity.
-type BlogEntityCreate struct {
+// blogEntityCreate is the create action for the blogEntity.
+type blogEntityCreate struct {
 	config *internal.Dialect
 	es     []*BlogEntity
 }
 
-// NewBlogEntityCreate creates a new BlogEntityCreate.
-func NewBlogEntityCreate(c *internal.Dialect, es ...*BlogEntity) *BlogEntityCreate {
-	return &BlogEntityCreate{
+// newBlogEntityCreate creates a new blogEntityCreate.
+func newBlogEntityCreate(c *internal.Dialect, es ...*BlogEntity) *blogEntityCreate {
+	return &blogEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *BlogEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *blogEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *BlogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *blogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *BlogEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *BlogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *blogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		blog.FieldID.Name,
 		blog.FieldCreatedTime.Name,
@@ -69,22 +69,34 @@ func (o *BlogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range blog.Columns {
 			switch blog.Columns[j] {
 			case blog.FieldUUID.Name:
-				if err := spec.CheckRequired(blog.FieldUUID.Name, e.UUID); err != nil {
+				v, err := e.UUID.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), blog.FieldUUID.Name, e.UUID); err != nil {
 					return nil, err
 				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: blog.FieldUUID.Name.String(),
-					Value:  e.UUID.Value(),
+					Value:  v,
 				})
 			case blog.FieldDesc.Name:
+				v, err := e.Desc.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: blog.FieldDesc.Name.String(),
-					Value:  e.Desc.Value(),
+					Value:  v,
 				})
 			case blog.FieldCreatedTime.Name:
+				v, err := e.CreatedTime.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: blog.FieldCreatedTime.Name.String(),
-					Value:  e.CreatedTime.Value(),
+					Value:  v,
 				})
 			}
 		}

@@ -12,32 +12,32 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// AuthorEntityDelete is the delete action for the AuthorEntity.
-type AuthorEntityDelete struct {
+// authorEntityDelete is the delete action for the authorEntity.
+type authorEntityDelete struct {
 	config     *internal.Dialect
 	es         []*AuthorEntity
 	predicates []entitysql.PredicateFunc
 }
 
-// NewAuthorEntityDelete creates a new AuthorEntityDelete.
-func NewAuthorEntityDelete(c *internal.Dialect, es ...*AuthorEntity) *AuthorEntityDelete {
-	return &AuthorEntityDelete{
+// newAuthorEntityDelete creates a new authorEntityDelete.
+func newAuthorEntityDelete(c *internal.Dialect, es ...*AuthorEntity) *authorEntityDelete {
+	return &authorEntityDelete{
 		config: c,
 		es:     es,
 	}
 }
 
 // Where adds a predicate to the delete action.
-func (o *AuthorEntityDelete) Where(predicates ...entitysql.PredicateFunc) *AuthorEntityDelete {
+func (o *authorEntityDelete) Where(predicates ...entitysql.PredicateFunc) *authorEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
-func (o *AuthorEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
+func (o *authorEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlDelete(ctx, tx)
 }
 
-func (o *AuthorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
+func (o *authorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.deleteSpec()
 		affected  = int64(0)
@@ -57,7 +57,7 @@ func (o *AuthorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error
 	return nil
 }
 
-func (o *AuthorEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
+func (o *authorEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(author.Entity)
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate, as string) {

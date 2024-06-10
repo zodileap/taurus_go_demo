@@ -108,9 +108,13 @@ func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range author.Columns {
 			switch c.String() {
 			case author.FieldID.Name.String():
-				args[i] = e.ID
+				v := e.ID
+				v.Set(*new(int64))
+				args[i] = v
 			case author.FieldName.Name.String():
-				args[i] = e.Name
+				v := e.Name
+				v.Set(*new(string))
+				args[i] = v
 			}
 		}
 		return args
@@ -119,9 +123,13 @@ func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case author.FieldID.Name.String():
-				args[i] = e.ID
+				v := e.ID
+				v.Set(*new(int64))
+				args[i] = v
 			case author.FieldName.Name.String():
-				args[i] = e.Name
+				v := e.Name
+				v.Set(*new(string))
+				args[i] = v
 			}
 		}
 		return args

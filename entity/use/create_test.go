@@ -8,7 +8,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/yohobala/taurus_go/testutil/unit"
-	"github.com/yohobala/taurus_go/tlog"
 )
 
 func TestCreate(t *testing.T) {
@@ -25,8 +24,6 @@ func TestCreate(t *testing.T) {
 		err = db.Save(ctx)
 		unit.Must(err)
 		fmt.Print(u.ID)
-		tlog.Print(u.ID)
-		tlog.Print(u.CreatedTime)
 	})
 
 	t.Run("multi_1", func(t *testing.T) {
@@ -38,6 +35,22 @@ func TestCreate(t *testing.T) {
 			unit.Must(err)
 		}
 		err := db.Save(ctx)
+		unit.Must(err)
+	})
+
+	t.Run("fieldDemo", func(t *testing.T) {
+		_, err := db.FieldDemos.Create(
+			1,
+			"hello",
+			true,
+			[]int64{1, 2, 3},
+			[][]int64{{1, 2}, {3, 4}},
+			[]bool{true, false},
+			time.Now(),
+			[]time.Time{time.Now(), time.Now()},
+		)
+		unit.Must(err)
+		err = db.Save(ctx)
 		unit.Must(err)
 	})
 }

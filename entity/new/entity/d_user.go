@@ -19,10 +19,11 @@ const UserTag = "UserTag"
 // User  is an struct of the database
 type User struct {
 	*internal.Dialect
-	tracker entity.Tracker
-	Authors *AuthorEntityBuilder
-	Blogs   *BlogEntityBuilder
-	Posts   *PostEntityBuilder
+	tracker    entity.Tracker
+	Authors    *authorEntityBuilder
+	Blogs      *blogEntityBuilder
+	FieldDemos *fieldDemoEntityBuilder
+	Posts      *postEntityBuilder
 }
 
 // NewUser creates a new User instance.
@@ -66,12 +67,13 @@ func (d *User) Save(ctx context.Context) error {
 func (d *User) init() {
 	authorEntityConfig := newAuthorEntityConfig(d.Dialect)
 	blogEntityConfig := newBlogEntityConfig(d.Dialect)
+	fieldDemoEntityConfig := newFieldDemoEntityConfig(d.Dialect)
 	postEntityConfig := newPostEntityConfig(d.Dialect)
 
 	d.Authors = newAuthorEntityBuilder(
 		authorEntityConfig,
 		d.tracker,
-		*NewPostEntityRelation(
+		*newPostEntityRelation(
 			postEntityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
@@ -95,7 +97,7 @@ func (d *User) init() {
 	d.Blogs = newBlogEntityBuilder(
 		blogEntityConfig,
 		d.tracker,
-		*NewPostEntityRelation(
+		*newPostEntityRelation(
 			postEntityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
@@ -116,10 +118,13 @@ func (d *User) init() {
 	)
 	d.tracker.Add(d.Blogs)
 
+	d.FieldDemos = newFieldDemoEntityBuilder(fieldDemoEntityConfig, d.tracker)
+	d.tracker.Add(d.FieldDemos)
+
 	d.Posts = newPostEntityBuilder(
 		postEntityConfig,
 		d.tracker,
-		*NewBlogEntityRelation(
+		*newBlogEntityRelation(
 			blogEntityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
@@ -138,7 +143,7 @@ func (d *User) init() {
 			},
 		),
 
-		*NewAuthorEntityRelation(
+		*newAuthorEntityRelation(
 			authorEntityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{

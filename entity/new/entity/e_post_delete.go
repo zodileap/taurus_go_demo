@@ -12,32 +12,32 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// PostEntityDelete is the delete action for the PostEntity.
-type PostEntityDelete struct {
+// postEntityDelete is the delete action for the postEntity.
+type postEntityDelete struct {
 	config     *internal.Dialect
 	es         []*PostEntity
 	predicates []entitysql.PredicateFunc
 }
 
-// NewPostEntityDelete creates a new PostEntityDelete.
-func NewPostEntityDelete(c *internal.Dialect, es ...*PostEntity) *PostEntityDelete {
-	return &PostEntityDelete{
+// newPostEntityDelete creates a new postEntityDelete.
+func newPostEntityDelete(c *internal.Dialect, es ...*PostEntity) *postEntityDelete {
+	return &postEntityDelete{
 		config: c,
 		es:     es,
 	}
 }
 
 // Where adds a predicate to the delete action.
-func (o *PostEntityDelete) Where(predicates ...entitysql.PredicateFunc) *PostEntityDelete {
+func (o *postEntityDelete) Where(predicates ...entitysql.PredicateFunc) *postEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
-func (o *PostEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
+func (o *postEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlDelete(ctx, tx)
 }
 
-func (o *PostEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
+func (o *postEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.deleteSpec()
 		affected  = int64(0)
@@ -57,7 +57,7 @@ func (o *PostEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (o *PostEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
+func (o *postEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(post.Entity)
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate, as string) {

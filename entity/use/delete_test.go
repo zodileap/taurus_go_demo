@@ -19,7 +19,6 @@ func TestDelete(t *testing.T) {
 		if err != nil {
 			t.Errorf(err.Error())
 		}
-		tlog.Print(u)
 		db.Blogs.Remove(u)
 		db.Save(ctx)
 	})

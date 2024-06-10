@@ -8,19 +8,23 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-type Rel interface {
-	Desc() (entitysql.RelationDesc, []Rel, internal.EntityConfig)
+type rel interface {
+	Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig)
 	reset()
 }
 
-type AuthorEntityRel interface {
-	Rel
+type authorEntityRel interface {
+	rel
 }
 
-type BlogEntityRel interface {
-	Rel
+type blogEntityRel interface {
+	rel
 }
 
-type PostEntityRel interface {
-	Rel
+type fieldDemoEntityRel interface {
+	rel
+}
+
+type postEntityRel interface {
+	rel
 }

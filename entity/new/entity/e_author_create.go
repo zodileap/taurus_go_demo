@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// AuthorEntityCreate is the create action for the AuthorEntity.
-type AuthorEntityCreate struct {
+// authorEntityCreate is the create action for the authorEntity.
+type authorEntityCreate struct {
 	config *internal.Dialect
 	es     []*AuthorEntity
 }
 
-// NewAuthorEntityCreate creates a new AuthorEntityCreate.
-func NewAuthorEntityCreate(c *internal.Dialect, es ...*AuthorEntity) *AuthorEntityCreate {
-	return &AuthorEntityCreate{
+// newAuthorEntityCreate creates a new authorEntityCreate.
+func newAuthorEntityCreate(c *internal.Dialect, es ...*AuthorEntity) *authorEntityCreate {
+	return &authorEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *AuthorEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *authorEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *AuthorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *authorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *AuthorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *AuthorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *authorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		author.FieldID.Name,
 	}
@@ -68,12 +68,16 @@ func (o *AuthorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range author.Columns {
 			switch author.Columns[j] {
 			case author.FieldName.Name:
-				if err := spec.CheckRequired(author.FieldName.Name, e.Name); err != nil {
+				v, err := e.Name.Value(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), author.FieldName.Name, e.Name); err != nil {
 					return nil, err
 				}
 				fields = append(fields, &entitysql.FieldSpec{
 					Column: author.FieldName.Name.String(),
-					Value:  e.Name.Value(),
+					Value:  v,
 				})
 			}
 		}

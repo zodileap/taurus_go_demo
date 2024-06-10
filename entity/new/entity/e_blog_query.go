@@ -12,19 +12,19 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// BlogEntityQuery is the query action for the BlogEntity.
-type BlogEntityQuery struct {
+// blogEntityQuery is the query action for the blogEntity.
+type blogEntityQuery struct {
 	config       *blogEntityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []BlogEntityRel
+	rels         []blogEntityRel
 	order        []blog.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
 }
 
 // First returns the first result of the query.
-func (o *BlogEntityQuery) First(ctx context.Context) (*BlogEntity, error) {
+func (o *blogEntityQuery) First(ctx context.Context) (*BlogEntity, error) {
 	result, err := o.Single(ctx)
 	if err != nil {
 		return nil, err
@@ -32,87 +32,94 @@ func (o *BlogEntityQuery) First(ctx context.Context) (*BlogEntity, error) {
 	return result, nil
 }
 
-// NewBlogEntityQuery creates a new BlogEntityQuery.
-func NewBlogEntityQuery(c *internal.Dialect, t entity.Tracker, ms *blogEntityMutations) *BlogEntityQuery {
-	return &BlogEntityQuery{
+// newBlogEntityQuery creates a new blogEntityQuery.
+func newBlogEntityQuery(c *internal.Dialect, t entity.Tracker, ms *blogEntityMutations) *blogEntityQuery {
+	return &blogEntityQuery{
 		config: &blogEntityConfig{
 			Dialect:             c,
 			blogEntityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []BlogEntityRel{},
+		rels:         []blogEntityRel{},
 		order:        []blog.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
 	}
 }
 
-func (o *BlogEntityQuery) Where(predicates ...entitysql.PredicateFunc) *BlogEntityQuery {
+func (o *blogEntityQuery) Where(predicates ...entitysql.PredicateFunc) *blogEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
 // Limit sets the limit of the query.
-func (o *BlogEntityQuery) Limit(limit int) *BlogEntityQuery {
+func (o *blogEntityQuery) Limit(limit int) *blogEntityQuery {
 	o.ctx.Limit = &limit
 	return o
 }
 
-func (o *BlogEntityQuery) Order(term ...blog.OrderTerm) *BlogEntityQuery {
+func (o *blogEntityQuery) Order(term ...blog.OrderTerm) *blogEntityQuery {
 	o.order = append(o.order, term...)
 	return o
 }
 
-func (o *BlogEntityQuery) Include(rels ...BlogEntityRel) *BlogEntityQuery {
+func (o *blogEntityQuery) Include(rels ...blogEntityRel) *blogEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
 
 // ToList returns the list of results of the query.
-func (o *BlogEntityQuery) ToList(ctx context.Context) ([]*BlogEntity, error) {
+func (o *blogEntityQuery) ToList(ctx context.Context) ([]*BlogEntity, error) {
 	return o.sqlAll(ctx)
 }
 
 // Single returns the single result of the query.
-func (o *BlogEntityQuery) Single(ctx context.Context) (*BlogEntity, error) {
+func (o *blogEntityQuery) Single(ctx context.Context) (*BlogEntity, error) {
 	limit := 1
 	o.ctx.Limit = &limit
 	return o.sqlSingle(ctx)
 }
 
-func (o *BlogEntityQuery) sqlSingle(ctx context.Context) (*BlogEntity, error) {
+func (o *blogEntityQuery) sqlSingle(ctx context.Context) (*BlogEntity, error) {
 	var (
 		spec = o.querySpec()
-		res  = o.config.New()
+		res  *BlogEntity
 	)
-	switch res := res.(type) {
-	case *BlogEntity:
-		spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
-			builder := entitysql.NewScannerBuilder(o.scannerTotal)
-			builder.Append(0, res.scan(fields)...)
+	spec.Scan = func(rows dialect.Rows, fields []entitysql.ScannerField) error {
+		e := o.config.New()
+		switch e := e.(type) {
+		case *BlogEntity:
+			builder := entitysql.NewScannerBuilder(o.scannerTotal + 1)
+			builder.Append(0, e.scan(fields)...)
 			for _, s := range o.scanner {
-				res.createRel(builder, s)
+				e.createRel(builder, s)
 			}
-
-			return rows.Scan(builder.Flatten()...)
+			if err := rows.Scan(builder.Flatten()...); err != nil {
+				return err
+			} else {
+				res = e
+				return nil
+			}
+		default:
+			return entity.Err_0100030006
 		}
-		if err := entitysql.NewQuery(ctx, o.config.Driver, spec); err != nil {
-			return nil, err
-		}
+	}
+	if err := entitysql.NewQuery(ctx, o.config.Driver, spec); err != nil {
+		return nil, err
+	}
+	if res != nil {
 		if err := res.setUnchanged(); err != nil {
 			return nil, err
 		}
-		for _, r := range o.rels {
-			r.reset()
-		}
-		return res, nil
-	default:
-		return nil, entity.Err_0100030006
 	}
+	for _, r := range o.rels {
+		r.reset()
+	}
+	return res, nil
 }
 
-func (o *BlogEntityQuery) sqlAll(ctx context.Context) ([]*BlogEntity, error) {
+func (o *blogEntityQuery) sqlAll(ctx context.Context) ([]*BlogEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  = []*BlogEntity{}
@@ -152,7 +159,7 @@ func (o *BlogEntityQuery) sqlAll(ctx context.Context) ([]*BlogEntity, error) {
 	return res, nil
 }
 
-func (o *BlogEntityQuery) querySpec() *entitysql.QuerySpec {
+func (o *blogEntityQuery) querySpec() *entitysql.QuerySpec {
 	s := entitysql.NewQuerySpec(blog.Entity, blog.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -186,7 +193,7 @@ func (o *BlogEntityQuery) querySpec() *entitysql.QuerySpec {
 	return s
 }
 
-func (o *BlogEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel Rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+func (o *blogEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
 	_, tableNum := join.GetAs()

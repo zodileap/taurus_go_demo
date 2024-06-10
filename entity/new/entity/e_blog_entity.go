@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
+	"time"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/entitysql"
@@ -116,13 +117,21 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range blog.Columns {
 			switch c.String() {
 			case blog.FieldID.Name.String():
-				args[i] = e.ID
+				v := e.ID
+				v.Set(*new(int64))
+				args[i] = v
 			case blog.FieldUUID.Name.String():
-				args[i] = e.UUID
+				v := e.UUID
+				v.Set(*new(string))
+				args[i] = v
 			case blog.FieldDesc.Name.String():
-				args[i] = e.Desc
+				v := e.Desc
+				v.Set(*new(string))
+				args[i] = v
 			case blog.FieldCreatedTime.Name.String():
-				args[i] = e.CreatedTime
+				v := e.CreatedTime
+				v.Set(*new(time.Time))
+				args[i] = v
 			}
 		}
 		return args
@@ -131,13 +140,21 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case blog.FieldID.Name.String():
-				args[i] = e.ID
+				v := e.ID
+				v.Set(*new(int64))
+				args[i] = v
 			case blog.FieldUUID.Name.String():
-				args[i] = e.UUID
+				v := e.UUID
+				v.Set(*new(string))
+				args[i] = v
 			case blog.FieldDesc.Name.String():
-				args[i] = e.Desc
+				v := e.Desc
+				v.Set(*new(string))
+				args[i] = v
 			case blog.FieldCreatedTime.Name.String():
-				args[i] = e.CreatedTime
+				v := e.CreatedTime
+				v.Set(*new(time.Time))
+				args[i] = v
 			}
 		}
 		return args

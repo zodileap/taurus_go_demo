@@ -7,9 +7,10 @@ import (
 
 type User struct {
 	entity.Database
-	Blog   *BlogEntity
-	Post   *PostEntity
-	Author *AuthorEntity
+	Blog      *BlogEntity
+	Post      *PostEntity
+	Author    *AuthorEntity
+	FieldDemo *FieldDemoEntity
 }
 
 func (d *User) Config() entity.DbConfig {

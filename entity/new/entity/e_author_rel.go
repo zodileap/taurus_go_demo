@@ -8,45 +8,45 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-type AuthorEntityRelation struct {
-	PostEntityRel
+type authorEntityRelation struct {
+	postEntityRel
 	Config   internal.EntityConfig
 	relation entitysql.RelationDesc
-	children []Rel
+	children []rel
 }
 
-func NewAuthorEntityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *AuthorEntityRelation {
-	return &AuthorEntityRelation{
+func newAuthorEntityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *authorEntityRelation {
+	return &authorEntityRelation{
 		Config:   config,
 		relation: desc,
-		children: []Rel{},
+		children: []rel{},
 	}
 }
 
-func (r *AuthorEntityRelation) Where(predicates ...entitysql.PredicateFunc) *AuthorEntityRelation {
+func (r *authorEntityRelation) Where(predicates ...entitysql.PredicateFunc) *authorEntityRelation {
 	r.relation.Predicates = append(r.relation.Predicates, predicates...)
 	return r
 }
 
-func (r *AuthorEntityRelation) Include(rels ...AuthorEntityRel) *AuthorEntityRelation {
+func (r *authorEntityRelation) Include(rels ...authorEntityRel) *authorEntityRelation {
 	// Create a slice of type Rel with the same length as r.children
-	newRels := make([]Rel, len(rels))
+	newRels := make([]rel, len(rels))
 	for i, r := range rels {
-		// Convert each AuthorEntityRel to Rel and store it in the new slice
-		newRels[i] = Rel(r)
+		// Convert each authorEntityRel to Rel and store it in the new slice
+		newRels[i] = rel(r)
 	}
 	r.children = append(r.children, newRels...)
 	return r
 }
 
-func (r *AuthorEntityRelation) Desc() (entitysql.RelationDesc, []Rel, internal.EntityConfig) {
+func (r *authorEntityRelation) Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig) {
 	return r.relation, r.children, r.Config
 }
 
-func (r *AuthorEntityRelation) reset() {
+func (r *authorEntityRelation) reset() {
 	for _, child := range r.children {
 		child.reset()
 	}
 	r.relation.Reset()
-	r.children = []Rel{}
+	r.children = []rel{}
 }
