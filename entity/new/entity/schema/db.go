@@ -11,6 +11,7 @@ type User struct {
 	Post      *PostEntity
 	Author    *AuthorEntity
 	FieldDemo *FieldDemoEntity
+	Geo       *GeoEntity
 }
 
 func (d *User) Config() entity.DbConfig {

@@ -346,6 +346,140 @@ END
 $$;
 
 -- ********
+-- Sequence geo_id_seq
+-- ********
+DO $$
+BEGIN
+    CREATE  SEQUENCE IF NOT EXISTS "public"."geo_id_seq" 
+    INCREMENT 1
+    MINVALUE  1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
+END
+$$;
+-- ********
+-- Table "geo_demo"
+-- ********
+DO $$
+DECLARE
+    column_rec RECORD;
+    v_constraint_name TEXT;
+BEGIN
+    IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'geo_demo') THEN
+        -- Check for any extra columns, and delete them if there are any.
+        -- 检查是否有多余的列，如果有则删除。
+        FOR column_rec IN SELECT tbl.column_name, tbl.data_type FROM information_schema.columns tbl WHERE table_schema = 'public' AND table_name = 'geo_demo' LOOP
+            IF column_rec.column_name NOT IN ('id','point','line_string','polygon','multi_point','multi_line_string','multi_polygon','circular_string') THEN
+                EXECUTE 'ALTER TABLE "public"."geo_demo" DROP COLUMN IF EXISTS ' || quote_ident(column_rec.column_name) || ' CASCADE;';
+            END IF;
+        END LOOP;
+        -- Check for missing columns, and add them if any are missing.
+        -- 检查是否缺少列，如果缺少则添加
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'id' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "id" int8 NOT NULL DEFAULT nextval('geo_id_seq'::regclass);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "id" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "id" SET DEFAULT nextval('geo_id_seq'::regclass); ALTER TABLE "public"."geo_demo" ALTER COLUMN "id" TYPE int8 USING "id"::int8;
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'point' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "point" geometry(Point, 4326) NOT NULL;
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" TYPE geometry(Point, 4326) USING "point"::geometry(Point, 4326);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'line_string' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "line_string" geometry(LineString, 0) NOT NULL;
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" TYPE geometry(LineString, 0) USING "line_string"::geometry(LineString, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'polygon' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "polygon" geometry(Polygon, 0) NOT NULL;
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" TYPE geometry(Polygon, 0) USING "polygon"::geometry(Polygon, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_point' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_point" geometry(MultiPoint, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point" TYPE geometry(MultiPoint, 0) USING "multi_point"::geometry(MultiPoint, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_line_string' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_line_string" geometry(MultiLineString, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string" TYPE geometry(MultiLineString, 0) USING "multi_line_string"::geometry(MultiLineString, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_polygon' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_polygon" geometry(MultiPolygon, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon" TYPE geometry(MultiPolygon, 0) USING "multi_polygon"::geometry(MultiPolygon, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'circular_string' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "circular_string" geometry(CircularString, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" TYPE geometry(CircularString, 0) USING "circular_string"::geometry(CircularString, 0);
+        END IF;
+        -- Search for the name of any existing primary key constraints. 
+        -- If found, delete them first, then add new primary key constraints.
+        -- 查找现有的主键约束名称，如果找到了先删除它， 添加新的主键约束。
+        SELECT conname INTO v_constraint_name
+        FROM pg_constraint con
+        JOIN pg_class rel ON rel.oid = con.conrelid
+        JOIN pg_namespace nsp ON nsp.oid = rel.relnamespace
+        WHERE nsp.nspname = 'public'
+            AND rel.relname = 'geo_demo'
+            AND con.contype = 'p';
+        IF v_constraint_name IS NOT NULL THEN
+            EXECUTE 'ALTER TABLE "public"."geo_demo" DROP CONSTRAINT IF EXISTS ' || quote_ident(v_constraint_name);
+        END IF;
+    ELSE
+        -- If the table does not exist, then create the table.
+        -- 如果表不存在，则创建表。
+        CREATE TABLE "public"."geo_demo" (
+            "id" int8 NOT NULL DEFAULT nextval('geo_id_seq'::regclass),
+            "point" geometry(Point, 4326) NOT NULL,
+            "line_string" geometry(LineString, 0) NOT NULL,
+            "polygon" geometry(Polygon, 0) NOT NULL,
+            "multi_point" geometry(MultiPoint, 0),
+            "multi_line_string" geometry(MultiLineString, 0),
+            "multi_polygon" geometry(MultiPolygon, 0),
+            "circular_string" geometry(CircularString, 0)
+        );
+    END IF;
+    -- Field Comment.
+    -- 字段备注。
+    COMMENT ON COLUMN "public"."geo_demo"."id" IS  '主键。';
+    COMMENT ON COLUMN "public"."geo_demo"."point" IS  '点';
+    COMMENT ON COLUMN "public"."geo_demo"."line_string" IS  '线';
+    COMMENT ON COLUMN "public"."geo_demo"."polygon" IS  '多边形';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_point" IS  '多点';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_line_string" IS  '多线';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_polygon" IS  '多多边形';
+    COMMENT ON COLUMN "public"."geo_demo"."circular_string" IS  '圆弧';
+    -- Table Comment.
+    -- 表备注。
+    COMMENT ON TABLE "public"."geo_demo" IS 'Geo的类型测试';
+
+    -- Primary Key.
+     -- 主键。
+    ALTER TABLE "public"."geo_demo" ADD CONSTRAINT geo_demo_pkey PRIMARY KEY ("id");
+END
+$$;
+
+-- ********
 -- Sequence post_id_seq
 -- ********
 DO $$

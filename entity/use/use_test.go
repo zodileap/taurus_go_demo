@@ -24,16 +24,13 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
 	sqlConsole := true
 	e.SetConfig(e.Config{
 		SqlConsole: &sqlConsole,
 	})
-
 }
 
 func initDb() *entity.User {
-
 	db, err := entity.NewUser()
 	if err != nil {
 		panic(err)

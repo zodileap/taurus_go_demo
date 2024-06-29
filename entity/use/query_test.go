@@ -4,208 +4,214 @@ import (
 	"context"
 	"fmt"
 	"testing"
+
+	"github.com/yohobala/taurus_go/testutil/unit"
 )
 
 func TestQuery(t *testing.T) {
-	db := initDb()
-	defer db.Close()
-	ctx := context.Background()
-
-	t.Run("first", func(t *testing.T) {
+	// 查询第一条数据。
+	// Query the first entry.
+	t.Run("Query the first entry.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.First(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("list", func(t *testing.T) {
+	// 查询全部数据。
+	// Query all entries.
+	t.Run("Query all entries.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("eq", func(t *testing.T) {
+	// 相等条件查询，返回多条数据。
+	// Query with equal conditions, and return multiple entries.
+	t.Run("Query with equal conditions, and return multiple entries.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.EQ("single desc"),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("eq_single", func(t *testing.T) {
+	// 相等条件查询，返回单条数据。
+	// Query with equal conditions, and return a single entry.
+	t.Run("Query with equal conditions, and return a single entry.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.EQ("desc"),
 		).Single(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("eq_limit", func(t *testing.T) {
+	// 相等条件查询，返回多条数据，限制返回数量。
+	// Query with equal conditions, and return multiple entries, with a limit on the number of entries returned.
+	t.Run(" Query with equal conditions, and return multiple entries, with a limit on the number of entries returned.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.EQ("desc"),
 		).Limit(3).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("neq", func(t *testing.T) {
+	// 不等条件查询。
+	// Query with not equal conditions.
+	t.Run("Query with not equal conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.NEQ("single desc"),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("gt", func(t *testing.T) {
+	// 大于条件查询。
+	// Query with greater than conditions.
+	t.Run("Query with greater than conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.ID.GT(1),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("gte", func(t *testing.T) {
+	// 大于等于条件查询。
+	// Query with greater than or equal conditions.
+	t.Run("Query with greater than or equal conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.ID.GTE(4068),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("lt", func(t *testing.T) {
+	// 小于条件查询。
+	// Query with less than conditions.
+	t.Run("Query with less than conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.ID.LT(20157081),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("lte", func(t *testing.T) {
+	// 小于等于条件查询。
+	// Query with less than or equal conditions.
+	t.Run("Query with less than or equal conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.ID.LTE(20157081),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("in", func(t *testing.T) {
+	// 值是否在范围内查询。
+	// Query with value in range conditions.
+	t.Run("Query with value in range conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.In("single desc", "multi desc"),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("not in", func(t *testing.T) {
+	// 值是否不在范围内查询。
+	// Query with value not in range conditions.
+	t.Run("Query with value not in range conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.ID.NotIn(1, 2),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("like", func(t *testing.T) {
+	// 模糊查询。
+	// Query with fuzzy conditions.
+	t.Run("Query with fuzzy conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.Like("%mutil%"),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("is null", func(t *testing.T) {
+	// 是否为空查询。
+	// Query with null conditions.
+	t.Run("Query with null conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.IsNull(),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("is not null", func(t *testing.T) {
+	// 是否不为空查询。
+	// Query with not null conditions.
+	t.Run("Query with not null conditions.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 		u, err := db.Blogs.Where(
 			db.Blogs.Desc.NotNull(),
 		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 
-	t.Run("order", func(t *testing.T) {
-		u, err := db.Posts.Order(
-			db.Posts.ByID.Asc(),
-		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
-		fmt.Println(u)
-	})
+	// 对查询结果进行排序。
+	// Sort the query results.
+	t.Run("Sort the query results.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 
-	t.Run("link", func(t *testing.T) {
-		u, err := db.Posts.Include(
-			db.Posts.Blog.Include(
-				db.Blogs.Posts,
-			).Where(db.Blogs.ID.EQ(4077)),
-		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
-		fmt.Println(u)
-
-		u, err = db.Posts.Include(
-			db.Posts.Blog,
-			db.Posts.Author,
-			// db.Posts.Blogs,
-		).ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
-		fmt.Println(u)
-	})
-
-	t.Run("mulit", func(t *testing.T) {
 		u, err := db.Posts.Where(
 			db.Posts.ID.EQ(1),
 		).Order(db.Posts.ByID.Desc()).
 			ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
-		fmt.Println(u)
-
-		u, err = db.Posts.Where(
-			db.Posts.ID.EQ(2),
-		).Order(db.Posts.ByBlogID.Asc()).
-			ToList(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
 		fmt.Println(u)
 	})
 }

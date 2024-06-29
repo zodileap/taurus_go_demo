@@ -10,32 +10,42 @@ import (
 )
 
 func TestDelete(t *testing.T) {
-	db := initDb()
-	defer db.Close()
-	ctx := context.Background()
+	// 删除单个实体。
+	// Deleting a single entity.
+	t.Run("Deleting a single entity.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
 
-	t.Run("single", func(t *testing.T) {
 		u, err := db.Blogs.First(ctx)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
+		unit.Must(t, err)
+
 		db.Blogs.Remove(u)
-		db.Save(ctx)
+		err = db.Save(ctx)
+		unit.Must(t, err)
 	})
 
-	t.Run("multi", func(t *testing.T) {
+	// 删除多个实体。
+	// Deleting multiple entities.
+	t.Run("Deleting multiple entities.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
+
 		starttime := time.Now()
-		us, err := db.Blogs.Where(db.Blogs.Desc.Like("%desc%")).ToList(ctx)
+		us, err := db.Blogs.Where(db.Blogs.Desc.Like("%lti desc%")).ToList(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}
 		for _, u := range us {
 			if err := db.Blogs.Remove(u); err != nil {
-				unit.Must(err)
+				unit.Must(t, err)
 			}
 		}
+		tlog.Print(us)
+
 		err = db.Save(ctx)
-		unit.Must(err)
+		unit.Must(t, err)
 		elapsedTime := time.Since(starttime)
 		tlog.Printf("elapsedTime: %s", elapsedTime)
 	})
