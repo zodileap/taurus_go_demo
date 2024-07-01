@@ -77,7 +77,7 @@ func (o *postEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(post.FieldContent.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Content.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Content.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case post.FieldBlogID.Name:
 				v, err := e.BlogID.SqlParam(o.config.Driver.Dialect())
@@ -89,7 +89,7 @@ func (o *postEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(post.FieldBlogID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.BlogID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.BlogID.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case post.FieldAuthorID.Name:
 				v, err := e.AuthorID.SqlParam(o.config.Driver.Dialect())
@@ -101,7 +101,7 @@ func (o *postEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(post.FieldAuthorID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.AuthorID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.AuthorID.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			}
 		}

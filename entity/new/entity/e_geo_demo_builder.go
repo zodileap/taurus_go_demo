@@ -7,7 +7,7 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/encoding/geo"
+	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/dialect"
 	"github.com/yohobala/taurus_go/entity/entitysql"
@@ -43,6 +43,24 @@ type geoEntityBuilder struct {
 
 	// CircularString 圆弧
 	CircularString geo_demo.PredCircularString
+
+	// PointJson 点
+	PointJson geo_demo.PredPointJson
+
+	// LineStringJson 线
+	LineStringJson geo_demo.PredLineStringJson
+
+	// PolygonJson 多边形
+	PolygonJson geo_demo.PredPolygonJson
+
+	// MultiPointJson 多点
+	MultiPointJson geo_demo.PredMultiPointJson
+
+	// MultiLineStringJson 多线
+	MultiLineStringJson geo_demo.PredMultiLineStringJson
+
+	// MultiPolygonJson 多多边形
+	MultiPolygonJson geo_demo.PredMultiPolygonJson
 	// ByID configures the query to sort results based on the 'id' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByID geo_demo.ByID
@@ -67,6 +85,24 @@ type geoEntityBuilder struct {
 	// ByCircularString configures the query to sort results based on the 'circular_string' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByCircularString geo_demo.ByCircularString
+	// ByPointJson configures the query to sort results based on the 'point_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByPointJson geo_demo.ByPointJson
+	// ByLineStringJson configures the query to sort results based on the 'line_string_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByLineStringJson geo_demo.ByLineStringJson
+	// ByPolygonJson configures the query to sort results based on the 'polygon_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByPolygonJson geo_demo.ByPolygonJson
+	// ByMultiPointJson configures the query to sort results based on the 'multi_point_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByMultiPointJson geo_demo.ByMultiPointJson
+	// ByMultiLineStringJson configures the query to sort results based on the 'multi_line_string_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByMultiLineStringJson geo_demo.ByMultiLineStringJson
+	// ByMultiPolygonJson configures the query to sort results based on the 'multi_polygon_json' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByMultiPolygonJson geo_demo.ByMultiPolygonJson
 }
 
 // newgeoEntityBuilder creates a new geoEntityBuilder.
@@ -80,11 +116,11 @@ func newGeoEntityBuilder(c *geoEntityConfig, t entity.Tracker) *geoEntityBuilder
 // Create creates a new UserEntity，and add it to the tracker.
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
-func (b *geoEntityBuilder) Create(point geo.Point, line_string geo.LineString, polygon geo.Polygon, options ...func(*GeoEntity)) (*GeoEntity, error) {
+func (b *geoEntityBuilder) Create(options ...func(*GeoEntity)) (*GeoEntity, error) {
 	e := b.config.New()
 	switch t := e.(type) {
 	case *GeoEntity:
-		return t.create(point, line_string, polygon, options...)
+		return t.create(options...)
 	default:
 		return nil, entity.Err_0100030006
 	}
@@ -130,31 +166,94 @@ func (s *geoEntityBuilder) WithID(id int64) func(*GeoEntity) {
 	}
 }
 
+// WithPoint sets the "point" field of the GeoEntity.
+func (s *geoEntityBuilder) WithPoint(point *geo.Point) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.Point.Set(point)
+	}
+}
+
+// WithLineString sets the "line_string" field of the GeoEntity.
+func (s *geoEntityBuilder) WithLineString(linestring *geo.LineString) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.LineString.Set(linestring)
+	}
+}
+
+// WithPolygon sets the "polygon" field of the GeoEntity.
+func (s *geoEntityBuilder) WithPolygon(polygon *geo.Polygon) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.Polygon.Set(polygon)
+	}
+}
+
 // WithMultiPoint sets the "multi_point" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPoint(multipoint geo.MultiPoint) func(*GeoEntity) {
+func (s *geoEntityBuilder) WithMultiPoint(multipoint *geo.MultiPoint) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPoint.Set(multipoint)
 	}
 }
 
 // WithMultiLineString sets the "multi_line_string" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiLineString(multilinestring geo.MultiLineString) func(*GeoEntity) {
+func (s *geoEntityBuilder) WithMultiLineString(multilinestring *geo.MultiLineString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiLineString.Set(multilinestring)
 	}
 }
 
 // WithMultiPolygon sets the "multi_polygon" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPolygon(multipolygon geo.MultiPolygon) func(*GeoEntity) {
+func (s *geoEntityBuilder) WithMultiPolygon(multipolygon *geo.MultiPolygon) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPolygon.Set(multipolygon)
 	}
 }
 
 // WithCircularString sets the "circular_string" field of the GeoEntity.
-func (s *geoEntityBuilder) WithCircularString(circularstring geo.CircularString) func(*GeoEntity) {
+func (s *geoEntityBuilder) WithCircularString(circularstring *geo.CircularString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.CircularString.Set(circularstring)
+	}
+}
+
+// WithPointJson sets the "point_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithPointJson(pointjson *geo.Point) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.PointJson.Set(pointjson)
+	}
+}
+
+// WithLineStringJson sets the "line_string_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithLineStringJson(linestringjson *geo.LineString) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.LineStringJson.Set(linestringjson)
+	}
+}
+
+// WithPolygonJson sets the "polygon_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithPolygonJson(polygonjson *geo.Polygon) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.PolygonJson.Set(polygonjson)
+	}
+}
+
+// WithMultiPointJson sets the "multi_point_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithMultiPointJson(multipointjson *geo.MultiPoint) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.MultiPointJson.Set(multipointjson)
+	}
+}
+
+// WithMultiLineStringJson sets the "multi_line_string_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithMultiLineStringJson(multilinestringjson *geo.MultiLineString) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.MultiLineStringJson.Set(multilinestringjson)
+	}
+}
+
+// WithMultiPolygonJson sets the "multi_polygon_json" field of the GeoEntity.
+func (s *geoEntityBuilder) WithMultiPolygonJson(multipolygonjson *geo.MultiPolygon) func(*GeoEntity) {
+	return func(e *GeoEntity) {
+		e.MultiPolygonJson.Set(multipolygonjson)
 	}
 }
 

@@ -370,7 +370,7 @@ BEGIN
         -- Check for any extra columns, and delete them if there are any.
         -- 检查是否有多余的列，如果有则删除。
         FOR column_rec IN SELECT tbl.column_name, tbl.data_type FROM information_schema.columns tbl WHERE table_schema = 'public' AND table_name = 'geo_demo' LOOP
-            IF column_rec.column_name NOT IN ('id','point','line_string','polygon','multi_point','multi_line_string','multi_polygon','circular_string') THEN
+            IF column_rec.column_name NOT IN ('id','point','line_string','polygon','multi_point','multi_line_string','multi_polygon','circular_string','point_json','line_string_json','polygon_json','multi_point_json','multi_line_string_json','multi_polygon_json') THEN
                 EXECUTE 'ALTER TABLE "public"."geo_demo" DROP COLUMN IF EXISTS ' || quote_ident(column_rec.column_name) || ' CASCADE;';
             END IF;
         END LOOP;
@@ -384,24 +384,24 @@ BEGIN
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "id" SET DEFAULT nextval('geo_id_seq'::regclass); ALTER TABLE "public"."geo_demo" ALTER COLUMN "id" TYPE int8 USING "id"::int8;
         END IF;
         IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'point' ) THEN
-            ALTER TABLE "public"."geo_demo" ADD COLUMN "point" geometry(Point, 4326) NOT NULL;
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "point" geometry(Point, 4326);
         ELSE
             
-            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" DROP NOT NULL; 
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "point" TYPE geometry(Point, 4326) USING "point"::geometry(Point, 4326);
         END IF;
         IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'line_string' ) THEN
-            ALTER TABLE "public"."geo_demo" ADD COLUMN "line_string" geometry(LineString, 0) NOT NULL;
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "line_string" geometry(LineString, 0);
         ELSE
             
-            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" DROP NOT NULL; 
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string" TYPE geometry(LineString, 0) USING "line_string"::geometry(LineString, 0);
         END IF;
         IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'polygon' ) THEN
-            ALTER TABLE "public"."geo_demo" ADD COLUMN "polygon" geometry(Polygon, 0) NOT NULL;
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "polygon" geometry(Polygon, 0);
         ELSE
             
-            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" SET NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" DROP NOT NULL; 
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon" TYPE geometry(Polygon, 0) USING "polygon"::geometry(Polygon, 0);
         END IF;
         IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_point' ) THEN
@@ -432,6 +432,48 @@ BEGIN
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" DROP NOT NULL; 
             ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "circular_string" TYPE geometry(CircularString, 0) USING "circular_string"::geometry(CircularString, 0);
         END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'point_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "point_json" geometry(Point, 4326);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "point_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "point_json" TYPE geometry(Point, 4326) USING "point_json"::geometry(Point, 4326);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'line_string_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "line_string_json" geometry(LineString, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "line_string_json" TYPE geometry(LineString, 0) USING "line_string_json"::geometry(LineString, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'polygon_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "polygon_json" geometry(Polygon, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "polygon_json" TYPE geometry(Polygon, 0) USING "polygon_json"::geometry(Polygon, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_point_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_point_json" geometry(MultiPoint, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_point_json" TYPE geometry(MultiPoint, 0) USING "multi_point_json"::geometry(MultiPoint, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_line_string_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_line_string_json" geometry(MultiLineString, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_line_string_json" TYPE geometry(MultiLineString, 0) USING "multi_line_string_json"::geometry(MultiLineString, 0);
+        END IF;
+        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'geo_demo' AND column_name = 'multi_polygon_json' ) THEN
+            ALTER TABLE "public"."geo_demo" ADD COLUMN "multi_polygon_json" geometry(MultiPolygon, 0);
+        ELSE
+            
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon_json" DROP NOT NULL; 
+            ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon_json" DROP DEFAULT; ALTER TABLE "public"."geo_demo" ALTER COLUMN "multi_polygon_json" TYPE geometry(MultiPolygon, 0) USING "multi_polygon_json"::geometry(MultiPolygon, 0);
+        END IF;
         -- Search for the name of any existing primary key constraints. 
         -- If found, delete them first, then add new primary key constraints.
         -- 查找现有的主键约束名称，如果找到了先删除它， 添加新的主键约束。
@@ -450,13 +492,19 @@ BEGIN
         -- 如果表不存在，则创建表。
         CREATE TABLE "public"."geo_demo" (
             "id" int8 NOT NULL DEFAULT nextval('geo_id_seq'::regclass),
-            "point" geometry(Point, 4326) NOT NULL,
-            "line_string" geometry(LineString, 0) NOT NULL,
-            "polygon" geometry(Polygon, 0) NOT NULL,
+            "point" geometry(Point, 4326),
+            "line_string" geometry(LineString, 0),
+            "polygon" geometry(Polygon, 0),
             "multi_point" geometry(MultiPoint, 0),
             "multi_line_string" geometry(MultiLineString, 0),
             "multi_polygon" geometry(MultiPolygon, 0),
-            "circular_string" geometry(CircularString, 0)
+            "circular_string" geometry(CircularString, 0),
+            "point_json" geometry(Point, 4326),
+            "line_string_json" geometry(LineString, 0),
+            "polygon_json" geometry(Polygon, 0),
+            "multi_point_json" geometry(MultiPoint, 0),
+            "multi_line_string_json" geometry(MultiLineString, 0),
+            "multi_polygon_json" geometry(MultiPolygon, 0)
         );
     END IF;
     -- Field Comment.
@@ -469,6 +517,12 @@ BEGIN
     COMMENT ON COLUMN "public"."geo_demo"."multi_line_string" IS  '多线';
     COMMENT ON COLUMN "public"."geo_demo"."multi_polygon" IS  '多多边形';
     COMMENT ON COLUMN "public"."geo_demo"."circular_string" IS  '圆弧';
+    COMMENT ON COLUMN "public"."geo_demo"."point_json" IS  '点';
+    COMMENT ON COLUMN "public"."geo_demo"."line_string_json" IS  '线';
+    COMMENT ON COLUMN "public"."geo_demo"."polygon_json" IS  '多边形';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_point_json" IS  '多点';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_line_string_json" IS  '多线';
+    COMMENT ON COLUMN "public"."geo_demo"."multi_polygon_json" IS  '多多边形';
     -- Table Comment.
     -- 表备注。
     COMMENT ON TABLE "public"."geo_demo" IS 'Geo的类型测试';

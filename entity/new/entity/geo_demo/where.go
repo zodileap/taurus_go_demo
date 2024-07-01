@@ -3,7 +3,7 @@
 package geo_demo
 
 import (
-	"github.com/yohobala/taurus_go/encoding/geo"
+	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
@@ -95,7 +95,7 @@ type PredPoint struct {
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredPoint) EQ(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) EQ(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -103,7 +103,7 @@ func (f *PredPoint) EQ(point geo.Point) entitysql.PredicateFunc {
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredPoint) NEQ(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) NEQ(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -111,7 +111,7 @@ func (f *PredPoint) NEQ(point geo.Point) entitysql.PredicateFunc {
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredPoint) GT(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) GT(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -119,7 +119,7 @@ func (f *PredPoint) GT(point geo.Point) entitysql.PredicateFunc {
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredPoint) GTE(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) GTE(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -127,7 +127,7 @@ func (f *PredPoint) GTE(point geo.Point) entitysql.PredicateFunc {
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredPoint) LT(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) LT(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -135,7 +135,7 @@ func (f *PredPoint) LT(point geo.Point) entitysql.PredicateFunc {
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredPoint) LTE(point geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) LTE(point *geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldPoint.Name.String(), p.Builder.FindAs(Entity), point)
 	}
@@ -143,7 +143,7 @@ func (f *PredPoint) LTE(point geo.Point) entitysql.PredicateFunc {
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredPoint) In(points ...geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) In(points ...*geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(points))
 		for i := range v {
@@ -155,7 +155,7 @@ func (f *PredPoint) In(points ...geo.Point) entitysql.PredicateFunc {
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredPoint) NotIn(points ...geo.Point) entitysql.PredicateFunc {
+func (f *PredPoint) NotIn(points ...*geo.Point) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(points))
 		for i := range v {
@@ -173,12 +173,28 @@ func (f *PredPoint) Like(point string) entitysql.PredicateFunc {
 	}
 }
 
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredPoint) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldPoint.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredPoint) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldPoint.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
 type PredLineString struct {
 }
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredLineString) EQ(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) EQ(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -186,7 +202,7 @@ func (f *PredLineString) EQ(line_string geo.LineString) entitysql.PredicateFunc 
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredLineString) NEQ(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) NEQ(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -194,7 +210,7 @@ func (f *PredLineString) NEQ(line_string geo.LineString) entitysql.PredicateFunc
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredLineString) GT(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) GT(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -202,7 +218,7 @@ func (f *PredLineString) GT(line_string geo.LineString) entitysql.PredicateFunc 
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredLineString) GTE(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) GTE(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -210,7 +226,7 @@ func (f *PredLineString) GTE(line_string geo.LineString) entitysql.PredicateFunc
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredLineString) LT(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) LT(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -218,7 +234,7 @@ func (f *PredLineString) LT(line_string geo.LineString) entitysql.PredicateFunc 
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredLineString) LTE(line_string geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) LTE(line_string *geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldLineString.Name.String(), p.Builder.FindAs(Entity), line_string)
 	}
@@ -226,7 +242,7 @@ func (f *PredLineString) LTE(line_string geo.LineString) entitysql.PredicateFunc
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredLineString) In(line_strings ...geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) In(line_strings ...*geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(line_strings))
 		for i := range v {
@@ -238,7 +254,7 @@ func (f *PredLineString) In(line_strings ...geo.LineString) entitysql.PredicateF
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredLineString) NotIn(line_strings ...geo.LineString) entitysql.PredicateFunc {
+func (f *PredLineString) NotIn(line_strings ...*geo.LineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(line_strings))
 		for i := range v {
@@ -256,12 +272,28 @@ func (f *PredLineString) Like(line_string string) entitysql.PredicateFunc {
 	}
 }
 
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredLineString) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldLineString.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredLineString) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldLineString.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
 type PredPolygon struct {
 }
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredPolygon) EQ(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) EQ(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -269,7 +301,7 @@ func (f *PredPolygon) EQ(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredPolygon) NEQ(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) NEQ(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -277,7 +309,7 @@ func (f *PredPolygon) NEQ(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredPolygon) GT(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) GT(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -285,7 +317,7 @@ func (f *PredPolygon) GT(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredPolygon) GTE(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) GTE(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -293,7 +325,7 @@ func (f *PredPolygon) GTE(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredPolygon) LT(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) LT(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -301,7 +333,7 @@ func (f *PredPolygon) LT(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredPolygon) LTE(polygon geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) LTE(polygon *geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldPolygon.Name.String(), p.Builder.FindAs(Entity), polygon)
 	}
@@ -309,7 +341,7 @@ func (f *PredPolygon) LTE(polygon geo.Polygon) entitysql.PredicateFunc {
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredPolygon) In(polygons ...geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) In(polygons ...*geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(polygons))
 		for i := range v {
@@ -321,7 +353,7 @@ func (f *PredPolygon) In(polygons ...geo.Polygon) entitysql.PredicateFunc {
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredPolygon) NotIn(polygons ...geo.Polygon) entitysql.PredicateFunc {
+func (f *PredPolygon) NotIn(polygons ...*geo.Polygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(polygons))
 		for i := range v {
@@ -339,12 +371,28 @@ func (f *PredPolygon) Like(polygon string) entitysql.PredicateFunc {
 	}
 }
 
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredPolygon) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldPolygon.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredPolygon) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldPolygon.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
 type PredMultiPoint struct {
 }
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredMultiPoint) EQ(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) EQ(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -352,7 +400,7 @@ func (f *PredMultiPoint) EQ(multi_point geo.MultiPoint) entitysql.PredicateFunc 
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredMultiPoint) NEQ(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) NEQ(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -360,7 +408,7 @@ func (f *PredMultiPoint) NEQ(multi_point geo.MultiPoint) entitysql.PredicateFunc
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredMultiPoint) GT(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) GT(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -368,7 +416,7 @@ func (f *PredMultiPoint) GT(multi_point geo.MultiPoint) entitysql.PredicateFunc 
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredMultiPoint) GTE(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) GTE(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -376,7 +424,7 @@ func (f *PredMultiPoint) GTE(multi_point geo.MultiPoint) entitysql.PredicateFunc
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredMultiPoint) LT(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) LT(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -384,7 +432,7 @@ func (f *PredMultiPoint) LT(multi_point geo.MultiPoint) entitysql.PredicateFunc 
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredMultiPoint) LTE(multi_point geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) LTE(multi_point *geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldMultiPoint.Name.String(), p.Builder.FindAs(Entity), multi_point)
 	}
@@ -392,7 +440,7 @@ func (f *PredMultiPoint) LTE(multi_point geo.MultiPoint) entitysql.PredicateFunc
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredMultiPoint) In(multi_points ...geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) In(multi_points ...*geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_points))
 		for i := range v {
@@ -404,7 +452,7 @@ func (f *PredMultiPoint) In(multi_points ...geo.MultiPoint) entitysql.PredicateF
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredMultiPoint) NotIn(multi_points ...geo.MultiPoint) entitysql.PredicateFunc {
+func (f *PredMultiPoint) NotIn(multi_points ...*geo.MultiPoint) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_points))
 		for i := range v {
@@ -443,7 +491,7 @@ type PredMultiLineString struct {
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredMultiLineString) EQ(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) EQ(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -451,7 +499,7 @@ func (f *PredMultiLineString) EQ(multi_line_string geo.MultiLineString) entitysq
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredMultiLineString) NEQ(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) NEQ(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -459,7 +507,7 @@ func (f *PredMultiLineString) NEQ(multi_line_string geo.MultiLineString) entitys
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredMultiLineString) GT(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) GT(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -467,7 +515,7 @@ func (f *PredMultiLineString) GT(multi_line_string geo.MultiLineString) entitysq
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredMultiLineString) GTE(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) GTE(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -475,7 +523,7 @@ func (f *PredMultiLineString) GTE(multi_line_string geo.MultiLineString) entitys
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredMultiLineString) LT(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) LT(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -483,7 +531,7 @@ func (f *PredMultiLineString) LT(multi_line_string geo.MultiLineString) entitysq
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredMultiLineString) LTE(multi_line_string geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) LTE(multi_line_string *geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldMultiLineString.Name.String(), p.Builder.FindAs(Entity), multi_line_string)
 	}
@@ -491,7 +539,7 @@ func (f *PredMultiLineString) LTE(multi_line_string geo.MultiLineString) entitys
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredMultiLineString) In(multi_line_strings ...geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) In(multi_line_strings ...*geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_line_strings))
 		for i := range v {
@@ -503,7 +551,7 @@ func (f *PredMultiLineString) In(multi_line_strings ...geo.MultiLineString) enti
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredMultiLineString) NotIn(multi_line_strings ...geo.MultiLineString) entitysql.PredicateFunc {
+func (f *PredMultiLineString) NotIn(multi_line_strings ...*geo.MultiLineString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_line_strings))
 		for i := range v {
@@ -542,7 +590,7 @@ type PredMultiPolygon struct {
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredMultiPolygon) EQ(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) EQ(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -550,7 +598,7 @@ func (f *PredMultiPolygon) EQ(multi_polygon geo.MultiPolygon) entitysql.Predicat
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredMultiPolygon) NEQ(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) NEQ(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -558,7 +606,7 @@ func (f *PredMultiPolygon) NEQ(multi_polygon geo.MultiPolygon) entitysql.Predica
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredMultiPolygon) GT(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) GT(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -566,7 +614,7 @@ func (f *PredMultiPolygon) GT(multi_polygon geo.MultiPolygon) entitysql.Predicat
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredMultiPolygon) GTE(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) GTE(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -574,7 +622,7 @@ func (f *PredMultiPolygon) GTE(multi_polygon geo.MultiPolygon) entitysql.Predica
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredMultiPolygon) LT(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) LT(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -582,7 +630,7 @@ func (f *PredMultiPolygon) LT(multi_polygon geo.MultiPolygon) entitysql.Predicat
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredMultiPolygon) LTE(multi_polygon geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) LTE(multi_polygon *geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldMultiPolygon.Name.String(), p.Builder.FindAs(Entity), multi_polygon)
 	}
@@ -590,7 +638,7 @@ func (f *PredMultiPolygon) LTE(multi_polygon geo.MultiPolygon) entitysql.Predica
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredMultiPolygon) In(multi_polygons ...geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) In(multi_polygons ...*geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_polygons))
 		for i := range v {
@@ -602,7 +650,7 @@ func (f *PredMultiPolygon) In(multi_polygons ...geo.MultiPolygon) entitysql.Pred
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredMultiPolygon) NotIn(multi_polygons ...geo.MultiPolygon) entitysql.PredicateFunc {
+func (f *PredMultiPolygon) NotIn(multi_polygons ...*geo.MultiPolygon) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(multi_polygons))
 		for i := range v {
@@ -641,7 +689,7 @@ type PredCircularString struct {
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredCircularString) EQ(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) EQ(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.EQ(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -649,7 +697,7 @@ func (f *PredCircularString) EQ(circular_string geo.CircularString) entitysql.Pr
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredCircularString) NEQ(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) NEQ(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NEQ(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -657,7 +705,7 @@ func (f *PredCircularString) NEQ(circular_string geo.CircularString) entitysql.P
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredCircularString) GT(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) GT(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GT(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -665,7 +713,7 @@ func (f *PredCircularString) GT(circular_string geo.CircularString) entitysql.Pr
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredCircularString) GTE(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) GTE(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.GTE(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -673,7 +721,7 @@ func (f *PredCircularString) GTE(circular_string geo.CircularString) entitysql.P
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredCircularString) LT(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) LT(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LT(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -681,7 +729,7 @@ func (f *PredCircularString) LT(circular_string geo.CircularString) entitysql.Pr
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredCircularString) LTE(circular_string geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) LTE(circular_string *geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.LTE(FieldCircularString.Name.String(), p.Builder.FindAs(Entity), circular_string)
 	}
@@ -689,7 +737,7 @@ func (f *PredCircularString) LTE(circular_string geo.CircularString) entitysql.P
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredCircularString) In(circular_strings ...geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) In(circular_strings ...*geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(circular_strings))
 		for i := range v {
@@ -701,7 +749,7 @@ func (f *PredCircularString) In(circular_strings ...geo.CircularString) entitysq
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredCircularString) NotIn(circular_strings ...geo.CircularString) entitysql.PredicateFunc {
+func (f *PredCircularString) NotIn(circular_strings ...*geo.CircularString) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		v := make([]any, len(circular_strings))
 		for i := range v {
@@ -732,5 +780,599 @@ func (f *PredCircularString) IsNull() entitysql.PredicateFunc {
 func (f *PredCircularString) NotNull() entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.NotNull(FieldCircularString.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredPointJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredPointJson) EQ(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredPointJson) NEQ(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredPointJson) GT(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredPointJson) GTE(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredPointJson) LT(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredPointJson) LTE(point_json *geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredPointJson) In(point_jsons ...*geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(point_jsons))
+		for i := range v {
+			v[i] = point_jsons[i]
+		}
+		p.In(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredPointJson) NotIn(point_jsons ...*geo.Point) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(point_jsons))
+		for i := range v {
+			v[i] = point_jsons[i]
+		}
+		p.NotIn(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredPointJson) Like(point_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldPointJson.Name.String(), p.Builder.FindAs(Entity), point_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredPointJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldPointJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredPointJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldPointJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredLineStringJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredLineStringJson) EQ(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredLineStringJson) NEQ(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredLineStringJson) GT(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredLineStringJson) GTE(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredLineStringJson) LT(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredLineStringJson) LTE(line_string_json *geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredLineStringJson) In(line_string_jsons ...*geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(line_string_jsons))
+		for i := range v {
+			v[i] = line_string_jsons[i]
+		}
+		p.In(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredLineStringJson) NotIn(line_string_jsons ...*geo.LineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(line_string_jsons))
+		for i := range v {
+			v[i] = line_string_jsons[i]
+		}
+		p.NotIn(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredLineStringJson) Like(line_string_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity), line_string_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredLineStringJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredLineStringJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldLineStringJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredPolygonJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredPolygonJson) EQ(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredPolygonJson) NEQ(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredPolygonJson) GT(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredPolygonJson) GTE(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredPolygonJson) LT(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredPolygonJson) LTE(polygon_json *geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredPolygonJson) In(polygon_jsons ...*geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(polygon_jsons))
+		for i := range v {
+			v[i] = polygon_jsons[i]
+		}
+		p.In(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredPolygonJson) NotIn(polygon_jsons ...*geo.Polygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(polygon_jsons))
+		for i := range v {
+			v[i] = polygon_jsons[i]
+		}
+		p.NotIn(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredPolygonJson) Like(polygon_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity), polygon_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredPolygonJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredPolygonJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldPolygonJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredMultiPointJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredMultiPointJson) EQ(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredMultiPointJson) NEQ(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredMultiPointJson) GT(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredMultiPointJson) GTE(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredMultiPointJson) LT(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredMultiPointJson) LTE(multi_point_json *geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredMultiPointJson) In(multi_point_jsons ...*geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_point_jsons))
+		for i := range v {
+			v[i] = multi_point_jsons[i]
+		}
+		p.In(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredMultiPointJson) NotIn(multi_point_jsons ...*geo.MultiPoint) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_point_jsons))
+		for i := range v {
+			v[i] = multi_point_jsons[i]
+		}
+		p.NotIn(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredMultiPointJson) Like(multi_point_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity), multi_point_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredMultiPointJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredMultiPointJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldMultiPointJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredMultiLineStringJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredMultiLineStringJson) EQ(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredMultiLineStringJson) NEQ(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredMultiLineStringJson) GT(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredMultiLineStringJson) GTE(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredMultiLineStringJson) LT(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredMultiLineStringJson) LTE(multi_line_string_json *geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredMultiLineStringJson) In(multi_line_string_jsons ...*geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_line_string_jsons))
+		for i := range v {
+			v[i] = multi_line_string_jsons[i]
+		}
+		p.In(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredMultiLineStringJson) NotIn(multi_line_string_jsons ...*geo.MultiLineString) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_line_string_jsons))
+		for i := range v {
+			v[i] = multi_line_string_jsons[i]
+		}
+		p.NotIn(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredMultiLineStringJson) Like(multi_line_string_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity), multi_line_string_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredMultiLineStringJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredMultiLineStringJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldMultiLineStringJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+type PredMultiPolygonJson struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredMultiPolygonJson) EQ(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredMultiPolygonJson) NEQ(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredMultiPolygonJson) GT(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredMultiPolygonJson) GTE(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredMultiPolygonJson) LT(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredMultiPolygonJson) LTE(multi_polygon_json *geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredMultiPolygonJson) In(multi_polygon_jsons ...*geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_polygon_jsons))
+		for i := range v {
+			v[i] = multi_polygon_jsons[i]
+		}
+		p.In(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredMultiPolygonJson) NotIn(multi_polygon_jsons ...*geo.MultiPolygon) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(multi_polygon_jsons))
+		for i := range v {
+			v[i] = multi_polygon_jsons[i]
+		}
+		p.NotIn(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredMultiPolygonJson) Like(multi_polygon_json string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity), multi_polygon_json)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredMultiPolygonJson) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredMultiPolygonJson) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldMultiPolygonJson.Name.String(), p.Builder.FindAs(Entity))
 	}
 }

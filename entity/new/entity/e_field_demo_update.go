@@ -103,7 +103,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldInt64F.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Int64F.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Int64F.SqlFormatParam()
 				o.sets[index][field_demo.FieldInt64F.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -116,7 +116,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldVarF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.VarF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.VarF.SqlFormatParam()
 				o.sets[index][field_demo.FieldVarF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -129,7 +129,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.BoolF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.BoolF.SqlFormatParam()
 				o.sets[index][field_demo.FieldBoolF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -142,7 +142,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.IntArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.IntArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldIntArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -155,7 +155,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntarray2F.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Intarray2F.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Intarray2F.SqlFormatParam()
 				o.sets[index][field_demo.FieldIntarray2F.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -168,7 +168,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.BoolArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.BoolArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldBoolArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -181,7 +181,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.TimeF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.TimeF.SqlFormatParam()
 				o.sets[index][field_demo.FieldTimeF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),
@@ -194,7 +194,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.TimeArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldTimeArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(*e.Int64F.Get()),

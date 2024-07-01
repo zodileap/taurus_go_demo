@@ -103,7 +103,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
 				o.sets[index][geo_demo.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -116,7 +116,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPoint.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Point.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Point.SqlFormatParam()
 				o.sets[index][geo_demo.FieldPoint.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -129,7 +129,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineString.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.LineString.SqlFormatParam()
+				fieldSpace.ParamFormat = e.LineString.SqlFormatParam()
 				o.sets[index][geo_demo.FieldLineString.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -142,7 +142,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygon.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Polygon.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Polygon.SqlFormatParam()
 				o.sets[index][geo_demo.FieldPolygon.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -155,7 +155,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPoint.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.MultiPoint.SqlFormatParam()
+				fieldSpace.ParamFormat = e.MultiPoint.SqlFormatParam()
 				o.sets[index][geo_demo.FieldMultiPoint.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -168,7 +168,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineString.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.MultiLineString.SqlFormatParam()
+				fieldSpace.ParamFormat = e.MultiLineString.SqlFormatParam()
 				o.sets[index][geo_demo.FieldMultiLineString.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -181,7 +181,7 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygon.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.MultiPolygon.SqlFormatParam()
+				fieldSpace.ParamFormat = e.MultiPolygon.SqlFormatParam()
 				o.sets[index][geo_demo.FieldMultiPolygon.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -194,8 +194,86 @@ func (o *geoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldCircularString.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.CircularString.SqlFormatParam()
+				fieldSpace.ParamFormat = e.CircularString.SqlFormatParam()
 				o.sets[index][geo_demo.FieldCircularString.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldPointJson.Name.String():
+				v, err := e.PointJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPointJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.PointJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldPointJson.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldLineStringJson.Name.String():
+				v, err := e.LineStringJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineStringJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.LineStringJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldLineStringJson.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldPolygonJson.Name.String():
+				v, err := e.PolygonJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygonJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.PolygonJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldPolygonJson.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldMultiPointJson.Name.String():
+				v, err := e.MultiPointJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPointJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.MultiPointJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldMultiPointJson.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldMultiLineStringJson.Name.String():
+				v, err := e.MultiLineStringJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineStringJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.MultiLineStringJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldMultiLineStringJson.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predID.EQ(*e.ID.Get()),
+				}
+				num++
+			case geo_demo.FieldMultiPolygonJson.Name.String():
+				v, err := e.MultiPolygonJson.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygonJson.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.MultiPolygonJson.SqlFormatParam()
+				o.sets[index][geo_demo.FieldMultiPolygonJson.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
 				}

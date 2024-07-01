@@ -103,7 +103,7 @@ func (o *blogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
 				o.sets[index][blog.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -116,7 +116,7 @@ func (o *blogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldUUID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.UUID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.UUID.SqlFormatParam()
 				o.sets[index][blog.FieldUUID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -129,7 +129,7 @@ func (o *blogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldDesc.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Desc.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Desc.SqlFormatParam()
 				o.sets[index][blog.FieldDesc.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -142,7 +142,7 @@ func (o *blogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldCreatedTime.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.CreatedTime.SqlFormatParam()
+				fieldSpace.ParamFormat = e.CreatedTime.SqlFormatParam()
 				o.sets[index][blog.FieldCreatedTime.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),

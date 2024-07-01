@@ -77,7 +77,7 @@ func (o *authorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(author.FieldName.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Name.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Name.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			}
 		}

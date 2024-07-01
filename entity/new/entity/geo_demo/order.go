@@ -365,3 +365,267 @@ func (b *ByCircularString) NullsLast() *ByCircularString {
 	})
 	return b
 }
+
+type ByPointJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByPointJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldPointJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByPointJson) Desc() *ByPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByPointJson) Asc() *ByPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByPointJson) NullsFirst() *ByPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByPointJson) NullsLast() *ByPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByLineStringJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByLineStringJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldLineStringJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByLineStringJson) Desc() *ByLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByLineStringJson) Asc() *ByLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByLineStringJson) NullsFirst() *ByLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByLineStringJson) NullsLast() *ByLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByPolygonJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByPolygonJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldPolygonJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByPolygonJson) Desc() *ByPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByPolygonJson) Asc() *ByPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByPolygonJson) NullsFirst() *ByPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByPolygonJson) NullsLast() *ByPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByMultiPointJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByMultiPointJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldMultiPointJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByMultiPointJson) Desc() *ByMultiPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByMultiPointJson) Asc() *ByMultiPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByMultiPointJson) NullsFirst() *ByMultiPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByMultiPointJson) NullsLast() *ByMultiPointJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByMultiLineStringJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByMultiLineStringJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldMultiLineStringJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByMultiLineStringJson) Desc() *ByMultiLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByMultiLineStringJson) Asc() *ByMultiLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByMultiLineStringJson) NullsFirst() *ByMultiLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByMultiLineStringJson) NullsLast() *ByMultiLineStringJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByMultiPolygonJson struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByMultiPolygonJson) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldMultiPolygonJson.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByMultiPolygonJson) Desc() *ByMultiPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByMultiPolygonJson) Asc() *ByMultiPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByMultiPolygonJson) NullsFirst() *ByMultiPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByMultiPolygonJson) NullsLast() *ByMultiPolygonJson {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}

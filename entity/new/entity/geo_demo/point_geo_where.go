@@ -5,7 +5,7 @@ package geo_demo
 import (
 	"fmt"
 
-	"github.com/yohobala/taurus_go/encoding/geo"
+	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 

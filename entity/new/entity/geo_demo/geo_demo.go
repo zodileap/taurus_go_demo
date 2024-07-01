@@ -21,19 +21,19 @@ var (
 		Name:     "point",
 		Primary:  0,
 		Default:  false,
-		Required: true,
+		Required: false,
 	}
 	FieldLineString = entitysql.Field{
 		Name:     "line_string",
 		Primary:  0,
 		Default:  false,
-		Required: true,
+		Required: false,
 	}
 	FieldPolygon = entitysql.Field{
 		Name:     "polygon",
 		Primary:  0,
 		Default:  false,
-		Required: true,
+		Required: false,
 	}
 	FieldMultiPoint = entitysql.Field{
 		Name:     "multi_point",
@@ -59,6 +59,42 @@ var (
 		Default:  false,
 		Required: false,
 	}
+	FieldPointJson = entitysql.Field{
+		Name:     "point_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
+	FieldLineStringJson = entitysql.Field{
+		Name:     "line_string_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
+	FieldPolygonJson = entitysql.Field{
+		Name:     "polygon_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
+	FieldMultiPointJson = entitysql.Field{
+		Name:     "multi_point_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
+	FieldMultiLineStringJson = entitysql.Field{
+		Name:     "multi_line_string_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
+	FieldMultiPolygonJson = entitysql.Field{
+		Name:     "multi_polygon_json",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
 )
 
 var (
@@ -71,5 +107,11 @@ var (
 		FieldMultiLineString.Name,
 		FieldMultiPolygon.Name,
 		FieldCircularString.Name,
+		FieldPointJson.Name,
+		FieldLineStringJson.Name,
+		FieldPolygonJson.Name,
+		FieldMultiPointJson.Name,
+		FieldMultiLineStringJson.Name,
+		FieldMultiPolygonJson.Name,
 	}
 )

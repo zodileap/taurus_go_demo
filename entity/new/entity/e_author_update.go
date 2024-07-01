@@ -103,7 +103,7 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(author.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
 				o.sets[index][author.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),
@@ -116,7 +116,7 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				}
 				fieldSpace := entitysql.NewFieldSpec(author.FieldName.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Name.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Name.SqlFormatParam()
 				o.sets[index][author.FieldName.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predID.EQ(*e.ID.Get()),

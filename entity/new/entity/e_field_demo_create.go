@@ -75,7 +75,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldInt64F.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Int64F.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Int64F.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldVarF.Name:
 				v, err := e.VarF.SqlParam(o.config.Driver.Dialect())
@@ -87,7 +87,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldVarF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.VarF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.VarF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldBoolF.Name:
 				v, err := e.BoolF.SqlParam(o.config.Driver.Dialect())
@@ -99,7 +99,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.BoolF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.BoolF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldIntArrayF.Name:
 				v, err := e.IntArrayF.SqlParam(o.config.Driver.Dialect())
@@ -111,7 +111,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.IntArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.IntArrayF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldIntarray2F.Name:
 				v, err := e.Intarray2F.SqlParam(o.config.Driver.Dialect())
@@ -123,7 +123,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntarray2F.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.Intarray2F.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Intarray2F.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldBoolArrayF.Name:
 				v, err := e.BoolArrayF.SqlParam(o.config.Driver.Dialect())
@@ -135,7 +135,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.BoolArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.BoolArrayF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldTimeF.Name:
 				v, err := e.TimeF.SqlParam(o.config.Driver.Dialect())
@@ -147,7 +147,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.TimeF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.TimeF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldTimeArrayF.Name:
 				v, err := e.TimeArrayF.SqlParam(o.config.Driver.Dialect())
@@ -159,7 +159,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				}
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
 				fieldSpace.Param = v
-				fieldSpace.Format = e.TimeArrayF.SqlFormatParam()
+				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
 				fields = append(fields, &fieldSpace)
 			}
 		}

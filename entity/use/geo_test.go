@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/yohobala/taurus_go/encoding/geo"
+	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/testutil/unit"
 	"github.com/yohobala/taurus_go/tlog"
 )
 
 func TestGeo(t *testing.T) {
 
-	// 全部geo已有字段类型创建测试。
+	// 全部geo WKT字段类型创建测试。
 	// All existing field type creation tests.
 	t.Run("All existing field type creation tests.", func(t *testing.T) {
 		db := initDb()
@@ -66,11 +66,19 @@ func TestGeo(t *testing.T) {
 		unit.Must(t, err)
 
 		g, err := db.Geos.Create(
-			*p, *line, *polygon,
-			db.Geos.WithMultiPoint(*multiPoint),
-			db.Geos.WithMultiLineString(*multiLineString),
-			db.Geos.WithMultiPolygon(*multiPolygon),
-			db.Geos.WithCircularString(*circularString),
+			db.Geos.WithPoint(p),
+			db.Geos.WithLineString(line),
+			db.Geos.WithPolygon(polygon),
+			db.Geos.WithMultiPoint(multiPoint),
+			db.Geos.WithMultiLineString(multiLineString),
+			db.Geos.WithMultiPolygon(multiPolygon),
+			db.Geos.WithCircularString(circularString),
+			db.Geos.WithPointJson(p),
+			db.Geos.WithLineStringJson(line),
+			db.Geos.WithPolygonJson(polygon),
+			db.Geos.WithMultiPointJson(multiPoint),
+			db.Geos.WithMultiLineStringJson(multiLineString),
+			db.Geos.WithMultiPolygonJson(multiPolygon),
 		)
 		unit.Must(t, err)
 		err = db.Save(ctx)
@@ -88,6 +96,25 @@ func TestGeo(t *testing.T) {
 		g, err := db.Geos.First(ctx)
 		unit.Must(t, err)
 		fmt.Println(g)
+
+		pointJSON, err := g.Point.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(pointJSON)
+		lineStringJSON, err := g.LineString.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(lineStringJSON)
+		polygonJSON, err := g.Polygon.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(polygonJSON)
+		multiPointJSON, err := g.MultiPoint.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(multiPointJSON)
+		multiLineStringJSON, err := g.MultiLineString.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(multiLineStringJSON)
+		multiPolygonJSON, err := g.MultiPolygon.Get().GeoJSON()
+		unit.Must(t, err)
+		tlog.Print(multiPolygonJSON)
 	})
 
 	// 查询所有数据。
@@ -114,15 +141,15 @@ func TestGeo(t *testing.T) {
 
 		np, err := geo.NewPoint(3, 4)
 		unit.Must(t, err)
-		g.Point.Set(*np)
+		g.Point.Set(np)
 
 		nl, err := geo.NewLineString([][]float64{{0, 0}, {4, 4}, {8, 8}})
 		unit.Must(t, err)
-		g.LineString.Set(*nl)
+		g.LineString.Set(nl)
 
 		nps, err := geo.NewPolygon([][]float64{{2, 2}, {6, 6}, {10, 2}, {2, 2}})
 		unit.Must(t, err)
-		g.Polygon.Set(*nps)
+		g.Polygon.Set(nps)
 
 		err = db.Save(ctx)
 		unit.Must(t, err)

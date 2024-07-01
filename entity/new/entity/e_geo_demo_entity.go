@@ -7,7 +7,7 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/encoding/geo"
+	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
@@ -39,6 +39,24 @@ type GeoEntity struct {
 
 	// CircularString 圆弧
 	CircularString *geoDemoCircularString
+
+	// PointJson 点
+	PointJson *geoDemoPointJson
+
+	// LineStringJson 线
+	LineStringJson *geoDemoLineStringJson
+
+	// PolygonJson 多边形
+	PolygonJson *geoDemoPolygonJson
+
+	// MultiPointJson 多点
+	MultiPointJson *geoDemoMultiPointJson
+
+	// MultiLineStringJson 多线
+	MultiLineStringJson *geoDemoMultiLineStringJson
+
+	// MultiPolygonJson 多多边形
+	MultiPolygonJson *geoDemoMultiPolygonJson
 }
 
 // geoEntityConfig holds the configuration for the GeoEntity.
@@ -77,6 +95,12 @@ func (c *geoEntityConfig) New() internal.Entity {
 	e.MultiLineString = newGeoDemoMultiLineString(e.config)
 	e.MultiPolygon = newGeoDemoMultiPolygon(e.config)
 	e.CircularString = newGeoDemoCircularString(e.config)
+	e.PointJson = newGeoDemoPointJson(e.config)
+	e.LineStringJson = newGeoDemoLineStringJson(e.config)
+	e.PolygonJson = newGeoDemoPolygonJson(e.config)
+	e.MultiPointJson = newGeoDemoMultiPointJson(e.config)
+	e.MultiLineStringJson = newGeoDemoMultiLineStringJson(e.config)
+	e.MultiPolygonJson = newGeoDemoMultiPolygonJson(e.config)
 	return e
 }
 
@@ -88,7 +112,7 @@ func (c *geoEntityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *GeoEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Point: %v, LineString: %v, Polygon: %v, MultiPoint: %v, MultiLineString: %v, MultiPolygon: %v, CircularString: %v}",
+	return fmt.Sprintf("{ ID: %v, Point: %v, LineString: %v, Polygon: %v, MultiPoint: %v, MultiLineString: %v, MultiPolygon: %v, CircularString: %v, PointJson: %v, LineStringJson: %v, PolygonJson: %v, MultiPointJson: %v, MultiLineStringJson: %v, MultiPolygonJson: %v}",
 		e.ID,
 		e.Point,
 		e.LineString,
@@ -97,6 +121,12 @@ func (e *GeoEntity) String() string {
 		e.MultiLineString,
 		e.MultiPolygon,
 		e.CircularString,
+		e.PointJson,
+		e.LineStringJson,
+		e.PolygonJson,
+		e.MultiPointJson,
+		e.MultiLineStringJson,
+		e.MultiPolygonJson,
 	)
 }
 
@@ -111,11 +141,8 @@ func (e *GeoEntity) remove() error {
 }
 
 // create creates a new GeoEntity and adds tracking.
-func (e *GeoEntity) create(point geo.Point, line_string geo.LineString, polygon geo.Polygon, options ...func(*GeoEntity)) (*GeoEntity, error) {
+func (e *GeoEntity) create(options ...func(*GeoEntity)) (*GeoEntity, error) {
 	e.setState(entity.Added)
-	e.Point.Set(point)
-	e.LineString.Set(line_string)
-	e.Polygon.Set(polygon)
 	for _, option := range options {
 		option(e)
 	}
@@ -144,31 +171,55 @@ func (e *GeoEntity) scan(fields []entitysql.ScannerField) []any {
 				args[i] = v
 			case geo_demo.FieldPoint.Name.String():
 				v := e.Point
-				v.Set(*new(geo.Point))
+				v.Set(*new(*geo.Point))
 				args[i] = v
 			case geo_demo.FieldLineString.Name.String():
 				v := e.LineString
-				v.Set(*new(geo.LineString))
+				v.Set(*new(*geo.LineString))
 				args[i] = v
 			case geo_demo.FieldPolygon.Name.String():
 				v := e.Polygon
-				v.Set(*new(geo.Polygon))
+				v.Set(*new(*geo.Polygon))
 				args[i] = v
 			case geo_demo.FieldMultiPoint.Name.String():
 				v := e.MultiPoint
-				v.Set(*new(geo.MultiPoint))
+				v.Set(*new(*geo.MultiPoint))
 				args[i] = v
 			case geo_demo.FieldMultiLineString.Name.String():
 				v := e.MultiLineString
-				v.Set(*new(geo.MultiLineString))
+				v.Set(*new(*geo.MultiLineString))
 				args[i] = v
 			case geo_demo.FieldMultiPolygon.Name.String():
 				v := e.MultiPolygon
-				v.Set(*new(geo.MultiPolygon))
+				v.Set(*new(*geo.MultiPolygon))
 				args[i] = v
 			case geo_demo.FieldCircularString.Name.String():
 				v := e.CircularString
-				v.Set(*new(geo.CircularString))
+				v.Set(*new(*geo.CircularString))
+				args[i] = v
+			case geo_demo.FieldPointJson.Name.String():
+				v := e.PointJson
+				v.Set(*new(*geo.Point))
+				args[i] = v
+			case geo_demo.FieldLineStringJson.Name.String():
+				v := e.LineStringJson
+				v.Set(*new(*geo.LineString))
+				args[i] = v
+			case geo_demo.FieldPolygonJson.Name.String():
+				v := e.PolygonJson
+				v.Set(*new(*geo.Polygon))
+				args[i] = v
+			case geo_demo.FieldMultiPointJson.Name.String():
+				v := e.MultiPointJson
+				v.Set(*new(*geo.MultiPoint))
+				args[i] = v
+			case geo_demo.FieldMultiLineStringJson.Name.String():
+				v := e.MultiLineStringJson
+				v.Set(*new(*geo.MultiLineString))
+				args[i] = v
+			case geo_demo.FieldMultiPolygonJson.Name.String():
+				v := e.MultiPolygonJson
+				v.Set(*new(*geo.MultiPolygon))
 				args[i] = v
 			}
 		}
@@ -183,31 +234,55 @@ func (e *GeoEntity) scan(fields []entitysql.ScannerField) []any {
 				args[i] = v
 			case geo_demo.FieldPoint.Name.String():
 				v := e.Point
-				v.Set(*new(geo.Point))
+				v.Set(*new(*geo.Point))
 				args[i] = v
 			case geo_demo.FieldLineString.Name.String():
 				v := e.LineString
-				v.Set(*new(geo.LineString))
+				v.Set(*new(*geo.LineString))
 				args[i] = v
 			case geo_demo.FieldPolygon.Name.String():
 				v := e.Polygon
-				v.Set(*new(geo.Polygon))
+				v.Set(*new(*geo.Polygon))
 				args[i] = v
 			case geo_demo.FieldMultiPoint.Name.String():
 				v := e.MultiPoint
-				v.Set(*new(geo.MultiPoint))
+				v.Set(*new(*geo.MultiPoint))
 				args[i] = v
 			case geo_demo.FieldMultiLineString.Name.String():
 				v := e.MultiLineString
-				v.Set(*new(geo.MultiLineString))
+				v.Set(*new(*geo.MultiLineString))
 				args[i] = v
 			case geo_demo.FieldMultiPolygon.Name.String():
 				v := e.MultiPolygon
-				v.Set(*new(geo.MultiPolygon))
+				v.Set(*new(*geo.MultiPolygon))
 				args[i] = v
 			case geo_demo.FieldCircularString.Name.String():
 				v := e.CircularString
-				v.Set(*new(geo.CircularString))
+				v.Set(*new(*geo.CircularString))
+				args[i] = v
+			case geo_demo.FieldPointJson.Name.String():
+				v := e.PointJson
+				v.Set(*new(*geo.Point))
+				args[i] = v
+			case geo_demo.FieldLineStringJson.Name.String():
+				v := e.LineStringJson
+				v.Set(*new(*geo.LineString))
+				args[i] = v
+			case geo_demo.FieldPolygonJson.Name.String():
+				v := e.PolygonJson
+				v.Set(*new(*geo.Polygon))
+				args[i] = v
+			case geo_demo.FieldMultiPointJson.Name.String():
+				v := e.MultiPointJson
+				v.Set(*new(*geo.MultiPoint))
+				args[i] = v
+			case geo_demo.FieldMultiLineStringJson.Name.String():
+				v := e.MultiLineStringJson
+				v.Set(*new(*geo.MultiLineString))
+				args[i] = v
+			case geo_demo.FieldMultiPolygonJson.Name.String():
+				v := e.MultiPolygonJson
+				v.Set(*new(*geo.MultiPolygon))
 				args[i] = v
 			}
 		}

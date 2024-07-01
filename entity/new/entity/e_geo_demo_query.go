@@ -209,6 +209,36 @@ func (o *geoEntityQuery) querySpec() *entitysql.QuerySpec {
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldCircularString.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldPointJson.Name:
+			var a *geoDemoPointJson = new(geoDemoPointJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPointJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldLineStringJson.Name:
+			var a *geoDemoLineStringJson = new(geoDemoLineStringJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineStringJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldPolygonJson.Name:
+			var a *geoDemoPolygonJson = new(geoDemoPolygonJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygonJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldMultiPointJson.Name:
+			var a *geoDemoMultiPointJson = new(geoDemoMultiPointJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPointJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldMultiLineStringJson.Name:
+			var a *geoDemoMultiLineStringJson = new(geoDemoMultiLineStringJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineStringJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case geo_demo.FieldMultiPolygonJson.Name:
+			var a *geoDemoMultiPolygonJson = new(geoDemoMultiPolygonJson)
+			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygonJson.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
 		}
 	}
 	if ps := o.predicates; len(ps) > 0 {

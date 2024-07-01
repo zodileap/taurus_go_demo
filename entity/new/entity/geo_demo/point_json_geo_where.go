@@ -40,7 +40,7 @@ import (
 // Sql: `SELECT "id", ST_AsText("point"), ST_AsText("line_string") FROM "geo_demo" AS "t1" WHERE ST_Contains("point", ST_SetSRID(ST_MakePoint(3, 4), 4326)) LIMIT 1`
 //
 // ExamplePath taurus_go_demo/entity/use/geo_test.go
-func (p *PredCircularString) Geo(f geo.PostGISFunc) entitysql.PredicateFunc {
+func (p *PredPointJson) Geo(f geo.PostGISFunc) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		f.Pred(p, p.Builder.FindAs(Entity))
 	}
@@ -49,17 +49,17 @@ func (p *PredCircularString) Geo(f geo.PostGISFunc) entitysql.PredicateFunc {
 // GeoColumn returns the PostGISFunc object for the column.
 // This function is used to specify the column name in the PostGIS function.
 // For example, in SQL: `Such as ST_Contains("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) GeoColumn() geo.PostGISFunc {
+func (p *PredPointJson) GeoColumn() geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Entity: Entity,
-		Column: string(FieldCircularString.Name),
+		Column: string(FieldPointJson.Name),
 	}
 }
 
 // ST_Contains is a PostGIS function.
 // This function is used to determine whether the first geometry contains the second geometry.
 // For example, in SQL: `ST_Contains("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Contains(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Contains(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Contains",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -70,7 +70,7 @@ func (p *PredCircularString) ST_Contains(f1 geo.PostGISFunc, f2 geo.PostGISFunc)
 // ST_Crosses is used to determine whether the first geometry crosses the second geometry.
 // ST_Crosses is generally applicable to line-to-line, line-to-surface, and surface-to-line scenarios, but are not suitable for surface-to-surface situations.
 // For example, in SQL: `ST_Crosses("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Crosses(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Crosses(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Crosses",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -80,7 +80,7 @@ func (p *PredCircularString) ST_Crosses(f1 geo.PostGISFunc, f2 geo.PostGISFunc) 
 // ST_Disjoint is a PostGIS function.
 // This function is used to determine whether the first geometry is disjoint from the second geometry.
 // For example, in SQL: `ST_Disjoint("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Disjoint(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Disjoint(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Disjoint",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -90,7 +90,7 @@ func (p *PredCircularString) ST_Disjoint(f1 geo.PostGISFunc, f2 geo.PostGISFunc)
 // ST_Equals is a PostGIS function.
 // This function is used to determine whether the first geometry is equal to the second geometry.
 // For example, in SQL: `ST_Equals("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Equals(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Equals(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Equals",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -100,7 +100,7 @@ func (p *PredCircularString) ST_Equals(f1 geo.PostGISFunc, f2 geo.PostGISFunc) g
 // ST_Intersects is a PostGIS function.
 // This function is used to determine whether the first geometry intersects the second geometry.
 // For example, in SQL: `ST_Intersects("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Intersects(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Intersects(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Intersects",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -110,7 +110,7 @@ func (p *PredCircularString) ST_Intersects(f1 geo.PostGISFunc, f2 geo.PostGISFun
 // ST_Overlaps is a PostGIS function.
 // This function is used to determine whether the first geometry overlaps the second geometry.
 // For example, in SQL: `ST_Overlaps("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Overlaps(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Overlaps(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Overlaps",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -120,7 +120,7 @@ func (p *PredCircularString) ST_Overlaps(f1 geo.PostGISFunc, f2 geo.PostGISFunc)
 // ST_Touches is a PostGIS function.
 // This function is used to determine whether the first geometry touches the second geometry.
 // For example, in SQL: `ST_Touches("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Touches(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Touches(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Touches",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -130,7 +130,7 @@ func (p *PredCircularString) ST_Touches(f1 geo.PostGISFunc, f2 geo.PostGISFunc) 
 // ST_Within is a PostGIS function.
 // This function is used to determine whether the first geometry is within the second geometry.
 // For example, in SQL: `ST_Within("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Within(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Within(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Within",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -140,7 +140,7 @@ func (p *PredCircularString) ST_Within(f1 geo.PostGISFunc, f2 geo.PostGISFunc) g
 // ST_Distance is a PostGIS function.
 // This function is used to calculate the distance between two geometries.
 // For example, in SQL: `ST_Distance("point", ST_SetSRID(ST_MakePoint(3, 4), 4326))`.
-func (p *PredCircularString) ST_Distance(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Distance(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Distance",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -150,7 +150,7 @@ func (p *PredCircularString) ST_Distance(f1 geo.PostGISFunc, f2 geo.PostGISFunc)
 // ST_DWithin is a PostGIS function.
 // This function is used to determine whether the first geometry is within a specified distance of the second geometry.
 // For example, in SQL: `ST_DWithin("point", ST_SetSRID(ST_MakePoint(3, 4), 4326), 1)`.
-func (p *PredCircularString) ST_DWithin(f1 geo.PostGISFunc, f2 geo.PostGISFunc, distance float64) geo.PostGISFunc {
+func (p *PredPointJson) ST_DWithin(f1 geo.PostGISFunc, f2 geo.PostGISFunc, distance float64) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_DWithin",
 		Value:    []any{distance},
@@ -161,7 +161,7 @@ func (p *PredCircularString) ST_DWithin(f1 geo.PostGISFunc, f2 geo.PostGISFunc, 
 // ST_Length is a PostGIS function.
 // This function is used to calculate the length of a geometry.
 // For example, in SQL: `ST_Length("lineString")`.
-func (p *PredCircularString) ST_Length(f geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Length(f geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Length",
 		Children: []geo.PostGISFunc{f},
@@ -171,7 +171,7 @@ func (p *PredCircularString) ST_Length(f geo.PostGISFunc) geo.PostGISFunc {
 // ST_Area is a PostGIS function.
 // This function is used to calculate the area of a geometry.
 // For example, in SQL: `ST_Area("polygon")`.
-func (p *PredCircularString) ST_Area(f geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Area(f geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Area",
 		Children: []geo.PostGISFunc{f},
@@ -181,7 +181,7 @@ func (p *PredCircularString) ST_Area(f geo.PostGISFunc) geo.PostGISFunc {
 // ST_Buffer is a PostGIS function.
 // This function is used to create a buffer around a geometry.
 // For example, in SQL: `ST_Buffer("point", 1)`.
-func (p *PredCircularString) ST_Buffer(f geo.PostGISFunc, distance float64) geo.PostGISFunc {
+func (p *PredPointJson) ST_Buffer(f geo.PostGISFunc, distance float64) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Buffer",
 		Value:    []any{distance},
@@ -192,7 +192,7 @@ func (p *PredCircularString) ST_Buffer(f geo.PostGISFunc, distance float64) geo.
 // ST_MakePoint is a PostGIS function.
 // This function is used to create a point geometry.
 // For example, in SQL: `ST_MakePoint(3, 4)`.
-func (p *PredCircularString) ST_MakePoint(lng float64, lat float64) geo.PostGISFunc {
+func (p *PredPointJson) ST_MakePoint(lng float64, lat float64) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:  "ST_MakePoint",
 		Value: []any{lng, lat},
@@ -202,7 +202,7 @@ func (p *PredCircularString) ST_MakePoint(lng float64, lat float64) geo.PostGISF
 // ST_MakeLine is a PostGIS function.
 // This function is used to create a line geometry.
 // For example, in SQL: `ST_MakeLine(ST_MakePoint(3, 4), ST_MakePoint(5, 6))`.
-func (p *PredCircularString) ST_MakeLine(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_MakeLine(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_MakeLine",
 		Children: []geo.PostGISFunc{f1, f2},
@@ -212,7 +212,7 @@ func (p *PredCircularString) ST_MakeLine(f1 geo.PostGISFunc, f2 geo.PostGISFunc)
 // ST_MakePolygon is a PostGIS function.
 // This function is used to create a polygon geometry.
 // For example, in SQL: `ST_MakePolygon(ST_GeomFromText('LINESTRING(0 0, 4 0, 2 4, 0 0)')`.
-func (p *PredCircularString) ST_MakePolygon(f geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_MakePolygon(f geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_MakePolygon",
 		Children: []geo.PostGISFunc{f},
@@ -222,7 +222,7 @@ func (p *PredCircularString) ST_MakePolygon(f geo.PostGISFunc) geo.PostGISFunc {
 // ST_MakeEnvelope is a PostGIS function.
 // This function is used to create a polygon geometry.
 // For example, in SQL: `ST_MakeEnvelope(3, 4, 5, 6, 4326)`.
-func (p *PredCircularString) ST_MakeEnvelope(xmin float64, ymin float64, xmax float64, ymax float64, srid geo.SRID) geo.PostGISFunc {
+func (p *PredPointJson) ST_MakeEnvelope(xmin float64, ymin float64, xmax float64, ymax float64, srid geo.SRID) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:  "ST_MakeEnvelope",
 		Value: []any{xmin, ymin, xmax, ymax, srid},
@@ -232,7 +232,7 @@ func (p *PredCircularString) ST_MakeEnvelope(xmin float64, ymin float64, xmax fl
 // ST_Multi	 is a PostGIS function.
 // This function is used to create a multi-geometry.
 // For example, in SQL: `ST_Multi(ST_GeomFromText('LINESTRING(0 0, 4 0)','LINESTRING(4 0, 6 6)'))`.
-func (p *PredCircularString) ST_Multi(f geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Multi(f geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Multi",
 		Children: []geo.PostGISFunc{f},
@@ -242,7 +242,7 @@ func (p *PredCircularString) ST_Multi(f geo.PostGISFunc) geo.PostGISFunc {
 // ST_Transform is a PostGIS function.
 // This function is used to transform a geometry from one SRID to another.
 // For example, in SQL: `ST_Transform(ST_MakePoint(3, 4), 4326)`.
-func (p *PredCircularString) ST_Transform(f geo.PostGISFunc, srid geo.SRID) geo.PostGISFunc {
+func (p *PredPointJson) ST_Transform(f geo.PostGISFunc, srid geo.SRID) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Transform",
 		Value:    []any{srid},
@@ -253,7 +253,7 @@ func (p *PredCircularString) ST_Transform(f geo.PostGISFunc, srid geo.SRID) geo.
 // ST_SetSRID is a PostGIS function.
 // This function is used to set the SRID of a geometry.
 // For example, in SQL: `ST_SetSRID(ST_MakePoint(3, 4), 4326)`.
-func (p *PredCircularString) ST_SetSRID(f geo.PostGISFunc, srid geo.SRID) geo.PostGISFunc {
+func (p *PredPointJson) ST_SetSRID(f geo.PostGISFunc, srid geo.SRID) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_SetSRID",
 		Value:    []any{srid.String()},
@@ -264,7 +264,7 @@ func (p *PredCircularString) ST_SetSRID(f geo.PostGISFunc, srid geo.SRID) geo.Po
 // ST_GeomFromText is a PostGIS function.
 // This function is used to create a geometry from a WKT string.
 // For example, in SQL: `ST_GeomFromText('POINT(3 4)')`.
-func (p *PredCircularString) ST_GeomFromText(wkt string) geo.PostGISFunc {
+func (p *PredPointJson) ST_GeomFromText(wkt string) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:  "ST_GeomFromText",
 		Value: []any{fmt.Sprintf("'%v'", wkt)},
@@ -274,7 +274,7 @@ func (p *PredCircularString) ST_GeomFromText(wkt string) geo.PostGISFunc {
 // ST_Union is a PostGIS function.
 // This function is used to merge multiple geometries into a single geometry.
 // For example, in SQL: `ST_Union("point", "lineString")`.
-func (p *PredCircularString) ST_Union(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
+func (p *PredPointJson) ST_Union(f1 geo.PostGISFunc, f2 geo.PostGISFunc) geo.PostGISFunc {
 	return geo.PostGISFunc{
 		Name:     "ST_Union",
 		Children: []geo.PostGISFunc{f1, f2},
