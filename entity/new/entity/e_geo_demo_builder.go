@@ -144,17 +144,17 @@ func (s *geoEntityBuilder) ToList(ctx context.Context) ([]*GeoEntity, error) {
 	return query.ToList(ctx)
 }
 
-func (s *geoEntityBuilder) Include(rels ...geoEntityRel) *geoEntityQuery {
+func (s *geoEntityBuilder) Include(rels ...geoEntityRel) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *geoEntityBuilder) Order(o ...geo_demo.OrderTerm) *geoEntityQuery {
+func (s *geoEntityBuilder) Order(o ...geo_demo.OrderTerm) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *geoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *geoEntityQuery {
+func (s *geoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -283,7 +283,7 @@ func (s *geoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *geoEntityBuilder) initQuery() *geoEntityQuery {
+func (s *geoEntityBuilder) initQuery() *GeoEntityQuery {
 	return newGeoEntityQuery(s.config.Dialect, s.tracker, s.config.geoEntityMutations)
 }
 

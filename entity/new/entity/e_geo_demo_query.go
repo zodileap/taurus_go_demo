@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// geoEntityQuery is the query action for the geoEntity.
-type geoEntityQuery struct {
+// GeoEntityQuery is the query action for the GeoEntity.
+type GeoEntityQuery struct {
 	config       *geoEntityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
@@ -24,7 +24,7 @@ type geoEntityQuery struct {
 }
 
 // First returns the first result of the query.
-func (o *geoEntityQuery) First(ctx context.Context) (*GeoEntity, error) {
+func (o *GeoEntityQuery) First(ctx context.Context) (*GeoEntity, error) {
 	result, err := o.Single(ctx)
 	if err != nil {
 		return nil, err
@@ -32,9 +32,9 @@ func (o *geoEntityQuery) First(ctx context.Context) (*GeoEntity, error) {
 	return result, nil
 }
 
-// newGeoEntityQuery creates a new geoEntityQuery.
-func newGeoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *geoEntityMutations) *geoEntityQuery {
-	return &geoEntityQuery{
+// newGeoEntityQuery creates a new GeoEntityQuery.
+func newGeoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *geoEntityMutations) *GeoEntityQuery {
+	return &GeoEntityQuery{
 		config: &geoEntityConfig{
 			Dialect:            c,
 			geoEntityMutations: ms,
@@ -48,40 +48,40 @@ func newGeoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *geoEntityMutat
 	}
 }
 
-func (o *geoEntityQuery) Where(predicates ...entitysql.PredicateFunc) *geoEntityQuery {
+func (o *GeoEntityQuery) Where(predicates ...entitysql.PredicateFunc) *GeoEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
 // Limit sets the limit of the query.
-func (o *geoEntityQuery) Limit(limit int) *geoEntityQuery {
+func (o *GeoEntityQuery) Limit(limit int) *GeoEntityQuery {
 	o.ctx.Limit = &limit
 	return o
 }
 
-func (o *geoEntityQuery) Order(term ...geo_demo.OrderTerm) *geoEntityQuery {
+func (o *GeoEntityQuery) Order(term ...geo_demo.OrderTerm) *GeoEntityQuery {
 	o.order = append(o.order, term...)
 	return o
 }
 
-func (o *geoEntityQuery) Include(rels ...geoEntityRel) *geoEntityQuery {
+func (o *GeoEntityQuery) Include(rels ...geoEntityRel) *GeoEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
 
 // ToList returns the list of results of the query.
-func (o *geoEntityQuery) ToList(ctx context.Context) ([]*GeoEntity, error) {
+func (o *GeoEntityQuery) ToList(ctx context.Context) ([]*GeoEntity, error) {
 	return o.sqlAll(ctx)
 }
 
 // Single returns the single result of the query.
-func (o *geoEntityQuery) Single(ctx context.Context) (*GeoEntity, error) {
+func (o *GeoEntityQuery) Single(ctx context.Context) (*GeoEntity, error) {
 	limit := 1
 	o.ctx.Limit = &limit
 	return o.sqlSingle(ctx)
 }
 
-func (o *geoEntityQuery) sqlSingle(ctx context.Context) (*GeoEntity, error) {
+func (o *GeoEntityQuery) sqlSingle(ctx context.Context) (*GeoEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  *GeoEntity
@@ -119,7 +119,7 @@ func (o *geoEntityQuery) sqlSingle(ctx context.Context) (*GeoEntity, error) {
 	return res, nil
 }
 
-func (o *geoEntityQuery) sqlAll(ctx context.Context) ([]*GeoEntity, error) {
+func (o *GeoEntityQuery) sqlAll(ctx context.Context) ([]*GeoEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  = []*GeoEntity{}
@@ -159,7 +159,7 @@ func (o *geoEntityQuery) sqlAll(ctx context.Context) ([]*GeoEntity, error) {
 	return res, nil
 }
 
-func (o *geoEntityQuery) querySpec() *entitysql.QuerySpec {
+func (o *GeoEntityQuery) querySpec() *entitysql.QuerySpec {
 	s := entitysql.NewQuerySpec(geo_demo.Entity, geo_demo.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -266,7 +266,7 @@ func (o *geoEntityQuery) querySpec() *entitysql.QuerySpec {
 	return s
 }
 
-func (o *geoEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+func (o *GeoEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
 	_, tableNum := join.GetAs()

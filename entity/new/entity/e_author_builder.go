@@ -76,17 +76,17 @@ func (s *authorEntityBuilder) ToList(ctx context.Context) ([]*AuthorEntity, erro
 	return query.ToList(ctx)
 }
 
-func (s *authorEntityBuilder) Include(rels ...authorEntityRel) *authorEntityQuery {
+func (s *authorEntityBuilder) Include(rels ...authorEntityRel) *AuthorEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *authorEntityBuilder) Order(o ...author.OrderTerm) *authorEntityQuery {
+func (s *authorEntityBuilder) Order(o ...author.OrderTerm) *AuthorEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *authorEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *authorEntityQuery {
+func (s *authorEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *AuthorEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -117,7 +117,7 @@ func (s *authorEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *authorEntityBuilder) initQuery() *authorEntityQuery {
+func (s *authorEntityBuilder) initQuery() *AuthorEntityQuery {
 	return newAuthorEntityQuery(s.config.Dialect, s.tracker, s.config.authorEntityMutations)
 }
 

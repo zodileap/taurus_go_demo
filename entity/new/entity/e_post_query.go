@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// postEntityQuery is the query action for the postEntity.
-type postEntityQuery struct {
+// PostEntityQuery is the query action for the PostEntity.
+type PostEntityQuery struct {
 	config       *postEntityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
@@ -24,7 +24,7 @@ type postEntityQuery struct {
 }
 
 // First returns the first result of the query.
-func (o *postEntityQuery) First(ctx context.Context) (*PostEntity, error) {
+func (o *PostEntityQuery) First(ctx context.Context) (*PostEntity, error) {
 	result, err := o.Single(ctx)
 	if err != nil {
 		return nil, err
@@ -32,9 +32,9 @@ func (o *postEntityQuery) First(ctx context.Context) (*PostEntity, error) {
 	return result, nil
 }
 
-// newPostEntityQuery creates a new postEntityQuery.
-func newPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postEntityMutations) *postEntityQuery {
-	return &postEntityQuery{
+// newPostEntityQuery creates a new PostEntityQuery.
+func newPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postEntityMutations) *PostEntityQuery {
+	return &PostEntityQuery{
 		config: &postEntityConfig{
 			Dialect:             c,
 			postEntityMutations: ms,
@@ -48,40 +48,40 @@ func newPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postEntityMut
 	}
 }
 
-func (o *postEntityQuery) Where(predicates ...entitysql.PredicateFunc) *postEntityQuery {
+func (o *PostEntityQuery) Where(predicates ...entitysql.PredicateFunc) *PostEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
 // Limit sets the limit of the query.
-func (o *postEntityQuery) Limit(limit int) *postEntityQuery {
+func (o *PostEntityQuery) Limit(limit int) *PostEntityQuery {
 	o.ctx.Limit = &limit
 	return o
 }
 
-func (o *postEntityQuery) Order(term ...post.OrderTerm) *postEntityQuery {
+func (o *PostEntityQuery) Order(term ...post.OrderTerm) *PostEntityQuery {
 	o.order = append(o.order, term...)
 	return o
 }
 
-func (o *postEntityQuery) Include(rels ...postEntityRel) *postEntityQuery {
+func (o *PostEntityQuery) Include(rels ...postEntityRel) *PostEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
 
 // ToList returns the list of results of the query.
-func (o *postEntityQuery) ToList(ctx context.Context) ([]*PostEntity, error) {
+func (o *PostEntityQuery) ToList(ctx context.Context) ([]*PostEntity, error) {
 	return o.sqlAll(ctx)
 }
 
 // Single returns the single result of the query.
-func (o *postEntityQuery) Single(ctx context.Context) (*PostEntity, error) {
+func (o *PostEntityQuery) Single(ctx context.Context) (*PostEntity, error) {
 	limit := 1
 	o.ctx.Limit = &limit
 	return o.sqlSingle(ctx)
 }
 
-func (o *postEntityQuery) sqlSingle(ctx context.Context) (*PostEntity, error) {
+func (o *PostEntityQuery) sqlSingle(ctx context.Context) (*PostEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  *PostEntity
@@ -119,7 +119,7 @@ func (o *postEntityQuery) sqlSingle(ctx context.Context) (*PostEntity, error) {
 	return res, nil
 }
 
-func (o *postEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
+func (o *PostEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  = []*PostEntity{}
@@ -159,7 +159,7 @@ func (o *postEntityQuery) sqlAll(ctx context.Context) ([]*PostEntity, error) {
 	return res, nil
 }
 
-func (o *postEntityQuery) querySpec() *entitysql.QuerySpec {
+func (o *PostEntityQuery) querySpec() *entitysql.QuerySpec {
 	s := entitysql.NewQuerySpec(post.Entity, post.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -216,7 +216,7 @@ func (o *postEntityQuery) querySpec() *entitysql.QuerySpec {
 	return s
 }
 
-func (o *postEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+func (o *PostEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
 	_, tableNum := join.GetAs()

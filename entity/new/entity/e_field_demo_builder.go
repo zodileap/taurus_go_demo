@@ -108,17 +108,17 @@ func (s *fieldDemoEntityBuilder) ToList(ctx context.Context) ([]*FieldDemoEntity
 	return query.ToList(ctx)
 }
 
-func (s *fieldDemoEntityBuilder) Include(rels ...fieldDemoEntityRel) *fieldDemoEntityQuery {
+func (s *fieldDemoEntityBuilder) Include(rels ...fieldDemoEntityRel) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *fieldDemoEntityBuilder) Order(o ...field_demo.OrderTerm) *fieldDemoEntityQuery {
+func (s *fieldDemoEntityBuilder) Order(o ...field_demo.OrderTerm) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *fieldDemoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *fieldDemoEntityQuery {
+func (s *fieldDemoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -149,7 +149,7 @@ func (s *fieldDemoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error 
 	return nil
 }
 
-func (s *fieldDemoEntityBuilder) initQuery() *fieldDemoEntityQuery {
+func (s *fieldDemoEntityBuilder) initQuery() *FieldDemoEntityQuery {
 	return newFieldDemoEntityQuery(s.config.Dialect, s.tracker, s.config.fieldDemoEntityMutations)
 }
 

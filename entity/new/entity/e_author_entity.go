@@ -12,15 +12,15 @@ import (
 )
 
 type AuthorEntity struct {
-	internal.Entity
-	config *authorEntityConfig
+	internal.Entity `json:"-"`
+	config          *authorEntityConfig
 
 	// ID Author primary key
 	ID *authorID
 
 	Name *authorName
 
-	Posts []*PostEntity
+	Posts []*PostEntity `json:"-"`
 }
 
 // authorEntityConfig holds the configuration for the AuthorEntity.

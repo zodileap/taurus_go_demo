@@ -91,17 +91,17 @@ func (s *postEntityBuilder) ToList(ctx context.Context) ([]*PostEntity, error) {
 	return query.ToList(ctx)
 }
 
-func (s *postEntityBuilder) Include(rels ...postEntityRel) *postEntityQuery {
+func (s *postEntityBuilder) Include(rels ...postEntityRel) *PostEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *postEntityBuilder) Order(o ...post.OrderTerm) *postEntityQuery {
+func (s *postEntityBuilder) Order(o ...post.OrderTerm) *PostEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *postEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *postEntityQuery {
+func (s *postEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *PostEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -132,7 +132,7 @@ func (s *postEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *postEntityBuilder) initQuery() *postEntityQuery {
+func (s *postEntityBuilder) initQuery() *PostEntityQuery {
 	return newPostEntityQuery(s.config.Dialect, s.tracker, s.config.postEntityMutations)
 }
 

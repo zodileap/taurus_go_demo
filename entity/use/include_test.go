@@ -16,7 +16,7 @@ func TestRel(t *testing.T) {
 		ctx := context.Background()
 
 		b, err := db.Blogs.Where(
-			db.Blogs.Desc.EQ("single desc"),
+			db.Blogs.ID.EQ(4077),
 		).
 			Include(
 				db.Blogs.Posts,
@@ -35,7 +35,7 @@ func TestRel(t *testing.T) {
 		ctx := context.Background()
 
 		b, err := db.Blogs.Where(
-			db.Blogs.Desc.EQ("single desc"),
+			db.Blogs.ID.EQ(4077),
 		).
 			Include(
 				db.Blogs.Posts,

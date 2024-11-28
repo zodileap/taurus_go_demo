@@ -13,11 +13,11 @@ import (
 )
 
 type BlogEntity struct {
-	internal.Entity
-	config *blogEntityConfig
+	internal.Entity `json:"-"`
+	config          *blogEntityConfig
 
 	// ID Blog primary key
-	ID *blogID
+	ID *blogID `json:"id"`
 
 	UUID *blogUUID
 
@@ -25,7 +25,7 @@ type BlogEntity struct {
 
 	CreatedTime *blogCreatedTime
 
-	Posts []*PostEntity
+	Posts []*PostEntity `json:"-"`
 }
 
 // blogEntityConfig holds the configuration for the BlogEntity.

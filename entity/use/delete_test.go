@@ -19,8 +19,8 @@ func TestDelete(t *testing.T) {
 
 		u, err := db.Blogs.First(ctx)
 		unit.Must(t, err)
-
-		db.Blogs.Remove(u)
+		tlog.Print(u)
+		db.Remove(u)
 		err = db.Save(ctx)
 		unit.Must(t, err)
 	})
@@ -38,7 +38,8 @@ func TestDelete(t *testing.T) {
 			t.Errorf(err.Error())
 		}
 		for _, u := range us {
-			if err := db.Blogs.Remove(u); err != nil {
+			db.Remove(u)
+			if err := db.Remove(u); err != nil {
 				unit.Must(t, err)
 			}
 		}

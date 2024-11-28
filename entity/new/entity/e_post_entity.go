@@ -12,8 +12,8 @@ import (
 )
 
 type PostEntity struct {
-	internal.Entity
-	config *postEntityConfig
+	internal.Entity `json:"-"`
+	config          *postEntityConfig
 
 	// ID Post primary key
 	ID *postID
@@ -24,9 +24,9 @@ type PostEntity struct {
 
 	AuthorID *postAuthorID
 
-	Blog *BlogEntity
+	Blog *BlogEntity `json:"-"`
 
-	Author *AuthorEntity
+	Author *AuthorEntity `json:"-"`
 }
 
 // postEntityConfig holds the configuration for the PostEntity.

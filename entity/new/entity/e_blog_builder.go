@@ -87,17 +87,17 @@ func (s *blogEntityBuilder) ToList(ctx context.Context) ([]*BlogEntity, error) {
 	return query.ToList(ctx)
 }
 
-func (s *blogEntityBuilder) Include(rels ...blogEntityRel) *blogEntityQuery {
+func (s *blogEntityBuilder) Include(rels ...blogEntityRel) *BlogEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *blogEntityBuilder) Order(o ...blog.OrderTerm) *blogEntityQuery {
+func (s *blogEntityBuilder) Order(o ...blog.OrderTerm) *BlogEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *blogEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *blogEntityQuery {
+func (s *blogEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *BlogEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
@@ -142,7 +142,7 @@ func (s *blogEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *blogEntityBuilder) initQuery() *blogEntityQuery {
+func (s *blogEntityBuilder) initQuery() *BlogEntityQuery {
 	return newBlogEntityQuery(s.config.Dialect, s.tracker, s.config.blogEntityMutations)
 }
 

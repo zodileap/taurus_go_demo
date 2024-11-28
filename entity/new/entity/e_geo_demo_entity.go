@@ -13,8 +13,8 @@ import (
 )
 
 type GeoEntity struct {
-	internal.Entity
-	config *geoEntityConfig
+	internal.Entity `json:"-"`
+	config          *geoEntityConfig
 
 	// ID 主键。
 	ID *geoDemoID

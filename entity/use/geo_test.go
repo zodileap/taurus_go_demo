@@ -3,7 +3,9 @@ package use
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/yohobala/taurus_go/datautil/geo"
 	"github.com/yohobala/taurus_go/testutil/unit"
@@ -84,6 +86,49 @@ func TestGeo(t *testing.T) {
 		err = db.Save(ctx)
 		unit.Must(t, err)
 		tlog.Print(g)
+	})
+
+	t.Run("随机生成10万条地理多边形数据，每条数据1000个点，符合经纬度标准", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
+
+		for num := 0; num < 100; num++ {
+			r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+			for i := 0; i < 1000; i++ {
+				var points []geo.Point
+
+				// 生成第一个点
+				firstLon := randomLongitude(r)
+				firstLat := randomLatitude(r)
+				firstPoint, err := geo.NewPoint(firstLon, firstLat)
+				unit.Must(t, err)
+				points = append(points, *firstPoint)
+
+				// 生成中间的998个点
+				for j := 0; j < 998; j++ {
+					lon := randomLongitude(r)
+					lat := randomLatitude(r)
+					p, err := geo.NewPoint(lon, lat)
+					unit.Must(t, err)
+					points = append(points, *p)
+				}
+
+				// 添加最后一个点（与第一个点相同）
+				points = append(points, *firstPoint)
+
+				polygon, err := geo.NewPolygonByPoint(points)
+				unit.Must(t, err)
+				_, err = db.Geos.Create(
+					db.Geos.WithPolygon(polygon),
+				)
+				unit.Must(t, err)
+			}
+
+			err := db.Save(ctx)
+			unit.Must(t, err)
+		}
 	})
 
 	// 查询第一条数据。
@@ -178,12 +223,13 @@ func TestGeo(t *testing.T) {
 	// ST_Contains，多边形 - 多边形
 	// ST_Contains, Polygon - Polygon.
 	t.Run("ST_Contains, Polygon - Polygon.", func(t *testing.T) {
+		startTime := time.Now()
 		db := initDb()
 		defer db.Close()
 		ctx := context.Background()
 		l, err := geo.NewLineString([][]float64{{3, 3}, {5, 5}, {9, 3}, {3, 3}})
 		unit.Must(t, err)
-		g, err := db.Geos.Where(
+		_, err = db.Geos.Where(
 			db.Geos.Polygon.Geo(
 				db.Geos.Polygon.ST_Contains(
 					db.Geos.Polygon.GeoColumn(),
@@ -197,7 +243,9 @@ func TestGeo(t *testing.T) {
 			),
 		).Single(ctx)
 		unit.Must(t, err)
-		fmt.Println(g)
+		endTime := time.Now()
+		fmt.Print("用时", endTime.Sub(startTime).Seconds(), "秒\n")
+		// fmt.Println(g)
 	})
 
 	// ST_Crosses，线 - 线。
@@ -552,12 +600,13 @@ func TestGeo(t *testing.T) {
 	// ST_Intersects，多边形 - 多边形
 	// ST_Intersects, Polygon - Polygon.
 	t.Run("ST_Intersects, Polygon - Polygon.", func(t *testing.T) {
+		startTime := time.Now()
 		db := initDb()
 		defer db.Close()
 		ctx := context.Background()
 		l, err := geo.NewLineString([][]float64{{2, 2}, {6, 6}, {10, 2}, {2, 2}})
 		unit.Must(t, err)
-		g, err := db.Geos.Where(
+		_, err = db.Geos.Where(
 			db.Geos.Polygon.Geo(
 				db.Geos.Polygon.ST_Intersects(
 					db.Geos.Polygon.GeoColumn(),
@@ -571,7 +620,9 @@ func TestGeo(t *testing.T) {
 			),
 		).Single(ctx)
 		unit.Must(t, err)
-		fmt.Println(g)
+		endTime := time.Now()
+		fmt.Print("用时", endTime.Sub(startTime).Seconds(), "秒\n")
+		// fmt.Println(g)
 	})
 
 	// ST_Overlaps，线 - 线
@@ -796,8 +847,18 @@ func TestGeo(t *testing.T) {
 					),
 				),
 			),
-		).Single(ctx)
+		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(g)
 	})
+}
+
+// 生成随机经度 (-180 到 180)
+func randomLongitude(r *rand.Rand) float64 {
+	return r.Float64()*360 - 180
+}
+
+// 生成随机纬度 (-90 到 90)
+func randomLatitude(r *rand.Rand) float64 {
+	return r.Float64()*180 - 90
 }

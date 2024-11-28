@@ -638,10 +638,18 @@ $$;
 DO $$
 BEGIN
 
+-- 判断是否存在唯一键，不存在添加
+IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'unique_blog_id' AND conrelid = 'public.blog'::regclass) THEN
+    ALTER TABLE "public"."blog" ADD CONSTRAINT unique_blog_id UNIQUE (id);
+END IF;
 ALTER TABLE "public"."post"
 ADD CONSTRAINT fk_blog_id FOREIGN KEY ("blog_id")
 REFERENCES "public"."blog" ("id");
 
+-- 判断是否存在唯一键，不存在添加
+IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'unique_author_id' AND conrelid = 'public.author'::regclass) THEN
+    ALTER TABLE "public"."author" ADD CONSTRAINT unique_author_id UNIQUE (id);
+END IF;
 ALTER TABLE "public"."post"
 ADD CONSTRAINT fk_author_id FOREIGN KEY ("author_id")
 REFERENCES "public"."author" ("id");

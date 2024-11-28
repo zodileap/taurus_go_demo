@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// fieldDemoEntityQuery is the query action for the fieldDemoEntity.
-type fieldDemoEntityQuery struct {
+// FieldDemoEntityQuery is the query action for the FieldDemoEntity.
+type FieldDemoEntityQuery struct {
 	config       *fieldDemoEntityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
@@ -24,7 +24,7 @@ type fieldDemoEntityQuery struct {
 }
 
 // First returns the first result of the query.
-func (o *fieldDemoEntityQuery) First(ctx context.Context) (*FieldDemoEntity, error) {
+func (o *FieldDemoEntityQuery) First(ctx context.Context) (*FieldDemoEntity, error) {
 	result, err := o.Single(ctx)
 	if err != nil {
 		return nil, err
@@ -32,9 +32,9 @@ func (o *fieldDemoEntityQuery) First(ctx context.Context) (*FieldDemoEntity, err
 	return result, nil
 }
 
-// newFieldDemoEntityQuery creates a new fieldDemoEntityQuery.
-func newFieldDemoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *fieldDemoEntityMutations) *fieldDemoEntityQuery {
-	return &fieldDemoEntityQuery{
+// newFieldDemoEntityQuery creates a new FieldDemoEntityQuery.
+func newFieldDemoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *fieldDemoEntityMutations) *FieldDemoEntityQuery {
+	return &FieldDemoEntityQuery{
 		config: &fieldDemoEntityConfig{
 			Dialect:                  c,
 			fieldDemoEntityMutations: ms,
@@ -48,40 +48,40 @@ func newFieldDemoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *fieldDem
 	}
 }
 
-func (o *fieldDemoEntityQuery) Where(predicates ...entitysql.PredicateFunc) *fieldDemoEntityQuery {
+func (o *FieldDemoEntityQuery) Where(predicates ...entitysql.PredicateFunc) *FieldDemoEntityQuery {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
 // Limit sets the limit of the query.
-func (o *fieldDemoEntityQuery) Limit(limit int) *fieldDemoEntityQuery {
+func (o *FieldDemoEntityQuery) Limit(limit int) *FieldDemoEntityQuery {
 	o.ctx.Limit = &limit
 	return o
 }
 
-func (o *fieldDemoEntityQuery) Order(term ...field_demo.OrderTerm) *fieldDemoEntityQuery {
+func (o *FieldDemoEntityQuery) Order(term ...field_demo.OrderTerm) *FieldDemoEntityQuery {
 	o.order = append(o.order, term...)
 	return o
 }
 
-func (o *fieldDemoEntityQuery) Include(rels ...fieldDemoEntityRel) *fieldDemoEntityQuery {
+func (o *FieldDemoEntityQuery) Include(rels ...fieldDemoEntityRel) *FieldDemoEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
 
 // ToList returns the list of results of the query.
-func (o *fieldDemoEntityQuery) ToList(ctx context.Context) ([]*FieldDemoEntity, error) {
+func (o *FieldDemoEntityQuery) ToList(ctx context.Context) ([]*FieldDemoEntity, error) {
 	return o.sqlAll(ctx)
 }
 
 // Single returns the single result of the query.
-func (o *fieldDemoEntityQuery) Single(ctx context.Context) (*FieldDemoEntity, error) {
+func (o *FieldDemoEntityQuery) Single(ctx context.Context) (*FieldDemoEntity, error) {
 	limit := 1
 	o.ctx.Limit = &limit
 	return o.sqlSingle(ctx)
 }
 
-func (o *fieldDemoEntityQuery) sqlSingle(ctx context.Context) (*FieldDemoEntity, error) {
+func (o *FieldDemoEntityQuery) sqlSingle(ctx context.Context) (*FieldDemoEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  *FieldDemoEntity
@@ -119,7 +119,7 @@ func (o *fieldDemoEntityQuery) sqlSingle(ctx context.Context) (*FieldDemoEntity,
 	return res, nil
 }
 
-func (o *fieldDemoEntityQuery) sqlAll(ctx context.Context) ([]*FieldDemoEntity, error) {
+func (o *FieldDemoEntityQuery) sqlAll(ctx context.Context) ([]*FieldDemoEntity, error) {
 	var (
 		spec = o.querySpec()
 		res  = []*FieldDemoEntity{}
@@ -159,7 +159,7 @@ func (o *fieldDemoEntityQuery) sqlAll(ctx context.Context) ([]*FieldDemoEntity, 
 	return res, nil
 }
 
-func (o *fieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
+func (o *FieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
 	s := entitysql.NewQuerySpec(field_demo.Entity, field_demo.Columns)
 	if o.ctx.Limit != nil {
 		s.Limit = *o.ctx.Limit
@@ -236,7 +236,7 @@ func (o *fieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
 	return s
 }
 
-func (o *fieldDemoEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
+func (o *FieldDemoEntityQuery) addRels(s *entitysql.Selector, t *entitysql.SelectTable, rel rel, scanner []*internal.QueryScanner) []*internal.QueryScanner {
 	desc, children, config := rel.Desc()
 	join := entitysql.AddRelBySelector(s, t, desc)
 	_, tableNum := join.GetAs()

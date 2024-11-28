@@ -7,7 +7,7 @@ import (
 
 type BlogEntity struct {
 	entity.Entity
-	ID          *field.Int64
+	ID          *field.Int64 `json:"id"`
 	UUID        *field.UUID
 	Desc        *field.Varchar
 	CreatedTime *field.Timestamptz

@@ -340,6 +340,14 @@ func (f *PredIntArrayF) Like(int_array_f string) entitysql.PredicateFunc {
 	}
 }
 
+// Contains returns a function that sets the predicate to check if the field contains the given value.
+// Operator "@>"
+func (f *PredIntArrayF) Contains(int_array_f []int64) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Contains(FieldIntArrayF.Name.String(), p.Builder.FindAs(Entity), int_array_f)
+	}
+}
+
 type PredIntarray2F struct {
 }
 
@@ -503,6 +511,14 @@ func (f *PredBoolArrayF) NotIn(bool_array_fs ...[]bool) entitysql.PredicateFunc 
 func (f *PredBoolArrayF) Like(bool_array_f string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldBoolArrayF.Name.String(), p.Builder.FindAs(Entity), bool_array_f)
+	}
+}
+
+// Contains returns a function that sets the predicate to check if the field contains the given value.
+// Operator "@>"
+func (f *PredBoolArrayF) Contains(bool_array_f []bool) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Contains(FieldBoolArrayF.Name.String(), p.Builder.FindAs(Entity), bool_array_f)
 	}
 }
 

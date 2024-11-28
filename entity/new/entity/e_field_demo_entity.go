@@ -13,8 +13,8 @@ import (
 )
 
 type FieldDemoEntity struct {
-	internal.Entity
-	config *fieldDemoEntityConfig
+	internal.Entity `json:"-"`
+	config          *fieldDemoEntityConfig
 
 	// Int64F Int64 field
 	Int64F *fieldDemoInt64F

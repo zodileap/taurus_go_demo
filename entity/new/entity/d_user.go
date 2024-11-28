@@ -4,6 +4,7 @@ package entity
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/yohobala/taurus_go/entity"
 	"github.com/yohobala/taurus_go/entity/entitysql"
@@ -27,6 +28,16 @@ type User struct {
 	Geos  *geoEntityBuilder
 	Posts *postEntityBuilder
 }
+
+type userEntityFlag interface {
+	isUserEntity()
+}
+
+func (e *AuthorEntity) isUserEntity()    {}
+func (e *BlogEntity) isUserEntity()      {}
+func (e *FieldDemoEntity) isUserEntity() {}
+func (e *GeoEntity) isUserEntity()       {}
+func (e *PostEntity) isUserEntity()      {}
 
 // NewUser creates a new User instance.
 func NewUser() (*User, error) {
@@ -64,6 +75,25 @@ func (d *User) Save(ctx context.Context) error {
 		return entitysql.Rollback(tx, err)
 	}
 	return tx.Commit()
+}
+
+// Remove will remove the entity from the database. The changes will be saved when Save is called.
+func (d *User) Remove(e userEntityFlag) error {
+	switch e.(type) {
+	case *AuthorEntity:
+		d.Authors.Remove(e.(*AuthorEntity))
+	case *BlogEntity:
+		d.Blogs.Remove(e.(*BlogEntity))
+	case *FieldDemoEntity:
+		d.FieldDemos.Remove(e.(*FieldDemoEntity))
+	case *GeoEntity:
+		d.Geos.Remove(e.(*GeoEntity))
+	case *PostEntity:
+		d.Posts.Remove(e.(*PostEntity))
+	default:
+		return fmt.Errorf("database User does not support entity type %T", e)
+	}
+	return nil
 }
 
 func (d *User) init() {
