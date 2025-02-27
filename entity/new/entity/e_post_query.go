@@ -14,10 +14,10 @@ import (
 
 // PostEntityQuery is the query action for the PostEntity.
 type PostEntityQuery struct {
-	config       *postEntityConfig
+	config       *postentityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []postEntityRel
+	rels         []postentityRel
 	order        []post.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
@@ -33,15 +33,15 @@ func (o *PostEntityQuery) First(ctx context.Context) (*PostEntity, error) {
 }
 
 // newPostEntityQuery creates a new PostEntityQuery.
-func newPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postEntityMutations) *PostEntityQuery {
+func newPostEntityQuery(c *internal.Dialect, t entity.Tracker, ms *postentityMutations) *PostEntityQuery {
 	return &PostEntityQuery{
-		config: &postEntityConfig{
+		config: &postentityConfig{
 			Dialect:             c,
-			postEntityMutations: ms,
+			postentityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []postEntityRel{},
+		rels:         []postentityRel{},
 		order:        []post.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
@@ -64,7 +64,7 @@ func (o *PostEntityQuery) Order(term ...post.OrderTerm) *PostEntityQuery {
 	return o
 }
 
-func (o *PostEntityQuery) Include(rels ...postEntityRel) *PostEntityQuery {
+func (o *PostEntityQuery) Include(rels ...postentityRel) *PostEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }

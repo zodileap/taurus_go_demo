@@ -102,14 +102,14 @@ func (b *ByUUID) NullsLast() *ByUUID {
 	return b
 }
 
-type ByDesc struct {
+type ByDescription struct {
 	OrderTerm
 	Options []OrderOption
 	Field   string
 }
 
-func (b *ByDesc) Apply(o *entitysql.Order) {
-	o.SetColumn(FieldDesc.Name.String())
+func (b *ByDescription) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldDescription.Name.String())
 	if len(b.Options) == 0 {
 		b.Asc()
 	}
@@ -118,28 +118,28 @@ func (b *ByDesc) Apply(o *entitysql.Order) {
 	}
 }
 
-func (b *ByDesc) Desc() *ByDesc {
+func (b *ByDescription) Desc() *ByDescription {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.Desc()
 	})
 	return b
 }
 
-func (b *ByDesc) Asc() *ByDesc {
+func (b *ByDescription) Asc() *ByDescription {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.Asc()
 	})
 	return b
 }
 
-func (b *ByDesc) NullsFirst() *ByDesc {
+func (b *ByDescription) NullsFirst() *ByDescription {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.NullsFirst()
 	})
 	return b
 }
 
-func (b *ByDesc) NullsLast() *ByDesc {
+func (b *ByDescription) NullsLast() *ByDescription {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.NullsLast()
 	})

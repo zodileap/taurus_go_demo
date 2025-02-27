@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// authorEntityCreate is the create action for the authorEntity.
-type authorEntityCreate struct {
+// AuthorEntityCreate is the create action for the AuthorEntity.
+type AuthorEntityCreate struct {
 	config *internal.Dialect
 	es     []*AuthorEntity
 }
 
-// newAuthorEntityCreate creates a new authorEntityCreate.
-func newAuthorEntityCreate(c *internal.Dialect, es ...*AuthorEntity) *authorEntityCreate {
-	return &authorEntityCreate{
+// newAuthorEntityCreate creates a new AuthorEntityCreate.
+func newAuthorEntityCreate(c *internal.Dialect, es ...*AuthorEntity) *AuthorEntityCreate {
+	return &AuthorEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *authorEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *authorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *authorEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *authorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *AuthorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		author.FieldID.Name,
 	}
@@ -67,6 +67,16 @@ func (o *authorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		fields := make([]*entitysql.FieldSpec, 0, len(author.Columns))
 		for j := range author.Columns {
 			switch author.Columns[j] {
+			case author.FieldID.Name:
+				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				fieldSpace := entitysql.NewFieldSpec(author.FieldID.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.Default = true
+				fields = append(fields, &fieldSpace)
 			case author.FieldName.Name:
 				v, err := e.Name.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
@@ -78,6 +88,7 @@ func (o *authorEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(author.FieldName.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.Name.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			}
 		}

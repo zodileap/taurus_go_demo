@@ -20,7 +20,7 @@ func TestUpdate(t *testing.T) {
 		u, err := db.Blogs.First(ctx)
 		unit.Must(t, err)
 
-		u.Desc.Set("single desc")
+		u.Description.Set("single desc")
 		err = db.Save(ctx)
 		unit.Must(t, err)
 	})
@@ -32,11 +32,11 @@ func TestUpdate(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 
-		us, err := db.Blogs.Where(db.Blogs.Desc.EQ("desc")).ToList(ctx)
+		us, err := db.Blogs.Where(db.Blogs.Description.EQ("desc")).ToList(ctx)
 		unit.Must(t, err)
 
 		for _, u := range us {
-			u.Desc.Set("multi desc")
+			u.Description.Set("multi desc")
 		}
 		err = db.Save(ctx)
 		unit.Must(t, err)

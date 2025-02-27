@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity"
@@ -14,58 +15,44 @@ import (
 
 type FieldDemoEntity struct {
 	internal.Entity `json:"-"`
-	config          *fieldDemoEntityConfig
-
-	// Int64F Int64 field
-	Int64F *fieldDemoInt64F
-
-	// VarF Varchar field
-	VarF *fieldDemoVarF
-
-	// BoolF Bool field
-	BoolF *fieldDemoBoolF
-
-	// IntArrayF Int array field
-	IntArrayF *fieldDemoIntArrayF
-
-	// Intarray2F Int array2 field
-	Intarray2F *fieldDemoIntarray2F
-
-	// BoolArrayF Bool array field
-	BoolArrayF *fieldDemoBoolArrayF
-
-	// TimeF Time field
-	TimeF *fieldDemoTimeF
-
-	// TimeArrayF Time array field
-	TimeArrayF *fieldDemoTimeArrayF
+	config          *fielddemoentityConfig
+	Int64F          *fieldDemoInt64F       // Int64F Int64 field
+	VarF            *fieldDemoVarF         // VarF Varchar field
+	BoolF           *fieldDemoBoolF        // BoolF Bool field
+	IntArrayF       *fieldDemoIntArrayF    // IntArrayF Int array field
+	Intarray2F      *fieldDemoIntarray2F   // Intarray2F Int array2 field
+	StringArrayF    *fieldDemoStringArrayF // StringArrayF String array field
+	BoolArrayF      *fieldDemoBoolArrayF   // BoolArrayF Bool array field
+	TimeF           *fieldDemoTimeF        // TimeF Time field
+	TimeArrayF      *fieldDemoTimeArrayF   // TimeArrayF Time array field
+	JsonF           *fieldDemoJsonF        // JsonF Json field
 }
 
-// fieldDemoEntityConfig holds the configuration for the FieldDemoEntity.
-type fieldDemoEntityConfig struct {
+// fielddemoentityConfig holds the configuration for the FieldDemoEntity.
+type fielddemoentityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*fieldDemoEntityMutations
+	*fielddemoentityMutations
 	name string
 }
 
-func newFieldDemoEntityConfig(c *internal.Dialect) *fieldDemoEntityConfig {
-	return &fieldDemoEntityConfig{
+func newFieldDemoEntityConfig(c *internal.Dialect) *fielddemoentityConfig {
+	return &fielddemoentityConfig{
 		Dialect:                  c,
-		fieldDemoEntityMutations: newFieldDemoEntityMutations(),
+		fielddemoentityMutations: newFieldDemoEntityMutations(),
 		name:                     "field_demo",
 	}
 }
 
 // New creates a new FieldDemoEntity, but does not add tracking.
-func (c *fieldDemoEntityConfig) New() internal.Entity {
+func (c *fielddemoentityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &FieldDemoEntity{
-		config: &fieldDemoEntityConfig{
+		config: &fielddemoentityConfig{
 			Mutation:                 b,
 			Dialect:                  c.Dialect,
-			fieldDemoEntityMutations: c.fieldDemoEntityMutations,
+			fielddemoentityMutations: c.fielddemoentityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -74,13 +61,15 @@ func (c *fieldDemoEntityConfig) New() internal.Entity {
 	e.BoolF = newFieldDemoBoolF(e.config)
 	e.IntArrayF = newFieldDemoIntArrayF(e.config)
 	e.Intarray2F = newFieldDemoIntarray2F(e.config)
+	e.StringArrayF = newFieldDemoStringArrayF(e.config)
 	e.BoolArrayF = newFieldDemoBoolArrayF(e.config)
 	e.TimeF = newFieldDemoTimeF(e.config)
 	e.TimeArrayF = newFieldDemoTimeArrayF(e.config)
+	e.JsonF = newFieldDemoJsonF(e.config)
 	return e
 }
 
-func (c *fieldDemoEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *fielddemoentityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -88,15 +77,17 @@ func (c *fieldDemoEntityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *FieldDemoEntity) String() string {
-	return fmt.Sprintf("{ Int64F: %v, VarF: %v, BoolF: %v, IntArrayF: %v, Intarray2F: %v, BoolArrayF: %v, TimeF: %v, TimeArrayF: %v}",
+	return fmt.Sprintf("{ Int64F: %v, VarF: %v, BoolF: %v, IntArrayF: %v, Intarray2F: %v, StringArrayF: %v, BoolArrayF: %v, TimeF: %v, TimeArrayF: %v, JsonF: %v}",
 		e.Int64F,
 		e.VarF,
 		e.BoolF,
 		e.IntArrayF,
 		e.Intarray2F,
+		e.StringArrayF,
 		e.BoolArrayF,
 		e.TimeF,
 		e.TimeArrayF,
+		e.JsonF,
 	)
 }
 
@@ -111,13 +102,14 @@ func (e *FieldDemoEntity) remove() error {
 }
 
 // create creates a new FieldDemoEntity and adds tracking.
-func (e *FieldDemoEntity) create(int64_f int64, var_f string, bool_f bool, int_array_f []int64, int_array2_f [][]int64, bool_array_f []bool, time_f time.Time, time_array_f []time.Time, options ...func(*FieldDemoEntity)) (*FieldDemoEntity, error) {
+func (e *FieldDemoEntity) create(int64_f int64, var_f string, bool_f bool, int_array_f []int64, int_array2_f [][]int64, string_array_f []string, bool_array_f []bool, time_f time.Time, time_array_f []time.Time, options ...func(*FieldDemoEntity)) (*FieldDemoEntity, error) {
 	e.setState(entity.Added)
 	e.Int64F.Set(int64_f)
 	e.VarF.Set(var_f)
 	e.BoolF.Set(bool_f)
 	e.IntArrayF.Set(int_array_f)
 	e.Intarray2F.Set(int_array2_f)
+	e.StringArrayF.Set(string_array_f)
 	e.BoolArrayF.Set(bool_array_f)
 	e.TimeF.Set(time_f)
 	e.TimeArrayF.Set(time_array_f)
@@ -134,7 +126,7 @@ func (e *FieldDemoEntity) setUnchanged() error {
 
 // setState sets the state of the FieldDemoEntity.
 func (e *FieldDemoEntity) setState(state entity.EntityState) error {
-	return e.config.fieldDemoEntityMutations.SetEntityState(e, state)
+	return e.config.fielddemoentityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the FieldDemoEntity.
@@ -163,6 +155,10 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 				v := e.Intarray2F
 				v.Set(*new([][]int64))
 				args[i] = v
+			case field_demo.FieldStringArrayF.Name.String():
+				v := e.StringArrayF
+				v.Set(*new([]string))
+				args[i] = v
 			case field_demo.FieldBoolArrayF.Name.String():
 				v := e.BoolArrayF
 				v.Set(*new([]bool))
@@ -174,6 +170,10 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 			case field_demo.FieldTimeArrayF.Name.String():
 				v := e.TimeArrayF
 				v.Set(*new([]time.Time))
+				args[i] = v
+			case field_demo.FieldJsonF.Name.String():
+				v := e.JsonF
+				v.Set(*new(schema.JsonFStruct))
 				args[i] = v
 			}
 		}
@@ -202,6 +202,10 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 				v := e.Intarray2F
 				v.Set(*new([][]int64))
 				args[i] = v
+			case field_demo.FieldStringArrayF.Name.String():
+				v := e.StringArrayF
+				v.Set(*new([]string))
+				args[i] = v
 			case field_demo.FieldBoolArrayF.Name.String():
 				v := e.BoolArrayF
 				v.Set(*new([]bool))
@@ -213,6 +217,10 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 			case field_demo.FieldTimeArrayF.Name.String():
 				v := e.TimeArrayF
 				v.Set(*new([]time.Time))
+				args[i] = v
+			case field_demo.FieldJsonF.Name.String():
+				v := e.JsonF
+				v.Set(*new(schema.JsonFStruct))
 				args[i] = v
 			}
 		}
@@ -234,11 +242,9 @@ func mergeFieldDemoEntity(es []*FieldDemoEntity, e *FieldDemoEntity) []*FieldDem
 	} else {
 		v := es[len(es)-1]
 
-		if e.Int64F.Get() != nil {
-			if v.Int64F.Get() != nil && *v.Int64F.Get() == *e.Int64F.Get() {
-			} else {
-				es = append(es, e)
-			}
+		if v.Int64F.Get() == e.Int64F.Get() {
+		} else {
+			es = append(es, e)
 		}
 	}
 	return es

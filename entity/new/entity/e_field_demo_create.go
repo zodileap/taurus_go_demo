@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// fieldDemoEntityCreate is the create action for the fieldDemoEntity.
-type fieldDemoEntityCreate struct {
+// FieldDemoEntityCreate is the create action for the FieldDemoEntity.
+type FieldDemoEntityCreate struct {
 	config *internal.Dialect
 	es     []*FieldDemoEntity
 }
 
-// newFieldDemoEntityCreate creates a new fieldDemoEntityCreate.
-func newFieldDemoEntityCreate(c *internal.Dialect, es ...*FieldDemoEntity) *fieldDemoEntityCreate {
-	return &fieldDemoEntityCreate{
+// newFieldDemoEntityCreate creates a new FieldDemoEntityCreate.
+func newFieldDemoEntityCreate(c *internal.Dialect, es ...*FieldDemoEntity) *FieldDemoEntityCreate {
+	return &FieldDemoEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *fieldDemoEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *fieldDemoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *fieldDemoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) er
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *FieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{}
 	entity := field_demo.Entity
 	columns := field_demo.Columns
@@ -76,6 +76,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldInt64F.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.Int64F.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldVarF.Name:
 				v, err := e.VarF.SqlParam(o.config.Driver.Dialect())
@@ -88,6 +89,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldVarF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.VarF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldBoolF.Name:
 				v, err := e.BoolF.SqlParam(o.config.Driver.Dialect())
@@ -100,6 +102,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.BoolF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldIntArrayF.Name:
 				v, err := e.IntArrayF.SqlParam(o.config.Driver.Dialect())
@@ -112,6 +115,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntArrayF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.IntArrayF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldIntarray2F.Name:
 				v, err := e.Intarray2F.SqlParam(o.config.Driver.Dialect())
@@ -124,6 +128,20 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntarray2F.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.Intarray2F.SqlFormatParam()
+				fieldSpace.Default = false
+				fields = append(fields, &fieldSpace)
+			case field_demo.FieldStringArrayF.Name:
+				v, err := e.StringArrayF.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), field_demo.FieldStringArrayF.Name, e.StringArrayF); err != nil {
+					return nil, err
+				}
+				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldStringArrayF.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.StringArrayF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldBoolArrayF.Name:
 				v, err := e.BoolArrayF.SqlParam(o.config.Driver.Dialect())
@@ -136,6 +154,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolArrayF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.BoolArrayF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldTimeF.Name:
 				v, err := e.TimeF.SqlParam(o.config.Driver.Dialect())
@@ -148,6 +167,7 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.TimeF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case field_demo.FieldTimeArrayF.Name:
 				v, err := e.TimeArrayF.SqlParam(o.config.Driver.Dialect())
@@ -160,6 +180,17 @@ func (o *fieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
+				fieldSpace.Default = false
+				fields = append(fields, &fieldSpace)
+			case field_demo.FieldJsonF.Name:
+				v, err := e.JsonF.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.JsonF.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			}
 		}

@@ -13,54 +13,26 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// geoEntityBuilder is a builder for the GeoEntity entity.
+// geoentityBuilder is a builder for the GeoEntity entity.
 //
 // The builder is used to create, update, and delete GeoEntity entities.
-type geoEntityBuilder struct {
-	config  *geoEntityConfig
-	tracker entity.Tracker
-
-	// ID 主键。
-	ID geo_demo.PredID
-
-	// Point 点
-	Point geo_demo.PredPoint
-
-	// LineString 线
-	LineString geo_demo.PredLineString
-
-	// Polygon 多边形
-	Polygon geo_demo.PredPolygon
-
-	// MultiPoint 多点
-	MultiPoint geo_demo.PredMultiPoint
-
-	// MultiLineString 多线
-	MultiLineString geo_demo.PredMultiLineString
-
-	// MultiPolygon 多多边形
-	MultiPolygon geo_demo.PredMultiPolygon
-
-	// CircularString 圆弧
-	CircularString geo_demo.PredCircularString
-
-	// PointJson 点
-	PointJson geo_demo.PredPointJson
-
-	// LineStringJson 线
-	LineStringJson geo_demo.PredLineStringJson
-
-	// PolygonJson 多边形
-	PolygonJson geo_demo.PredPolygonJson
-
-	// MultiPointJson 多点
-	MultiPointJson geo_demo.PredMultiPointJson
-
-	// MultiLineStringJson 多线
-	MultiLineStringJson geo_demo.PredMultiLineStringJson
-
-	// MultiPolygonJson 多多边形
-	MultiPolygonJson geo_demo.PredMultiPolygonJson
+type geoentityBuilder struct {
+	config              *geoentityConfig
+	tracker             entity.Tracker
+	ID                  geo_demo.PredID                  // ID 主键。
+	Point               geo_demo.PredPoint               // Point 点
+	LineString          geo_demo.PredLineString          // LineString 线
+	Polygon             geo_demo.PredPolygon             // Polygon 多边形
+	MultiPoint          geo_demo.PredMultiPoint          // MultiPoint 多点
+	MultiLineString     geo_demo.PredMultiLineString     // MultiLineString 多线
+	MultiPolygon        geo_demo.PredMultiPolygon        // MultiPolygon 多多边形
+	CircularString      geo_demo.PredCircularString      // CircularString 圆弧
+	PointJson           geo_demo.PredPointJson           // PointJson 点
+	LineStringJson      geo_demo.PredLineStringJson      // LineStringJson 线
+	PolygonJson         geo_demo.PredPolygonJson         // PolygonJson 多边形
+	MultiPointJson      geo_demo.PredMultiPointJson      // MultiPointJson 多点
+	MultiLineStringJson geo_demo.PredMultiLineStringJson // MultiLineStringJson 多线
+	MultiPolygonJson    geo_demo.PredMultiPolygonJson    // MultiPolygonJson 多多边形
 	// ByID configures the query to sort results based on the 'id' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByID geo_demo.ByID
@@ -105,9 +77,9 @@ type geoEntityBuilder struct {
 	ByMultiPolygonJson geo_demo.ByMultiPolygonJson
 }
 
-// newgeoEntityBuilder creates a new geoEntityBuilder.
-func newGeoEntityBuilder(c *geoEntityConfig, t entity.Tracker) *geoEntityBuilder {
-	return &geoEntityBuilder{
+// newGeoEntityBuilder creates a new GeoEntityBuilder .
+func newGeoEntityBuilder(c *geoentityConfig, t entity.Tracker) *geoentityBuilder {
+	return &geoentityBuilder{
 		config:  c,
 		tracker: t,
 	}
@@ -116,7 +88,7 @@ func newGeoEntityBuilder(c *geoEntityConfig, t entity.Tracker) *geoEntityBuilder
 // Create creates a new UserEntity，and add it to the tracker.
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
-func (b *geoEntityBuilder) Create(options ...func(*GeoEntity)) (*GeoEntity, error) {
+func (b *geoentityBuilder) Create(options ...func(*GeoEntity)) (*GeoEntity, error) {
 	e := b.config.New()
 	switch t := e.(type) {
 	case *GeoEntity:
@@ -126,7 +98,7 @@ func (b *geoEntityBuilder) Create(options ...func(*GeoEntity)) (*GeoEntity, erro
 	}
 }
 
-func (b *geoEntityBuilder) Remove(e *GeoEntity) error {
+func (b *geoentityBuilder) Remove(e *GeoEntity) error {
 	if e.config.Mutation == nil {
 		return nil
 	}
@@ -134,147 +106,147 @@ func (b *geoEntityBuilder) Remove(e *GeoEntity) error {
 }
 
 // First returns the first GeoEntity.
-func (s *geoEntityBuilder) First(ctx context.Context) (*GeoEntity, error) {
+func (s *geoentityBuilder) First(ctx context.Context) (*GeoEntity, error) {
 	query := s.initQuery()
 	return query.First(ctx)
 }
 
-func (s *geoEntityBuilder) ToList(ctx context.Context) ([]*GeoEntity, error) {
+func (s *geoentityBuilder) ToList(ctx context.Context) ([]*GeoEntity, error) {
 	query := s.initQuery()
 	return query.ToList(ctx)
 }
 
-func (s *geoEntityBuilder) Include(rels ...geoEntityRel) *GeoEntityQuery {
+func (s *geoentityBuilder) Include(rels ...geoentityRel) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *geoEntityBuilder) Order(o ...geo_demo.OrderTerm) *GeoEntityQuery {
+func (s *geoentityBuilder) Order(o ...geo_demo.OrderTerm) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *geoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *GeoEntityQuery {
+func (s *geoentityBuilder) Where(conditions ...entitysql.PredicateFunc) *GeoEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
 
 // WithID sets the "id" field of the GeoEntity.
-func (s *geoEntityBuilder) WithID(id int64) func(*GeoEntity) {
+func (s *geoentityBuilder) WithID(id int64) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.ID.Set(id)
 	}
 }
 
 // WithPoint sets the "point" field of the GeoEntity.
-func (s *geoEntityBuilder) WithPoint(point *geo.Point) func(*GeoEntity) {
+func (s *geoentityBuilder) WithPoint(point *geo.Point) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.Point.Set(point)
 	}
 }
 
 // WithLineString sets the "line_string" field of the GeoEntity.
-func (s *geoEntityBuilder) WithLineString(linestring *geo.LineString) func(*GeoEntity) {
+func (s *geoentityBuilder) WithLineString(linestring *geo.LineString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.LineString.Set(linestring)
 	}
 }
 
 // WithPolygon sets the "polygon" field of the GeoEntity.
-func (s *geoEntityBuilder) WithPolygon(polygon *geo.Polygon) func(*GeoEntity) {
+func (s *geoentityBuilder) WithPolygon(polygon *geo.Polygon) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.Polygon.Set(polygon)
 	}
 }
 
 // WithMultiPoint sets the "multi_point" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPoint(multipoint *geo.MultiPoint) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiPoint(multipoint *geo.MultiPoint) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPoint.Set(multipoint)
 	}
 }
 
 // WithMultiLineString sets the "multi_line_string" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiLineString(multilinestring *geo.MultiLineString) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiLineString(multilinestring *geo.MultiLineString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiLineString.Set(multilinestring)
 	}
 }
 
 // WithMultiPolygon sets the "multi_polygon" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPolygon(multipolygon *geo.MultiPolygon) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiPolygon(multipolygon *geo.MultiPolygon) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPolygon.Set(multipolygon)
 	}
 }
 
 // WithCircularString sets the "circular_string" field of the GeoEntity.
-func (s *geoEntityBuilder) WithCircularString(circularstring *geo.CircularString) func(*GeoEntity) {
+func (s *geoentityBuilder) WithCircularString(circularstring *geo.CircularString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.CircularString.Set(circularstring)
 	}
 }
 
 // WithPointJson sets the "point_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithPointJson(pointjson *geo.Point) func(*GeoEntity) {
+func (s *geoentityBuilder) WithPointJson(pointjson *geo.Point) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.PointJson.Set(pointjson)
 	}
 }
 
 // WithLineStringJson sets the "line_string_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithLineStringJson(linestringjson *geo.LineString) func(*GeoEntity) {
+func (s *geoentityBuilder) WithLineStringJson(linestringjson *geo.LineString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.LineStringJson.Set(linestringjson)
 	}
 }
 
 // WithPolygonJson sets the "polygon_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithPolygonJson(polygonjson *geo.Polygon) func(*GeoEntity) {
+func (s *geoentityBuilder) WithPolygonJson(polygonjson *geo.Polygon) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.PolygonJson.Set(polygonjson)
 	}
 }
 
 // WithMultiPointJson sets the "multi_point_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPointJson(multipointjson *geo.MultiPoint) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiPointJson(multipointjson *geo.MultiPoint) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPointJson.Set(multipointjson)
 	}
 }
 
 // WithMultiLineStringJson sets the "multi_line_string_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiLineStringJson(multilinestringjson *geo.MultiLineString) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiLineStringJson(multilinestringjson *geo.MultiLineString) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiLineStringJson.Set(multilinestringjson)
 	}
 }
 
 // WithMultiPolygonJson sets the "multi_polygon_json" field of the GeoEntity.
-func (s *geoEntityBuilder) WithMultiPolygonJson(multipolygonjson *geo.MultiPolygon) func(*GeoEntity) {
+func (s *geoentityBuilder) WithMultiPolygonJson(multipolygonjson *geo.MultiPolygon) func(*GeoEntity) {
 	return func(e *GeoEntity) {
 		e.MultiPolygonJson.Set(multipolygonjson)
 	}
 }
 
-// Exec executes all the geoEntityMutations for the GeoEntity.
-func (s *geoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
-	if len(s.config.geoEntityMutations.Addeds) > 0 {
-		e := s.config.geoEntityMutations.Get(entity.Added)
+// Exec executes all the geoentityMutations for the GeoEntity.
+func (s *geoentityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
+	if len(s.config.geoentityMutations.Addeds) > 0 {
+		e := s.config.geoentityMutations.Get(entity.Added)
 		n := newGeoEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.config.geoEntityMutations.Modifieds) > 0 {
-		e := s.config.geoEntityMutations.Get(entity.Modified)
+	if len(s.config.geoentityMutations.Modifieds) > 0 {
+		e := s.config.geoentityMutations.Get(entity.Modified)
 		n := newGeoEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.config.geoEntityMutations.Deleteds) > 0 {
-		e := s.config.geoEntityMutations.Get(entity.Deleted)
+	if len(s.config.geoentityMutations.Deleteds) > 0 {
+		e := s.config.geoentityMutations.Get(entity.Deleted)
 		n := newGeoEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
@@ -283,12 +255,12 @@ func (s *geoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (s *geoEntityBuilder) initQuery() *GeoEntityQuery {
-	return newGeoEntityQuery(s.config.Dialect, s.tracker, s.config.geoEntityMutations)
+func (s *geoentityBuilder) initQuery() *GeoEntityQuery {
+	return newGeoEntityQuery(s.config.Dialect, s.tracker, s.config.geoentityMutations)
 }
 
-// geoEntityMutations is a collection of GeoEntity mutation.
-type geoEntityMutations struct {
+// geoentityMutations is a collection of GeoEntity mutation.
+type geoentityMutations struct {
 	Detacheds  map[string]*GeoEntity
 	Unchangeds map[string]*GeoEntity
 	Deleteds   map[string]*GeoEntity
@@ -297,8 +269,8 @@ type geoEntityMutations struct {
 }
 
 // newGeoEntityMutations creates a new mutations.
-func newGeoEntityMutations() *geoEntityMutations {
-	return &geoEntityMutations{
+func newGeoEntityMutations() *geoentityMutations {
+	return &geoentityMutations{
 		Detacheds:  make(map[string]*GeoEntity),
 		Unchangeds: make(map[string]*GeoEntity),
 		Deleteds:   make(map[string]*GeoEntity),
@@ -308,7 +280,7 @@ func newGeoEntityMutations() *geoEntityMutations {
 }
 
 // Get returns all the GeoEntity in the specified state.
-func (ms *geoEntityMutations) Get(state entity.EntityState) []*GeoEntity {
+func (ms *geoentityMutations) Get(state entity.EntityState) []*GeoEntity {
 	switch state {
 	case entity.Detached:
 		s := make([]*GeoEntity, 0, len(ms.Detacheds))
@@ -345,7 +317,7 @@ func (ms *geoEntityMutations) Get(state entity.EntityState) []*GeoEntity {
 }
 
 // SetEntityState sets the state of the entity.
-func (ms *geoEntityMutations) SetEntityState(e *GeoEntity, state entity.EntityState) error {
+func (ms *geoentityMutations) SetEntityState(e *GeoEntity, state entity.EntityState) error {
 	m := e.config.Mutation
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -356,7 +328,7 @@ func (ms *geoEntityMutations) SetEntityState(e *GeoEntity, state entity.EntitySt
 
 // ChangeEntityState attempts to set the desired entity state,
 // but will not do so if the conditions are not met.
-func (ms *geoEntityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
+func (ms *geoentityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
 	e := ms.getEntity(m)
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -365,7 +337,7 @@ func (ms *geoEntityMutations) ChangeEntityState(m *entity.Mutation, state entity
 }
 
 // getEntity returns the entity in the specified state.
-func (ms *geoEntityMutations) getEntity(m *entity.Mutation) *GeoEntity {
+func (ms *geoentityMutations) getEntity(m *entity.Mutation) *GeoEntity {
 	key := m.Key()
 	switch m.State() {
 	case entity.Detached:
@@ -383,7 +355,7 @@ func (ms *geoEntityMutations) getEntity(m *entity.Mutation) *GeoEntity {
 }
 
 // Set sets the entity in the specified state.
-func (ms *geoEntityMutations) set(e *GeoEntity, state entity.EntityState) {
+func (ms *geoentityMutations) set(e *GeoEntity, state entity.EntityState) {
 	m := e.config.Mutation
 	key := m.Key()
 	switch m.State() {

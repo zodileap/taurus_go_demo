@@ -12,78 +12,51 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
+// Geo的类型测试
 type GeoEntity struct {
-	internal.Entity `json:"-"`
-	config          *geoEntityConfig
-
-	// ID 主键。
-	ID *geoDemoID
-
-	// Point 点
-	Point *geoDemoPoint
-
-	// LineString 线
-	LineString *geoDemoLineString
-
-	// Polygon 多边形
-	Polygon *geoDemoPolygon
-
-	// MultiPoint 多点
-	MultiPoint *geoDemoMultiPoint
-
-	// MultiLineString 多线
-	MultiLineString *geoDemoMultiLineString
-
-	// MultiPolygon 多多边形
-	MultiPolygon *geoDemoMultiPolygon
-
-	// CircularString 圆弧
-	CircularString *geoDemoCircularString
-
-	// PointJson 点
-	PointJson *geoDemoPointJson
-
-	// LineStringJson 线
-	LineStringJson *geoDemoLineStringJson
-
-	// PolygonJson 多边形
-	PolygonJson *geoDemoPolygonJson
-
-	// MultiPointJson 多点
-	MultiPointJson *geoDemoMultiPointJson
-
-	// MultiLineStringJson 多线
-	MultiLineStringJson *geoDemoMultiLineStringJson
-
-	// MultiPolygonJson 多多边形
-	MultiPolygonJson *geoDemoMultiPolygonJson
+	internal.Entity     `json:"-"`
+	config              *geoentityConfig
+	ID                  *geoDemoID                  // ID 主键。
+	Point               *geoDemoPoint               // Point 点
+	LineString          *geoDemoLineString          // LineString 线
+	Polygon             *geoDemoPolygon             // Polygon 多边形
+	MultiPoint          *geoDemoMultiPoint          // MultiPoint 多点
+	MultiLineString     *geoDemoMultiLineString     // MultiLineString 多线
+	MultiPolygon        *geoDemoMultiPolygon        // MultiPolygon 多多边形
+	CircularString      *geoDemoCircularString      // CircularString 圆弧
+	PointJson           *geoDemoPointJson           // PointJson 点
+	LineStringJson      *geoDemoLineStringJson      // LineStringJson 线
+	PolygonJson         *geoDemoPolygonJson         // PolygonJson 多边形
+	MultiPointJson      *geoDemoMultiPointJson      // MultiPointJson 多点
+	MultiLineStringJson *geoDemoMultiLineStringJson // MultiLineStringJson 多线
+	MultiPolygonJson    *geoDemoMultiPolygonJson    // MultiPolygonJson 多多边形
 }
 
-// geoEntityConfig holds the configuration for the GeoEntity.
-type geoEntityConfig struct {
+// geoentityConfig holds the configuration for the GeoEntity.
+type geoentityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*geoEntityMutations
+	*geoentityMutations
 	name string
 }
 
-func newGeoEntityConfig(c *internal.Dialect) *geoEntityConfig {
-	return &geoEntityConfig{
+func newGeoEntityConfig(c *internal.Dialect) *geoentityConfig {
+	return &geoentityConfig{
 		Dialect:            c,
-		geoEntityMutations: newGeoEntityMutations(),
+		geoentityMutations: newGeoEntityMutations(),
 		name:               "geo_demo",
 	}
 }
 
 // New creates a new GeoEntity, but does not add tracking.
-func (c *geoEntityConfig) New() internal.Entity {
+func (c *geoentityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &GeoEntity{
-		config: &geoEntityConfig{
+		config: &geoentityConfig{
 			Mutation:           b,
 			Dialect:            c.Dialect,
-			geoEntityMutations: c.geoEntityMutations,
+			geoentityMutations: c.geoentityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -104,7 +77,7 @@ func (c *geoEntityConfig) New() internal.Entity {
 	return e
 }
 
-func (c *geoEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *geoentityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -156,7 +129,7 @@ func (e *GeoEntity) setUnchanged() error {
 
 // setState sets the state of the GeoEntity.
 func (e *GeoEntity) setState(state entity.EntityState) error {
-	return e.config.geoEntityMutations.SetEntityState(e, state)
+	return e.config.geoentityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the GeoEntity.
@@ -304,11 +277,9 @@ func mergeGeoEntity(es []*GeoEntity, e *GeoEntity) []*GeoEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if e.ID.Get() != nil {
-			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-			} else {
-				es = append(es, e)
-			}
+		if v.ID.Get() == e.ID.Get() {
+		} else {
+			es = append(es, e)
 		}
 	}
 	return es

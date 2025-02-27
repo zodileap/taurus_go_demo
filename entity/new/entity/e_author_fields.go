@@ -12,11 +12,11 @@ import (
 // authorID is ID field
 type authorID struct {
 	field.IntStorage[int64]
-	config *authorEntityConfig
+	config *authorentityConfig
 }
 
 // newauthorID creates a new authorID
-func newAuthorID(c *authorEntityConfig) *authorID {
+func newAuthorID(c *authorentityConfig) *authorID {
 	t := &authorID{}
 	t.config = c
 	return t
@@ -26,24 +26,26 @@ func newAuthorID(c *authorEntityConfig) *authorID {
 func (t *authorID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.authorEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.authorentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(author.FieldID.Name.String())
 	}
 }
 
 // Get gets the value of ID field
-func (t *authorID) Get() *int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *authorID) Get() int64 {
+	return *t.IntStorage.Get()
 }
 
 // authorName is Name field
 type authorName struct {
 	field.StringStorage[string]
-	config *authorEntityConfig
+	config *authorentityConfig
 }
 
 // newauthorName creates a new authorName
-func newAuthorName(c *authorEntityConfig) *authorName {
+func newAuthorName(c *authorentityConfig) *authorName {
 	t := &authorName{}
 	t.config = c
 	return t
@@ -53,12 +55,14 @@ func newAuthorName(c *authorEntityConfig) *authorName {
 func (t *authorName) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.authorEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.authorentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(author.FieldName.Name.String())
 	}
 }
 
 // Get gets the value of Name field
-func (t *authorName) Get() *string {
-	return t.StringStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *authorName) Get() string {
+	return *t.StringStorage.Get()
 }

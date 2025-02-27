@@ -14,10 +14,10 @@ import (
 
 // GeoEntityQuery is the query action for the GeoEntity.
 type GeoEntityQuery struct {
-	config       *geoEntityConfig
+	config       *geoentityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []geoEntityRel
+	rels         []geoentityRel
 	order        []geo_demo.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
@@ -33,15 +33,15 @@ func (o *GeoEntityQuery) First(ctx context.Context) (*GeoEntity, error) {
 }
 
 // newGeoEntityQuery creates a new GeoEntityQuery.
-func newGeoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *geoEntityMutations) *GeoEntityQuery {
+func newGeoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *geoentityMutations) *GeoEntityQuery {
 	return &GeoEntityQuery{
-		config: &geoEntityConfig{
+		config: &geoentityConfig{
 			Dialect:            c,
-			geoEntityMutations: ms,
+			geoentityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []geoEntityRel{},
+		rels:         []geoentityRel{},
 		order:        []geo_demo.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
@@ -64,7 +64,7 @@ func (o *GeoEntityQuery) Order(term ...geo_demo.OrderTerm) *GeoEntityQuery {
 	return o
 }
 
-func (o *GeoEntityQuery) Include(rels ...geoEntityRel) *GeoEntityQuery {
+func (o *GeoEntityQuery) Include(rels ...geoentityRel) *GeoEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }

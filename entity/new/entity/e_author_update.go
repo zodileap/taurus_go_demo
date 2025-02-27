@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// authorEntityUpdate is the update action for the authorEntity.
-type authorEntityUpdate struct {
+// AuthorEntityUpdate is the update action for the AuthorEntity.
+type AuthorEntityUpdate struct {
 	config     *internal.Dialect
 	ctx        *entitysql.QueryContext
 	tracker    entity.Tracker
@@ -24,9 +24,9 @@ type authorEntityUpdate struct {
 	batchIndex []int
 }
 
-// newAuthorEntityUpdate creates a new authorEntityUpdate.
-func newAuthorEntityUpdate(c *internal.Dialect, es ...*AuthorEntity) *authorEntityUpdate {
-	return &authorEntityUpdate{
+// newAuthorEntityUpdate creates a new AuthorEntityUpdate.
+func newAuthorEntityUpdate(c *internal.Dialect, es ...*AuthorEntity) *AuthorEntityUpdate {
+	return &AuthorEntityUpdate{
 		config:     c,
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
@@ -35,11 +35,11 @@ func newAuthorEntityUpdate(c *internal.Dialect, es ...*AuthorEntity) *authorEnti
 	}
 }
 
-func (o *authorEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlUpdate(ctx, tx)
 }
 
-func (o *authorEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.updateSpec()
 		res       = o.es
@@ -62,7 +62,7 @@ func (o *authorEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error
 	return entitysql.NewUpdate(ctx, tx, spec)
 }
 
-func (o *authorEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
+func (o *AuthorEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	spec := entitysql.NewUpdateSpec(author.Entity, author.Columns)
 	if len(o.predicates) != len(o.sets) {
 		return nil, entity.Err_0100030005
@@ -74,9 +74,9 @@ func (o *authorEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	return spec, nil
 }
 
-// setEntity 用于在updateSpec中设置[]*authorEntity的配置，
+// setEntity 用于在updateSpec中设置[]*AuthorEntity的配置，
 // 一般来说这个setEntity里的entity都是通过状态追踪，自动添加的。
-func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
+func (o *AuthorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	predID := &author.PredID{}
 	num := 0
 	for i, e := range o.es {
@@ -89,9 +89,9 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		// 因为判断过predicates和set长度，所以这里默认等长
 		index := len(o.predicates) - 1
 		if i > 0 {
-			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(*e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(e.ID.Get()))
 		} else {
-			o.predicates[index] = append(o.predicates[index], predID.EQ(*e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], predID.EQ(e.ID.Get()))
 		}
 		num++
 		for _, f := range fields {
@@ -106,7 +106,7 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
 				o.sets[index][author.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(*e.ID.Get()),
+					When:  predID.EQ(e.ID.Get()),
 				}
 				num++
 			case author.FieldName.Name.String():
@@ -119,7 +119,7 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.Name.SqlFormatParam()
 				o.sets[index][author.FieldName.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(*e.ID.Get()),
+					When:  predID.EQ(e.ID.Get()),
 				}
 				num++
 			}
@@ -135,7 +135,7 @@ func (o *authorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	return nil
 }
 
-func (o *authorEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
+func (o *AuthorEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
 	for i, end := range o.batchIndex {
 		var begin int
 		if i == 0 {

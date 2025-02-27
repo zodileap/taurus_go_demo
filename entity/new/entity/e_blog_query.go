@@ -14,10 +14,10 @@ import (
 
 // BlogEntityQuery is the query action for the BlogEntity.
 type BlogEntityQuery struct {
-	config       *blogEntityConfig
+	config       *blogentityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []blogEntityRel
+	rels         []blogentityRel
 	order        []blog.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
@@ -33,15 +33,15 @@ func (o *BlogEntityQuery) First(ctx context.Context) (*BlogEntity, error) {
 }
 
 // newBlogEntityQuery creates a new BlogEntityQuery.
-func newBlogEntityQuery(c *internal.Dialect, t entity.Tracker, ms *blogEntityMutations) *BlogEntityQuery {
+func newBlogEntityQuery(c *internal.Dialect, t entity.Tracker, ms *blogentityMutations) *BlogEntityQuery {
 	return &BlogEntityQuery{
-		config: &blogEntityConfig{
+		config: &blogentityConfig{
 			Dialect:             c,
-			blogEntityMutations: ms,
+			blogentityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []blogEntityRel{},
+		rels:         []blogentityRel{},
 		order:        []blog.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
@@ -64,7 +64,7 @@ func (o *BlogEntityQuery) Order(term ...blog.OrderTerm) *BlogEntityQuery {
 	return o
 }
 
-func (o *BlogEntityQuery) Include(rels ...blogEntityRel) *BlogEntityQuery {
+func (o *BlogEntityQuery) Include(rels ...blogentityRel) *BlogEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
@@ -179,9 +179,9 @@ func (o *BlogEntityQuery) querySpec() *entitysql.QuerySpec {
 			fieldSpace := entitysql.NewFieldSpec(blog.FieldUUID.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
-		case blog.FieldDesc.Name:
-			var a *blogDesc = new(blogDesc)
-			fieldSpace := entitysql.NewFieldSpec(blog.FieldDesc.Name)
+		case blog.FieldDescription.Name:
+			var a *blogDescription = new(blogDescription)
+			fieldSpace := entitysql.NewFieldSpec(blog.FieldDescription.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case blog.FieldCreatedTime.Name:

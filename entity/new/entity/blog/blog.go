@@ -23,8 +23,8 @@ var (
 		Default:  false,
 		Required: true,
 	}
-	FieldDesc = entitysql.Field{
-		Name:     "desc",
+	FieldDescription = entitysql.Field{
+		Name:     "description",
 		Primary:  0,
 		Default:  false,
 		Required: false,
@@ -41,7 +41,7 @@ var (
 	Columns = []entitysql.FieldName{
 		FieldID.Name,
 		FieldUUID.Name,
-		FieldDesc.Name,
+		FieldDescription.Name,
 		FieldCreatedTime.Name,
 	}
 )

@@ -14,10 +14,10 @@ import (
 
 // AuthorEntityQuery is the query action for the AuthorEntity.
 type AuthorEntityQuery struct {
-	config       *authorEntityConfig
+	config       *authorentityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []authorEntityRel
+	rels         []authorentityRel
 	order        []author.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
@@ -33,15 +33,15 @@ func (o *AuthorEntityQuery) First(ctx context.Context) (*AuthorEntity, error) {
 }
 
 // newAuthorEntityQuery creates a new AuthorEntityQuery.
-func newAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *authorEntityMutations) *AuthorEntityQuery {
+func newAuthorEntityQuery(c *internal.Dialect, t entity.Tracker, ms *authorentityMutations) *AuthorEntityQuery {
 	return &AuthorEntityQuery{
-		config: &authorEntityConfig{
+		config: &authorentityConfig{
 			Dialect:               c,
-			authorEntityMutations: ms,
+			authorentityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []authorEntityRel{},
+		rels:         []authorentityRel{},
 		order:        []author.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
@@ -64,7 +64,7 @@ func (o *AuthorEntityQuery) Order(term ...author.OrderTerm) *AuthorEntityQuery {
 	return o
 }
 
-func (o *AuthorEntityQuery) Include(rels ...authorEntityRel) *AuthorEntityQuery {
+func (o *AuthorEntityQuery) Include(rels ...authorentityRel) *AuthorEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }

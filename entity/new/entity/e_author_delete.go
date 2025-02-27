@@ -12,32 +12,32 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// authorEntityDelete is the delete action for the authorEntity.
-type authorEntityDelete struct {
+// AuthorEntityDelete is the delete action for the AuthorEntity.
+type AuthorEntityDelete struct {
 	config     *internal.Dialect
 	es         []*AuthorEntity
 	predicates []entitysql.PredicateFunc
 }
 
-// newAuthorEntityDelete creates a new authorEntityDelete.
-func newAuthorEntityDelete(c *internal.Dialect, es ...*AuthorEntity) *authorEntityDelete {
-	return &authorEntityDelete{
+// newAuthorEntityDelete creates a new AuthorEntityDelete.
+func newAuthorEntityDelete(c *internal.Dialect, es ...*AuthorEntity) *AuthorEntityDelete {
+	return &AuthorEntityDelete{
 		config: c,
 		es:     es,
 	}
 }
 
 // Where adds a predicate to the delete action.
-func (o *authorEntityDelete) Where(predicates ...entitysql.PredicateFunc) *authorEntityDelete {
+func (o *AuthorEntityDelete) Where(predicates ...entitysql.PredicateFunc) *AuthorEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
-func (o *authorEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlDelete(ctx, tx)
 }
 
-func (o *authorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
+func (o *AuthorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.deleteSpec()
 		affected  = int64(0)
@@ -57,7 +57,7 @@ func (o *authorEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error
 	return nil
 }
 
-func (o *authorEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
+func (o *AuthorEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(author.Entity)
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {
@@ -71,12 +71,10 @@ func (o *authorEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 		o.predicates = make([]entitysql.PredicateFunc, 0, len(o.es))
 	}
 	for i, e := range o.es {
-		if e.ID.Get() != nil {
-			if i >= 1 {
-				o.predicates = append(o.predicates, entitysql.Or)
-			}
-			o.predicates = append(o.predicates, predID.EQ(*e.ID.Get()))
+		if i >= 1 {
+			o.predicates = append(o.predicates, entitysql.Or)
 		}
+		o.predicates = append(o.predicates, predID.EQ(e.ID.Get()))
 	}
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {

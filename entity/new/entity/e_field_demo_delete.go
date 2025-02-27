@@ -12,32 +12,32 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// fieldDemoEntityDelete is the delete action for the fieldDemoEntity.
-type fieldDemoEntityDelete struct {
+// FieldDemoEntityDelete is the delete action for the FieldDemoEntity.
+type FieldDemoEntityDelete struct {
 	config     *internal.Dialect
 	es         []*FieldDemoEntity
 	predicates []entitysql.PredicateFunc
 }
 
-// newFieldDemoEntityDelete creates a new fieldDemoEntityDelete.
-func newFieldDemoEntityDelete(c *internal.Dialect, es ...*FieldDemoEntity) *fieldDemoEntityDelete {
-	return &fieldDemoEntityDelete{
+// newFieldDemoEntityDelete creates a new FieldDemoEntityDelete.
+func newFieldDemoEntityDelete(c *internal.Dialect, es ...*FieldDemoEntity) *FieldDemoEntityDelete {
+	return &FieldDemoEntityDelete{
 		config: c,
 		es:     es,
 	}
 }
 
 // Where adds a predicate to the delete action.
-func (o *fieldDemoEntityDelete) Where(predicates ...entitysql.PredicateFunc) *fieldDemoEntityDelete {
+func (o *FieldDemoEntityDelete) Where(predicates ...entitysql.PredicateFunc) *FieldDemoEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
-func (o *fieldDemoEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlDelete(ctx, tx)
 }
 
-func (o *fieldDemoEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.deleteSpec()
 		affected  = int64(0)
@@ -57,7 +57,7 @@ func (o *fieldDemoEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) er
 	return nil
 }
 
-func (o *fieldDemoEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
+func (o *FieldDemoEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(field_demo.Entity)
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {
@@ -71,12 +71,10 @@ func (o *fieldDemoEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 		o.predicates = make([]entitysql.PredicateFunc, 0, len(o.es))
 	}
 	for i, e := range o.es {
-		if e.Int64F.Get() != nil {
-			if i >= 1 {
-				o.predicates = append(o.predicates, entitysql.Or)
-			}
-			o.predicates = append(o.predicates, predInt64F.EQ(*e.Int64F.Get()))
+		if i >= 1 {
+			o.predicates = append(o.predicates, entitysql.Or)
 		}
+		o.predicates = append(o.predicates, predInt64F.EQ(e.Int64F.Get()))
 	}
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {

@@ -8,41 +8,41 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-type fieldDemoEntityRelation struct {
+type fielddemoentityRelation struct {
 	Config   internal.EntityConfig
 	relation entitysql.RelationDesc
 	children []rel
 }
 
-func newFieldDemoEntityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *fieldDemoEntityRelation {
-	return &fieldDemoEntityRelation{
+func newFielddemoentityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *fielddemoentityRelation {
+	return &fielddemoentityRelation{
 		Config:   config,
 		relation: desc,
 		children: []rel{},
 	}
 }
 
-func (r *fieldDemoEntityRelation) Where(predicates ...entitysql.PredicateFunc) *fieldDemoEntityRelation {
+func (r *fielddemoentityRelation) Where(predicates ...entitysql.PredicateFunc) *fielddemoentityRelation {
 	r.relation.Predicates = append(r.relation.Predicates, predicates...)
 	return r
 }
 
-func (r *fieldDemoEntityRelation) Include(rels ...fieldDemoEntityRel) *fieldDemoEntityRelation {
+func (r *fielddemoentityRelation) Include(rels ...fielddemoentityRel) *fielddemoentityRelation {
 	// Create a slice of type Rel with the same length as r.children
 	newRels := make([]rel, len(rels))
 	for i, r := range rels {
-		// Convert each fieldDemoEntityRel to Rel and store it in the new slice
+		// Convert each fielddemoentityRel to Rel and store it in the new slice
 		newRels[i] = rel(r)
 	}
 	r.children = append(r.children, newRels...)
 	return r
 }
 
-func (r *fieldDemoEntityRelation) Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig) {
+func (r *fielddemoentityRelation) Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig) {
 	return r.relation, r.children, r.Config
 }
 
-func (r *fieldDemoEntityRelation) reset() {
+func (r *fielddemoentityRelation) reset() {
 	for _, child := range r.children {
 		child.reset()
 	}

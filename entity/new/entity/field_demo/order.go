@@ -234,6 +234,50 @@ func (b *ByIntarray2F) NullsLast() *ByIntarray2F {
 	return b
 }
 
+type ByStringArrayF struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByStringArrayF) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldStringArrayF.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByStringArrayF) Desc() *ByStringArrayF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByStringArrayF) Asc() *ByStringArrayF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByStringArrayF) NullsFirst() *ByStringArrayF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByStringArrayF) NullsLast() *ByStringArrayF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
 type ByBoolArrayF struct {
 	OrderTerm
 	Options []OrderOption
@@ -360,6 +404,50 @@ func (b *ByTimeArrayF) NullsFirst() *ByTimeArrayF {
 }
 
 func (b *ByTimeArrayF) NullsLast() *ByTimeArrayF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsLast()
+	})
+	return b
+}
+
+type ByJsonF struct {
+	OrderTerm
+	Options []OrderOption
+	Field   string
+}
+
+func (b *ByJsonF) Apply(o *entitysql.Order) {
+	o.SetColumn(FieldJsonF.Name.String())
+	if len(b.Options) == 0 {
+		b.Asc()
+	}
+	for _, opt := range b.Options {
+		opt(o)
+	}
+}
+
+func (b *ByJsonF) Desc() *ByJsonF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Desc()
+	})
+	return b
+}
+
+func (b *ByJsonF) Asc() *ByJsonF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.Asc()
+	})
+	return b
+}
+
+func (b *ByJsonF) NullsFirst() *ByJsonF {
+	b.Options = append(b.Options, func(o *entitysql.Order) {
+		o.NullsFirst()
+	})
+	return b
+}
+
+func (b *ByJsonF) NullsLast() *ByJsonF {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.NullsLast()
 	})

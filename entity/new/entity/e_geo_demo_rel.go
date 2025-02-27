@@ -8,41 +8,41 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-type geoEntityRelation struct {
+type geoentityRelation struct {
 	Config   internal.EntityConfig
 	relation entitysql.RelationDesc
 	children []rel
 }
 
-func newGeoEntityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *geoEntityRelation {
-	return &geoEntityRelation{
+func newGeoentityRelation(config internal.EntityConfig, desc entitysql.RelationDesc) *geoentityRelation {
+	return &geoentityRelation{
 		Config:   config,
 		relation: desc,
 		children: []rel{},
 	}
 }
 
-func (r *geoEntityRelation) Where(predicates ...entitysql.PredicateFunc) *geoEntityRelation {
+func (r *geoentityRelation) Where(predicates ...entitysql.PredicateFunc) *geoentityRelation {
 	r.relation.Predicates = append(r.relation.Predicates, predicates...)
 	return r
 }
 
-func (r *geoEntityRelation) Include(rels ...geoEntityRel) *geoEntityRelation {
+func (r *geoentityRelation) Include(rels ...geoentityRel) *geoentityRelation {
 	// Create a slice of type Rel with the same length as r.children
 	newRels := make([]rel, len(rels))
 	for i, r := range rels {
-		// Convert each geoEntityRel to Rel and store it in the new slice
+		// Convert each geoentityRel to Rel and store it in the new slice
 		newRels[i] = rel(r)
 	}
 	r.children = append(r.children, newRels...)
 	return r
 }
 
-func (r *geoEntityRelation) Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig) {
+func (r *geoentityRelation) Desc() (entitysql.RelationDesc, []rel, internal.EntityConfig) {
 	return r.relation, r.children, r.Config
 }
 
-func (r *geoEntityRelation) reset() {
+func (r *geoentityRelation) reset() {
 	for _, child := range r.children {
 		child.reset()
 	}

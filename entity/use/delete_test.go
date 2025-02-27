@@ -33,7 +33,7 @@ func TestDelete(t *testing.T) {
 		ctx := context.Background()
 
 		starttime := time.Now()
-		us, err := db.Blogs.Where(db.Blogs.Desc.Like("%lti desc%")).ToList(ctx)
+		us, err := db.Blogs.Where(db.Blogs.Description.Like("%lti desc%")).ToList(ctx)
 		if err != nil {
 			t.Errorf(err.Error())
 		}

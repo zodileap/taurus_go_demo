@@ -14,10 +14,10 @@ import (
 
 // FieldDemoEntityQuery is the query action for the FieldDemoEntity.
 type FieldDemoEntityQuery struct {
-	config       *fieldDemoEntityConfig
+	config       *fielddemoentityConfig
 	ctx          *entitysql.QueryContext
 	predicates   []entitysql.PredicateFunc
-	rels         []fieldDemoEntityRel
+	rels         []fielddemoentityRel
 	order        []field_demo.OrderTerm
 	scanner      []*internal.QueryScanner
 	scannerTotal int
@@ -33,15 +33,15 @@ func (o *FieldDemoEntityQuery) First(ctx context.Context) (*FieldDemoEntity, err
 }
 
 // newFieldDemoEntityQuery creates a new FieldDemoEntityQuery.
-func newFieldDemoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *fieldDemoEntityMutations) *FieldDemoEntityQuery {
+func newFieldDemoEntityQuery(c *internal.Dialect, t entity.Tracker, ms *fielddemoentityMutations) *FieldDemoEntityQuery {
 	return &FieldDemoEntityQuery{
-		config: &fieldDemoEntityConfig{
+		config: &fielddemoentityConfig{
 			Dialect:                  c,
-			fieldDemoEntityMutations: ms,
+			fielddemoentityMutations: ms,
 		},
 		ctx:          &entitysql.QueryContext{},
 		predicates:   []entitysql.PredicateFunc{},
-		rels:         []fieldDemoEntityRel{},
+		rels:         []fielddemoentityRel{},
 		order:        []field_demo.OrderTerm{},
 		scanner:      []*internal.QueryScanner{},
 		scannerTotal: 0,
@@ -64,7 +64,7 @@ func (o *FieldDemoEntityQuery) Order(term ...field_demo.OrderTerm) *FieldDemoEnt
 	return o
 }
 
-func (o *FieldDemoEntityQuery) Include(rels ...fieldDemoEntityRel) *FieldDemoEntityQuery {
+func (o *FieldDemoEntityQuery) Include(rels ...fielddemoentityRel) *FieldDemoEntityQuery {
 	o.rels = append(o.rels, rels...)
 	return o
 }
@@ -194,6 +194,11 @@ func (o *FieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntarray2F.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
+		case field_demo.FieldStringArrayF.Name:
+			var a *fieldDemoStringArrayF = new(fieldDemoStringArrayF)
+			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldStringArrayF.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldBoolArrayF.Name:
 			var a *fieldDemoBoolArrayF = new(fieldDemoBoolArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolArrayF.Name)
@@ -207,6 +212,11 @@ func (o *FieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
 		case field_demo.FieldTimeArrayF.Name:
 			var a *fieldDemoTimeArrayF = new(fieldDemoTimeArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
+			fieldSpace.NameFormat = a.SqlSelectFormat()
+			s.Entity.Columns[i] = fieldSpace
+		case field_demo.FieldJsonF.Name:
+			var a *fieldDemoJsonF = new(fieldDemoJsonF)
+			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		}

@@ -12,11 +12,11 @@ import (
 // postID is ID field
 type postID struct {
 	field.IntStorage[int64]
-	config *postEntityConfig
+	config *postentityConfig
 }
 
 // newpostID creates a new postID
-func newPostID(c *postEntityConfig) *postID {
+func newPostID(c *postentityConfig) *postID {
 	t := &postID{}
 	t.config = c
 	return t
@@ -26,24 +26,26 @@ func newPostID(c *postEntityConfig) *postID {
 func (t *postID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldID.Name.String())
 	}
 }
 
 // Get gets the value of ID field
-func (t *postID) Get() *int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *postID) Get() int64 {
+	return *t.IntStorage.Get()
 }
 
 // postContent is Content field
 type postContent struct {
 	field.StringStorage[string]
-	config *postEntityConfig
+	config *postentityConfig
 }
 
 // newpostContent creates a new postContent
-func newPostContent(c *postEntityConfig) *postContent {
+func newPostContent(c *postentityConfig) *postContent {
 	t := &postContent{}
 	t.config = c
 	return t
@@ -53,24 +55,26 @@ func newPostContent(c *postEntityConfig) *postContent {
 func (t *postContent) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldContent.Name.String())
 	}
 }
 
 // Get gets the value of Content field
-func (t *postContent) Get() *string {
-	return t.StringStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *postContent) Get() string {
+	return *t.StringStorage.Get()
 }
 
 // postBlogID is BlogID field
 type postBlogID struct {
 	field.IntStorage[int64]
-	config *postEntityConfig
+	config *postentityConfig
 }
 
 // newpostBlogID creates a new postBlogID
-func newPostBlogID(c *postEntityConfig) *postBlogID {
+func newPostBlogID(c *postentityConfig) *postBlogID {
 	t := &postBlogID{}
 	t.config = c
 	return t
@@ -80,24 +84,26 @@ func newPostBlogID(c *postEntityConfig) *postBlogID {
 func (t *postBlogID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldBlogID.Name.String())
 	}
 }
 
 // Get gets the value of BlogID field
-func (t *postBlogID) Get() *int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *postBlogID) Get() int64 {
+	return *t.IntStorage.Get()
 }
 
 // postAuthorID is AuthorID field
 type postAuthorID struct {
 	field.IntStorage[int64]
-	config *postEntityConfig
+	config *postentityConfig
 }
 
 // newpostAuthorID creates a new postAuthorID
-func newPostAuthorID(c *postEntityConfig) *postAuthorID {
+func newPostAuthorID(c *postentityConfig) *postAuthorID {
 	t := &postAuthorID{}
 	t.config = c
 	return t
@@ -107,12 +113,14 @@ func newPostAuthorID(c *postEntityConfig) *postAuthorID {
 func (t *postAuthorID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.postEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(post.FieldAuthorID.Name.String())
 	}
 }
 
 // Get gets the value of AuthorID field
-func (t *postAuthorID) Get() *int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *postAuthorID) Get() int64 {
+	return *t.IntStorage.Get()
 }

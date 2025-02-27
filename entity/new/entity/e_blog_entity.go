@@ -14,56 +14,51 @@ import (
 
 type BlogEntity struct {
 	internal.Entity `json:"-"`
-	config          *blogEntityConfig
+	config          *blogentityConfig
+	ID              *blogID `json:"id"` // ID Blog primary key
+	UUID            *blogUUID
+	Description     *blogDescription
+	CreatedTime     *blogCreatedTime
 
-	// ID Blog primary key
-	ID *blogID `json:"id"`
-
-	UUID *blogUUID
-
-	Desc *blogDesc
-
-	CreatedTime *blogCreatedTime
-
-	Posts []*PostEntity `json:"-"`
+	Posts []*PostEntity `json:"posts,omitempty"`
 }
 
-// blogEntityConfig holds the configuration for the BlogEntity.
-type blogEntityConfig struct {
+// blogentityConfig holds the configuration for the BlogEntity.
+type blogentityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*blogEntityMutations
+	*blogentityMutations
 	name string
 }
 
-func newBlogEntityConfig(c *internal.Dialect) *blogEntityConfig {
-	return &blogEntityConfig{
+func newBlogEntityConfig(c *internal.Dialect) *blogentityConfig {
+	return &blogentityConfig{
 		Dialect:             c,
-		blogEntityMutations: newBlogEntityMutations(),
+		blogentityMutations: newBlogEntityMutations(),
 		name:                "blog",
 	}
 }
 
 // New creates a new BlogEntity, but does not add tracking.
-func (c *blogEntityConfig) New() internal.Entity {
+func (c *blogentityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &BlogEntity{
-		config: &blogEntityConfig{
+		config: &blogentityConfig{
 			Mutation:            b,
 			Dialect:             c.Dialect,
-			blogEntityMutations: c.blogEntityMutations,
+			blogentityMutations: c.blogentityMutations,
 		},
 	}
 	e.setState(entity.Detached)
 	e.ID = newBlogID(e.config)
 	e.UUID = newBlogUUID(e.config)
-	e.Desc = newBlogDesc(e.config)
+	e.Description = newBlogDescription(e.config)
 	e.CreatedTime = newBlogCreatedTime(e.config)
 	return e
 }
 
-func (c *blogEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *blogentityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -71,10 +66,10 @@ func (c *blogEntityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *BlogEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, UUID: %v, Desc: %v, CreatedTime: %v, Posts: %v}",
+	return fmt.Sprintf("{ ID: %v, UUID: %v, Description: %v, CreatedTime: %v, Posts: %v}",
 		e.ID,
 		e.UUID,
-		e.Desc,
+		e.Description,
 		e.CreatedTime,
 		e.Posts,
 	)
@@ -107,7 +102,7 @@ func (e *BlogEntity) setUnchanged() error {
 
 // setState sets the state of the BlogEntity.
 func (e *BlogEntity) setState(state entity.EntityState) error {
-	return e.config.blogEntityMutations.SetEntityState(e, state)
+	return e.config.blogentityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the BlogEntity.
@@ -124,8 +119,8 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 				v := e.UUID
 				v.Set(*new(string))
 				args[i] = v
-			case blog.FieldDesc.Name.String():
-				v := e.Desc
+			case blog.FieldDescription.Name.String():
+				v := e.Description
 				v.Set(*new(string))
 				args[i] = v
 			case blog.FieldCreatedTime.Name.String():
@@ -147,8 +142,8 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 				v := e.UUID
 				v.Set(*new(string))
 				args[i] = v
-			case blog.FieldDesc.Name.String():
-				v := e.Desc
+			case blog.FieldDescription.Name.String():
+				v := e.Description
 				v.Set(*new(string))
 				args[i] = v
 			case blog.FieldCreatedTime.Name.String():
@@ -164,11 +159,11 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 func (e *BlogEntity) createRel(buidler *entitysql.ScannerBuilder, scanner *internal.QueryScanner) {
 	switch scanner.Config.Desc().Name {
 	case "post":
-		postEntity := scanner.Config.New().(*PostEntity)
-		buidler.Append(scanner.TableNum-1, postEntity.scan([]entitysql.ScannerField{})...)
-		e.Posts = append(e.Posts, postEntity)
+		postentity := scanner.Config.New().(*PostEntity)
+		buidler.Append(scanner.TableNum-1, postentity.scan([]entitysql.ScannerField{})...)
+		e.Posts = append(e.Posts, postentity)
 		for _, c := range scanner.Children {
-			postEntity.createRel(buidler, c)
+			postentity.createRel(buidler, c)
 		}
 	}
 }
@@ -182,17 +177,15 @@ func mergeBlogEntity(es []*BlogEntity, e *BlogEntity) []*BlogEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if e.ID.Get() != nil {
-			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-				for _, post := range e.Posts {
-					posts := mergePostEntity(v.Posts, post)
-					if len(posts) > 0 {
-						v.Posts = posts
-					}
+		if v.ID.Get() == e.ID.Get() {
+			for _, post := range e.Posts {
+				posts := mergePostEntity(v.Posts, post)
+				if len(posts) > 0 {
+					v.Posts = posts
 				}
-			} else {
-				es = append(es, e)
 			}
+		} else {
+			es = append(es, e)
 		}
 	}
 	return es

@@ -13,47 +13,42 @@ import (
 
 type PostEntity struct {
 	internal.Entity `json:"-"`
-	config          *postEntityConfig
+	config          *postentityConfig
+	ID              *postID // ID Post primary key
+	Content         *postContent
+	BlogID          *postBlogID
+	AuthorID        *postAuthorID
 
-	// ID Post primary key
-	ID *postID
+	Blog *BlogEntity `json:"blog,omitempty"`
 
-	Content *postContent
-
-	BlogID *postBlogID
-
-	AuthorID *postAuthorID
-
-	Blog *BlogEntity `json:"-"`
-
-	Author *AuthorEntity `json:"-"`
+	Author *AuthorEntity `json:"author,omitempty"`
 }
 
-// postEntityConfig holds the configuration for the PostEntity.
-type postEntityConfig struct {
+// postentityConfig holds the configuration for the PostEntity.
+type postentityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*postEntityMutations
+	*postentityMutations
 	name string
 }
 
-func newPostEntityConfig(c *internal.Dialect) *postEntityConfig {
-	return &postEntityConfig{
+func newPostEntityConfig(c *internal.Dialect) *postentityConfig {
+	return &postentityConfig{
 		Dialect:             c,
-		postEntityMutations: newPostEntityMutations(),
+		postentityMutations: newPostEntityMutations(),
 		name:                "post",
 	}
 }
 
 // New creates a new PostEntity, but does not add tracking.
-func (c *postEntityConfig) New() internal.Entity {
+func (c *postentityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &PostEntity{
-		config: &postEntityConfig{
+		config: &postentityConfig{
 			Mutation:            b,
 			Dialect:             c.Dialect,
-			postEntityMutations: c.postEntityMutations,
+			postentityMutations: c.postentityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -64,7 +59,7 @@ func (c *postEntityConfig) New() internal.Entity {
 	return e
 }
 
-func (c *postEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *postentityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -111,7 +106,7 @@ func (e *PostEntity) setUnchanged() error {
 
 // setState sets the state of the PostEntity.
 func (e *PostEntity) setState(state entity.EntityState) error {
-	return e.config.postEntityMutations.SetEntityState(e, state)
+	return e.config.postentityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the PostEntity.
@@ -168,18 +163,18 @@ func (e *PostEntity) scan(fields []entitysql.ScannerField) []any {
 func (e *PostEntity) createRel(buidler *entitysql.ScannerBuilder, scanner *internal.QueryScanner) {
 	switch scanner.Config.Desc().Name {
 	case "blog":
-		blogEntity := scanner.Config.New().(*BlogEntity)
-		buidler.Append(scanner.TableNum-1, blogEntity.scan([]entitysql.ScannerField{})...)
-		e.Blog = blogEntity
+		blogentity := scanner.Config.New().(*BlogEntity)
+		buidler.Append(scanner.TableNum-1, blogentity.scan([]entitysql.ScannerField{})...)
+		e.Blog = blogentity
 		for _, c := range scanner.Children {
-			blogEntity.createRel(buidler, c)
+			blogentity.createRel(buidler, c)
 		}
 	case "author":
-		authorEntity := scanner.Config.New().(*AuthorEntity)
-		buidler.Append(scanner.TableNum-1, authorEntity.scan([]entitysql.ScannerField{})...)
-		e.Author = authorEntity
+		authorentity := scanner.Config.New().(*AuthorEntity)
+		buidler.Append(scanner.TableNum-1, authorentity.scan([]entitysql.ScannerField{})...)
+		e.Author = authorentity
 		for _, c := range scanner.Children {
-			authorEntity.createRel(buidler, c)
+			authorentity.createRel(buidler, c)
 		}
 	}
 }
@@ -193,19 +188,17 @@ func mergePostEntity(es []*PostEntity, e *PostEntity) []*PostEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if e.ID.Get() != nil {
-			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-				blogs := mergeBlogEntity([]*BlogEntity{v.Blog}, e.Blog)
-				if len(blogs) > 0 {
-					v.Blog = blogs[0]
-				}
-				authors := mergeAuthorEntity([]*AuthorEntity{v.Author}, e.Author)
-				if len(authors) > 0 {
-					v.Author = authors[0]
-				}
-			} else {
-				es = append(es, e)
+		if v.ID.Get() == e.ID.Get() {
+			blogs := mergeBlogEntity([]*BlogEntity{v.Blog}, e.Blog)
+			if len(blogs) > 0 {
+				v.Blog = blogs[0]
 			}
+			authors := mergeAuthorEntity([]*AuthorEntity{v.Author}, e.Author)
+			if len(authors) > 0 {
+				v.Author = authors[0]
+			}
+		} else {
+			es = append(es, e)
 		}
 	}
 	return es

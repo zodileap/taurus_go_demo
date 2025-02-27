@@ -12,32 +12,32 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// blogEntityDelete is the delete action for the blogEntity.
-type blogEntityDelete struct {
+// BlogEntityDelete is the delete action for the BlogEntity.
+type BlogEntityDelete struct {
 	config     *internal.Dialect
 	es         []*BlogEntity
 	predicates []entitysql.PredicateFunc
 }
 
-// newBlogEntityDelete creates a new blogEntityDelete.
-func newBlogEntityDelete(c *internal.Dialect, es ...*BlogEntity) *blogEntityDelete {
-	return &blogEntityDelete{
+// newBlogEntityDelete creates a new BlogEntityDelete.
+func newBlogEntityDelete(c *internal.Dialect, es ...*BlogEntity) *BlogEntityDelete {
+	return &BlogEntityDelete{
 		config: c,
 		es:     es,
 	}
 }
 
 // Where adds a predicate to the delete action.
-func (o *blogEntityDelete) Where(predicates ...entitysql.PredicateFunc) *blogEntityDelete {
+func (o *BlogEntityDelete) Where(predicates ...entitysql.PredicateFunc) *BlogEntityDelete {
 	o.predicates = append(o.predicates, predicates...)
 	return o
 }
 
-func (o *blogEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
+func (o *BlogEntityDelete) delete(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlDelete(ctx, tx)
 }
 
-func (o *blogEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
+func (o *BlogEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.deleteSpec()
 		affected  = int64(0)
@@ -57,7 +57,7 @@ func (o *blogEntityDelete) sqlDelete(ctx context.Context, tx dialect.Tx) error {
 	return nil
 }
 
-func (o *blogEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
+func (o *BlogEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 	spec := entitysql.NewDeleteSpec(blog.Entity)
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {
@@ -71,12 +71,10 @@ func (o *blogEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 		o.predicates = make([]entitysql.PredicateFunc, 0, len(o.es))
 	}
 	for i, e := range o.es {
-		if e.ID.Get() != nil {
-			if i >= 1 {
-				o.predicates = append(o.predicates, entitysql.Or)
-			}
-			o.predicates = append(o.predicates, predID.EQ(*e.ID.Get()))
+		if i >= 1 {
+			o.predicates = append(o.predicates, entitysql.Or)
 		}
+		o.predicates = append(o.predicates, predID.EQ(e.ID.Get()))
 	}
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {

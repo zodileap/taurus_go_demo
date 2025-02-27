@@ -30,7 +30,7 @@ func main() {
 	ctx := context.Background()
 	_, err = db.Blogs.Create(
 		uuid.New().String(),
-		db.Blogs.WithDesc("http://test.com"),
+		db.Blogs.WithDescription("http://test.com"),
 	)
 	if err != nil {
 		panic(err)

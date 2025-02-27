@@ -3,6 +3,7 @@
 package field_demo
 
 import (
+	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity/entitysql"
@@ -431,6 +432,97 @@ func (f *PredIntarray2F) Like(int_array2_f string) entitysql.PredicateFunc {
 	}
 }
 
+type PredStringArrayF struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredStringArrayF) EQ(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredStringArrayF) NEQ(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredStringArrayF) GT(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredStringArrayF) GTE(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredStringArrayF) LT(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredStringArrayF) LTE(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredStringArrayF) In(string_array_fs ...[]string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(string_array_fs))
+		for i := range v {
+			v[i] = string_array_fs[i]
+		}
+		p.In(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredStringArrayF) NotIn(string_array_fs ...[]string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(string_array_fs))
+		for i := range v {
+			v[i] = string_array_fs[i]
+		}
+		p.NotIn(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredStringArrayF) Like(string_array_f string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
+// Contains returns a function that sets the predicate to check if the field contains the given value.
+// Operator "@>"
+func (f *PredStringArrayF) Contains(string_array_f []string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Contains(FieldStringArrayF.Name.String(), p.Builder.FindAs(Entity), string_array_f)
+	}
+}
+
 type PredBoolArrayF struct {
 }
 
@@ -685,5 +777,104 @@ func (f *PredTimeArrayF) NotIn(time_array_fs ...[]time.Time) entitysql.Predicate
 func (f *PredTimeArrayF) Like(time_array_f string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
 		p.Like(FieldTimeArrayF.Name.String(), p.Builder.FindAs(Entity), time_array_f)
+	}
+}
+
+type PredJsonF struct {
+}
+
+// EQ returns a function that sets the predicate to check if the field is equal to the given value.
+// Operator "="
+func (f *PredJsonF) EQ(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.EQ(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
+// Operator "<>"
+func (f *PredJsonF) NEQ(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NEQ(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// GT returns a function that sets the predicate to check if the field is greater than the given value.
+// Operator ">"
+func (f *PredJsonF) GT(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GT(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
+// Operator ">="
+func (f *PredJsonF) GTE(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.GTE(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// LT returns a function that sets the predicate to check if the field is less than the given value.
+// Operator "<"
+func (f *PredJsonF) LT(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LT(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
+// Operator "<="
+func (f *PredJsonF) LTE(json_f schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.LTE(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// In returns a function that sets the predicate to check if the field is in the given values.
+// Operator "IN"
+func (f *PredJsonF) In(json_fs ...schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(json_fs))
+		for i := range v {
+			v[i] = json_fs[i]
+		}
+		p.In(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// NotIn returns a function that sets the predicate to check if the field is not in the given values.
+// Operator "NOT IN"
+func (f *PredJsonF) NotIn(json_fs ...schema.JsonFStruct) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		v := make([]any, len(json_fs))
+		for i := range v {
+			v[i] = json_fs[i]
+		}
+		p.NotIn(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), v...)
+	}
+}
+
+// Like returns a function that sets the predicate to check if the field is like the given value.
+// Operator "LIKE"
+func (f *PredJsonF) Like(json_f string) entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.Like(FieldJsonF.Name.String(), p.Builder.FindAs(Entity), json_f)
+	}
+}
+
+// IsNull returns a function that sets the predicate to check if the field is null.
+// Operator "IS NULL"
+func (f *PredJsonF) IsNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.IsNull(FieldJsonF.Name.String(), p.Builder.FindAs(Entity))
+	}
+}
+
+// NotNull returns a function that sets the predicate to check if the field is not null.
+// Operator "IS NOT NULL"
+func (f *PredJsonF) NotNull() entitysql.PredicateFunc {
+	return func(p *entitysql.Predicate) {
+		p.NotNull(FieldJsonF.Name.String(), p.Builder.FindAs(Entity))
 	}
 }

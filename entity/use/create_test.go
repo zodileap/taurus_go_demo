@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/yohobala/taurus_go/testutil/unit"
+
+	schema "taurus_go_demo/entity/new/entity/schema"
 )
 
 func TestCreate(t *testing.T) {
@@ -40,7 +42,7 @@ func TestCreate(t *testing.T) {
 		for i := 0; i < 2; i++ {
 			_, err := db.Blogs.Create(
 				uuid.New().String(),
-				db.Blogs.WithDesc("desc"),
+				db.Blogs.WithDescription("desc"),
 			)
 			unit.Must(t, err)
 		}
@@ -55,15 +57,22 @@ func TestCreate(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 
+		jsonTestData2 := schema.JsonFStruct{
+			Key:   "key",
+			Value: "value",
+		}
+
 		_, err := db.FieldDemos.Create(
 			1,
 			"hello",
 			true,
 			[]int64{1, 2, 3},
 			[][]int64{{1, 2}, {3, 4}},
+			[]string{"ab", "bc"},
 			[]bool{true, true},
 			time.Now(),
 			[]time.Time{time.Now(), time.Now()},
+			db.FieldDemos.WithJsonF(jsonTestData2),
 		)
 		unit.Must(t, err)
 

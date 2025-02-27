@@ -9,7 +9,7 @@ type BlogEntity struct {
 	entity.Entity
 	ID          *field.Int64 `json:"id"`
 	UUID        *field.UUID
-	Desc        *field.Varchar
+	Description *field.Varchar
 	CreatedTime *field.Timestamptz
 }
 
@@ -69,16 +69,23 @@ func (e *AuthorEntity) Fields() []entity.FieldBuilder {
 	}
 }
 
+type JsonFStruct struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 type FieldDemoEntity struct {
 	entity.Entity
-	Int64F     *field.Int64
-	VarF       *field.Varchar
-	BoolF      *field.Bool
-	IntArrayF  *field.Int64A1
-	Intarray2F *field.Int64A2
-	BoolArrayF *field.BoolA1
-	TimeF      *field.Timestamptz
-	TimeArrayF *field.TimestamptzA1
+	Int64F       *field.Int64
+	VarF         *field.Varchar
+	BoolF        *field.Bool
+	IntArrayF    *field.Int64A1
+	Intarray2F   *field.Int64A2
+	StringArrayF *field.VarcharA1
+	BoolArrayF   *field.BoolA1
+	TimeF        *field.Timestamptz
+	TimeArrayF   *field.TimestamptzA1
+	JsonF        *field.JSON[JsonFStruct]
 }
 
 func (e *FieldDemoEntity) Config() entity.EntityConfig {
@@ -94,8 +101,10 @@ func (e *FieldDemoEntity) Fields() []entity.FieldBuilder {
 		e.BoolF.Required().Name("bool_f").Comment("Bool field"),
 		e.IntArrayF.Required().Name("int_array_f").Comment("Int array field"),
 		e.Intarray2F.Required().Name("int_array2_f").Comment("Int array2 field"),
+		e.StringArrayF.Required().Name("string_array_f").Comment("String array field"),
 		e.BoolArrayF.Required().Name("bool_array_f").Comment("Bool array field"),
 		e.TimeF.Required().Name("time_f").Comment("Time field"),
 		e.TimeArrayF.Required().Name("time_array_f").Comment("Time array field"),
+		e.JsonF.Name("json_f").Comment("Json field"),
 	}
 }

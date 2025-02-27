@@ -4,6 +4,7 @@ package entity
 
 import (
 	"taurus_go_demo/entity/new/entity/field_demo"
+	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity"
@@ -13,11 +14,11 @@ import (
 // fieldDemoInt64F is Int64F field
 type fieldDemoInt64F struct {
 	field.IntStorage[int64]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoInt64F creates a new fieldDemoInt64F
-func newFieldDemoInt64F(c *fieldDemoEntityConfig) *fieldDemoInt64F {
+func newFieldDemoInt64F(c *fielddemoentityConfig) *fieldDemoInt64F {
 	t := &fieldDemoInt64F{}
 	t.config = c
 	return t
@@ -27,24 +28,26 @@ func newFieldDemoInt64F(c *fieldDemoEntityConfig) *fieldDemoInt64F {
 func (t *fieldDemoInt64F) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldInt64F.Name.String())
 	}
 }
 
 // Get gets the value of Int64F field
-func (t *fieldDemoInt64F) Get() *int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoInt64F) Get() int64 {
+	return *t.IntStorage.Get()
 }
 
 // fieldDemoVarF is VarF field
 type fieldDemoVarF struct {
 	field.StringStorage[string]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoVarF creates a new fieldDemoVarF
-func newFieldDemoVarF(c *fieldDemoEntityConfig) *fieldDemoVarF {
+func newFieldDemoVarF(c *fielddemoentityConfig) *fieldDemoVarF {
 	t := &fieldDemoVarF{}
 	t.config = c
 	return t
@@ -54,24 +57,26 @@ func newFieldDemoVarF(c *fieldDemoEntityConfig) *fieldDemoVarF {
 func (t *fieldDemoVarF) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldVarF.Name.String())
 	}
 }
 
 // Get gets the value of VarF field
-func (t *fieldDemoVarF) Get() *string {
-	return t.StringStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoVarF) Get() string {
+	return *t.StringStorage.Get()
 }
 
 // fieldDemoBoolF is BoolF field
 type fieldDemoBoolF struct {
 	field.BoolStorage[bool]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoBoolF creates a new fieldDemoBoolF
-func newFieldDemoBoolF(c *fieldDemoEntityConfig) *fieldDemoBoolF {
+func newFieldDemoBoolF(c *fielddemoentityConfig) *fieldDemoBoolF {
 	t := &fieldDemoBoolF{}
 	t.config = c
 	return t
@@ -81,24 +86,26 @@ func newFieldDemoBoolF(c *fieldDemoEntityConfig) *fieldDemoBoolF {
 func (t *fieldDemoBoolF) Set(v bool) {
 	t.BoolStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldBoolF.Name.String())
 	}
 }
 
 // Get gets the value of BoolF field
-func (t *fieldDemoBoolF) Get() *bool {
-	return t.BoolStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoBoolF) Get() bool {
+	return *t.BoolStorage.Get()
 }
 
 // fieldDemoIntArrayF is IntArrayF field
 type fieldDemoIntArrayF struct {
 	field.IntStorage[[]int64]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoIntArrayF creates a new fieldDemoIntArrayF
-func newFieldDemoIntArrayF(c *fieldDemoEntityConfig) *fieldDemoIntArrayF {
+func newFieldDemoIntArrayF(c *fielddemoentityConfig) *fieldDemoIntArrayF {
 	t := &fieldDemoIntArrayF{}
 	t.config = c
 	return t
@@ -108,24 +115,26 @@ func newFieldDemoIntArrayF(c *fieldDemoEntityConfig) *fieldDemoIntArrayF {
 func (t *fieldDemoIntArrayF) Set(v []int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldIntArrayF.Name.String())
 	}
 }
 
 // Get gets the value of IntArrayF field
-func (t *fieldDemoIntArrayF) Get() *[]int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoIntArrayF) Get() []int64 {
+	return *t.IntStorage.Get()
 }
 
 // fieldDemoIntarray2F is Intarray2F field
 type fieldDemoIntarray2F struct {
 	field.IntStorage[[][]int64]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoIntarray2F creates a new fieldDemoIntarray2F
-func newFieldDemoIntarray2F(c *fieldDemoEntityConfig) *fieldDemoIntarray2F {
+func newFieldDemoIntarray2F(c *fielddemoentityConfig) *fieldDemoIntarray2F {
 	t := &fieldDemoIntarray2F{}
 	t.config = c
 	return t
@@ -135,24 +144,55 @@ func newFieldDemoIntarray2F(c *fieldDemoEntityConfig) *fieldDemoIntarray2F {
 func (t *fieldDemoIntarray2F) Set(v [][]int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldIntarray2F.Name.String())
 	}
 }
 
 // Get gets the value of Intarray2F field
-func (t *fieldDemoIntarray2F) Get() *[][]int64 {
-	return t.IntStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoIntarray2F) Get() [][]int64 {
+	return *t.IntStorage.Get()
+}
+
+// fieldDemoStringArrayF is StringArrayF field
+type fieldDemoStringArrayF struct {
+	field.StringStorage[[]string]
+	config *fielddemoentityConfig
+}
+
+// newfieldDemoStringArrayF creates a new fieldDemoStringArrayF
+func newFieldDemoStringArrayF(c *fielddemoentityConfig) *fieldDemoStringArrayF {
+	t := &fieldDemoStringArrayF{}
+	t.config = c
+	return t
+}
+
+// Set sets the value of StringArrayF field
+func (t *fieldDemoStringArrayF) Set(v []string) {
+	t.StringStorage.Set(v)
+	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.Mutation.SetFields(field_demo.FieldStringArrayF.Name.String())
+	}
+}
+
+// Get gets the value of StringArrayF field
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoStringArrayF) Get() []string {
+	return *t.StringStorage.Get()
 }
 
 // fieldDemoBoolArrayF is BoolArrayF field
 type fieldDemoBoolArrayF struct {
 	field.BoolStorage[[]bool]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoBoolArrayF creates a new fieldDemoBoolArrayF
-func newFieldDemoBoolArrayF(c *fieldDemoEntityConfig) *fieldDemoBoolArrayF {
+func newFieldDemoBoolArrayF(c *fielddemoentityConfig) *fieldDemoBoolArrayF {
 	t := &fieldDemoBoolArrayF{}
 	t.config = c
 	return t
@@ -162,24 +202,26 @@ func newFieldDemoBoolArrayF(c *fieldDemoEntityConfig) *fieldDemoBoolArrayF {
 func (t *fieldDemoBoolArrayF) Set(v []bool) {
 	t.BoolStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldBoolArrayF.Name.String())
 	}
 }
 
 // Get gets the value of BoolArrayF field
-func (t *fieldDemoBoolArrayF) Get() *[]bool {
-	return t.BoolStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoBoolArrayF) Get() []bool {
+	return *t.BoolStorage.Get()
 }
 
 // fieldDemoTimeF is TimeF field
 type fieldDemoTimeF struct {
 	field.TimestampStorage[time.Time]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoTimeF creates a new fieldDemoTimeF
-func newFieldDemoTimeF(c *fieldDemoEntityConfig) *fieldDemoTimeF {
+func newFieldDemoTimeF(c *fielddemoentityConfig) *fieldDemoTimeF {
 	t := &fieldDemoTimeF{}
 	t.config = c
 	return t
@@ -189,24 +231,26 @@ func newFieldDemoTimeF(c *fieldDemoEntityConfig) *fieldDemoTimeF {
 func (t *fieldDemoTimeF) Set(v time.Time) {
 	t.TimestampStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldTimeF.Name.String())
 	}
 }
 
 // Get gets the value of TimeF field
-func (t *fieldDemoTimeF) Get() *time.Time {
-	return t.TimestampStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoTimeF) Get() time.Time {
+	return *t.TimestampStorage.Get()
 }
 
 // fieldDemoTimeArrayF is TimeArrayF field
 type fieldDemoTimeArrayF struct {
 	field.TimestampStorage[[]time.Time]
-	config *fieldDemoEntityConfig
+	config *fielddemoentityConfig
 }
 
 // newfieldDemoTimeArrayF creates a new fieldDemoTimeArrayF
-func newFieldDemoTimeArrayF(c *fieldDemoEntityConfig) *fieldDemoTimeArrayF {
+func newFieldDemoTimeArrayF(c *fielddemoentityConfig) *fieldDemoTimeArrayF {
 	t := &fieldDemoTimeArrayF{}
 	t.config = c
 	return t
@@ -216,12 +260,44 @@ func newFieldDemoTimeArrayF(c *fieldDemoEntityConfig) *fieldDemoTimeArrayF {
 func (t *fieldDemoTimeArrayF) Set(v []time.Time) {
 	t.TimestampStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
-		t.config.fieldDemoEntityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
 		t.config.Mutation.SetFields(field_demo.FieldTimeArrayF.Name.String())
 	}
 }
 
 // Get gets the value of TimeArrayF field
-func (t *fieldDemoTimeArrayF) Get() *[]time.Time {
-	return t.TimestampStorage.Get()
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+func (t *fieldDemoTimeArrayF) Get() []time.Time {
+	return *t.TimestampStorage.Get()
+}
+
+// fieldDemoJsonF is JsonF field
+type fieldDemoJsonF struct {
+	field.JSONStorage[schema.JsonFStruct]
+	config *fielddemoentityConfig
+}
+
+// newfieldDemoJsonF creates a new fieldDemoJsonF
+func newFieldDemoJsonF(c *fielddemoentityConfig) *fieldDemoJsonF {
+	t := &fieldDemoJsonF{}
+	t.config = c
+	return t
+}
+
+// Set sets the value of JsonF field
+func (t *fieldDemoJsonF) Set(v schema.JsonFStruct) {
+	t.JSONStorage.Set(v)
+	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
+		t.config.fielddemoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
+		t.config.Mutation.SetFields(field_demo.FieldJsonF.Name.String())
+	}
+}
+
+// Get gets the value of JsonF field
+//
+// If the field is required, it returns the value type; otherwise, it returns a pointer type.
+
+func (t *fieldDemoJsonF) Get() *schema.JsonFStruct {
+	return t.JSONStorage.Get()
 }

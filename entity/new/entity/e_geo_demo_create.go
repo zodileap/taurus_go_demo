@@ -11,27 +11,27 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// geoEntityCreate is the create action for the geoEntity.
-type geoEntityCreate struct {
+// GeoEntityCreate is the create action for the GeoEntity.
+type GeoEntityCreate struct {
 	config *internal.Dialect
 	es     []*GeoEntity
 }
 
-// newGeoEntityCreate creates a new geoEntityCreate.
-func newGeoEntityCreate(c *internal.Dialect, es ...*GeoEntity) *geoEntityCreate {
-	return &geoEntityCreate{
+// newGeoEntityCreate creates a new GeoEntityCreate.
+func newGeoEntityCreate(c *internal.Dialect, es ...*GeoEntity) *GeoEntityCreate {
+	return &GeoEntityCreate{
 		config: c,
 		es:     es,
 	}
 }
 
 // create executes the create action.
-func (o *geoEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
+func (o *GeoEntityCreate) create(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlCreate(ctx, tx)
 }
 
 // sqlCreate executes the SQL create action.
-func (o *geoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
+func (o *GeoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.createSpec()
 		res       = o.es
@@ -55,7 +55,7 @@ func (o *geoEntityCreate) sqlCreate(ctx context.Context, tx dialect.Tx) error {
 }
 
 // createSpec creates the create action spec. It checks for required fields and sets the returning fields.
-func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
+func (o *GeoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 	returning := []entitysql.FieldName{
 		geo_demo.FieldID.Name,
 	}
@@ -67,6 +67,16 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		fields := make([]*entitysql.FieldSpec, 0, len(geo_demo.Columns))
 		for j := range geo_demo.Columns {
 			switch geo_demo.Columns[j] {
+			case geo_demo.FieldID.Name:
+				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return nil, err
+				}
+				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldID.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.Default = true
+				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldPoint.Name:
 				v, err := e.Point.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
@@ -75,6 +85,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPoint.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.Point.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldLineString.Name:
 				v, err := e.LineString.SqlParam(o.config.Driver.Dialect())
@@ -84,6 +95,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineString.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.LineString.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldPolygon.Name:
 				v, err := e.Polygon.SqlParam(o.config.Driver.Dialect())
@@ -93,6 +105,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygon.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.Polygon.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiPoint.Name:
 				v, err := e.MultiPoint.SqlParam(o.config.Driver.Dialect())
@@ -102,6 +115,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPoint.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiPoint.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiLineString.Name:
 				v, err := e.MultiLineString.SqlParam(o.config.Driver.Dialect())
@@ -111,6 +125,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineString.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiLineString.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiPolygon.Name:
 				v, err := e.MultiPolygon.SqlParam(o.config.Driver.Dialect())
@@ -120,6 +135,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygon.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiPolygon.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldCircularString.Name:
 				v, err := e.CircularString.SqlParam(o.config.Driver.Dialect())
@@ -129,6 +145,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldCircularString.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.CircularString.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldPointJson.Name:
 				v, err := e.PointJson.SqlParam(o.config.Driver.Dialect())
@@ -138,6 +155,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPointJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.PointJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldLineStringJson.Name:
 				v, err := e.LineStringJson.SqlParam(o.config.Driver.Dialect())
@@ -147,6 +165,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineStringJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.LineStringJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldPolygonJson.Name:
 				v, err := e.PolygonJson.SqlParam(o.config.Driver.Dialect())
@@ -156,6 +175,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygonJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.PolygonJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiPointJson.Name:
 				v, err := e.MultiPointJson.SqlParam(o.config.Driver.Dialect())
@@ -165,6 +185,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPointJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiPointJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiLineStringJson.Name:
 				v, err := e.MultiLineStringJson.SqlParam(o.config.Driver.Dialect())
@@ -174,6 +195,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineStringJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiLineStringJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldMultiPolygonJson.Name:
 				v, err := e.MultiPolygonJson.SqlParam(o.config.Driver.Dialect())
@@ -183,6 +205,7 @@ func (o *geoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygonJson.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.MultiPolygonJson.SqlFormatParam()
+				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			}
 		}

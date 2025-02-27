@@ -6,6 +6,7 @@ import (
 	"context"
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
+	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
 	"github.com/yohobala/taurus_go/entity"
@@ -13,36 +14,22 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// fieldDemoEntityBuilder is a builder for the FieldDemoEntity entity.
+// fielddemoentityBuilder is a builder for the FieldDemoEntity entity.
 //
 // The builder is used to create, update, and delete FieldDemoEntity entities.
-type fieldDemoEntityBuilder struct {
-	config  *fieldDemoEntityConfig
-	tracker entity.Tracker
-
-	// Int64F Int64 field
-	Int64F field_demo.PredInt64F
-
-	// VarF Varchar field
-	VarF field_demo.PredVarF
-
-	// BoolF Bool field
-	BoolF field_demo.PredBoolF
-
-	// IntArrayF Int array field
-	IntArrayF field_demo.PredIntArrayF
-
-	// Intarray2F Int array2 field
-	Intarray2F field_demo.PredIntarray2F
-
-	// BoolArrayF Bool array field
-	BoolArrayF field_demo.PredBoolArrayF
-
-	// TimeF Time field
-	TimeF field_demo.PredTimeF
-
-	// TimeArrayF Time array field
-	TimeArrayF field_demo.PredTimeArrayF
+type fielddemoentityBuilder struct {
+	config       *fielddemoentityConfig
+	tracker      entity.Tracker
+	Int64F       field_demo.PredInt64F       // Int64F Int64 field
+	VarF         field_demo.PredVarF         // VarF Varchar field
+	BoolF        field_demo.PredBoolF        // BoolF Bool field
+	IntArrayF    field_demo.PredIntArrayF    // IntArrayF Int array field
+	Intarray2F   field_demo.PredIntarray2F   // Intarray2F Int array2 field
+	StringArrayF field_demo.PredStringArrayF // StringArrayF String array field
+	BoolArrayF   field_demo.PredBoolArrayF   // BoolArrayF Bool array field
+	TimeF        field_demo.PredTimeF        // TimeF Time field
+	TimeArrayF   field_demo.PredTimeArrayF   // TimeArrayF Time array field
+	JsonF        field_demo.PredJsonF        // JsonF Json field
 	// ByInt64F configures the query to sort results based on the 'int64_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByInt64F field_demo.ByInt64F
@@ -58,6 +45,9 @@ type fieldDemoEntityBuilder struct {
 	// ByIntarray2F configures the query to sort results based on the 'int_array2_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByIntarray2F field_demo.ByIntarray2F
+	// ByStringArrayF configures the query to sort results based on the 'string_array_f' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByStringArrayF field_demo.ByStringArrayF
 	// ByBoolArrayF configures the query to sort results based on the 'bool_array_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByBoolArrayF field_demo.ByBoolArrayF
@@ -67,11 +57,14 @@ type fieldDemoEntityBuilder struct {
 	// ByTimeArrayF configures the query to sort results based on the 'time_array_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByTimeArrayF field_demo.ByTimeArrayF
+	// ByJsonF configures the query to sort results based on the 'json_f' field of the entity.
+	// Sorting entities in ascending order by default.
+	ByJsonF field_demo.ByJsonF
 }
 
-// newfieldDemoEntityBuilder creates a new fieldDemoEntityBuilder.
-func newFieldDemoEntityBuilder(c *fieldDemoEntityConfig, t entity.Tracker) *fieldDemoEntityBuilder {
-	return &fieldDemoEntityBuilder{
+// newFieldDemoEntityBuilder creates a new FieldDemoEntityBuilder .
+func newFieldDemoEntityBuilder(c *fielddemoentityConfig, t entity.Tracker) *fielddemoentityBuilder {
+	return &fielddemoentityBuilder{
 		config:  c,
 		tracker: t,
 	}
@@ -80,17 +73,17 @@ func newFieldDemoEntityBuilder(c *fieldDemoEntityConfig, t entity.Tracker) *fiel
 // Create creates a new UserEntity，and add it to the tracker.
 // Required parameters are fields that have no default value but are required,
 // and options are fields that can be left empty by calling WithFieldName.
-func (b *fieldDemoEntityBuilder) Create(int64_f int64, var_f string, bool_f bool, int_array_f []int64, int_array2_f [][]int64, bool_array_f []bool, time_f time.Time, time_array_f []time.Time, options ...func(*FieldDemoEntity)) (*FieldDemoEntity, error) {
+func (b *fielddemoentityBuilder) Create(int64_f int64, var_f string, bool_f bool, int_array_f []int64, int_array2_f [][]int64, string_array_f []string, bool_array_f []bool, time_f time.Time, time_array_f []time.Time, options ...func(*FieldDemoEntity)) (*FieldDemoEntity, error) {
 	e := b.config.New()
 	switch t := e.(type) {
 	case *FieldDemoEntity:
-		return t.create(int64_f, var_f, bool_f, int_array_f, int_array2_f, bool_array_f, time_f, time_array_f, options...)
+		return t.create(int64_f, var_f, bool_f, int_array_f, int_array2_f, string_array_f, bool_array_f, time_f, time_array_f, options...)
 	default:
 		return nil, entity.Err_0100030006
 	}
 }
 
-func (b *fieldDemoEntityBuilder) Remove(e *FieldDemoEntity) error {
+func (b *fielddemoentityBuilder) Remove(e *FieldDemoEntity) error {
 	if e.config.Mutation == nil {
 		return nil
 	}
@@ -98,49 +91,56 @@ func (b *fieldDemoEntityBuilder) Remove(e *FieldDemoEntity) error {
 }
 
 // First returns the first FieldDemoEntity.
-func (s *fieldDemoEntityBuilder) First(ctx context.Context) (*FieldDemoEntity, error) {
+func (s *fielddemoentityBuilder) First(ctx context.Context) (*FieldDemoEntity, error) {
 	query := s.initQuery()
 	return query.First(ctx)
 }
 
-func (s *fieldDemoEntityBuilder) ToList(ctx context.Context) ([]*FieldDemoEntity, error) {
+func (s *fielddemoentityBuilder) ToList(ctx context.Context) ([]*FieldDemoEntity, error) {
 	query := s.initQuery()
 	return query.ToList(ctx)
 }
 
-func (s *fieldDemoEntityBuilder) Include(rels ...fieldDemoEntityRel) *FieldDemoEntityQuery {
+func (s *fielddemoentityBuilder) Include(rels ...fielddemoentityRel) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Include(rels...)
 }
 
-func (s *fieldDemoEntityBuilder) Order(o ...field_demo.OrderTerm) *FieldDemoEntityQuery {
+func (s *fielddemoentityBuilder) Order(o ...field_demo.OrderTerm) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Order(o...)
 }
 
-func (s *fieldDemoEntityBuilder) Where(conditions ...entitysql.PredicateFunc) *FieldDemoEntityQuery {
+func (s *fielddemoentityBuilder) Where(conditions ...entitysql.PredicateFunc) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
 }
 
-// Exec executes all the fieldDemoEntityMutations for the FieldDemoEntity.
-func (s *fieldDemoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
-	if len(s.config.fieldDemoEntityMutations.Addeds) > 0 {
-		e := s.config.fieldDemoEntityMutations.Get(entity.Added)
+// WithJsonF sets the "json_f" field of the FieldDemoEntity.
+func (s *fielddemoentityBuilder) WithJsonF(jsonf schema.JsonFStruct) func(*FieldDemoEntity) {
+	return func(e *FieldDemoEntity) {
+		e.JsonF.Set(jsonf)
+	}
+}
+
+// Exec executes all the fielddemoentityMutations for the FieldDemoEntity.
+func (s *fielddemoentityBuilder) Exec(ctx context.Context, tx dialect.Tx) error {
+	if len(s.config.fielddemoentityMutations.Addeds) > 0 {
+		e := s.config.fielddemoentityMutations.Get(entity.Added)
 		n := newFieldDemoEntityCreate(s.config.Dialect, e...)
 		if err := n.create(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.config.fieldDemoEntityMutations.Modifieds) > 0 {
-		e := s.config.fieldDemoEntityMutations.Get(entity.Modified)
+	if len(s.config.fielddemoentityMutations.Modifieds) > 0 {
+		e := s.config.fielddemoentityMutations.Get(entity.Modified)
 		n := newFieldDemoEntityUpdate(s.config.Dialect, e...)
 		if err := n.update(ctx, tx); err != nil {
 			return err
 		}
 	}
-	if len(s.config.fieldDemoEntityMutations.Deleteds) > 0 {
-		e := s.config.fieldDemoEntityMutations.Get(entity.Deleted)
+	if len(s.config.fielddemoentityMutations.Deleteds) > 0 {
+		e := s.config.fielddemoentityMutations.Get(entity.Deleted)
 		n := newFieldDemoEntityDelete(s.config.Dialect, e...)
 		if err := n.delete(ctx, tx); err != nil {
 			return err
@@ -149,12 +149,12 @@ func (s *fieldDemoEntityBuilder) Exec(ctx context.Context, tx dialect.Tx) error 
 	return nil
 }
 
-func (s *fieldDemoEntityBuilder) initQuery() *FieldDemoEntityQuery {
-	return newFieldDemoEntityQuery(s.config.Dialect, s.tracker, s.config.fieldDemoEntityMutations)
+func (s *fielddemoentityBuilder) initQuery() *FieldDemoEntityQuery {
+	return newFieldDemoEntityQuery(s.config.Dialect, s.tracker, s.config.fielddemoentityMutations)
 }
 
-// fieldDemoEntityMutations is a collection of FieldDemoEntity mutation.
-type fieldDemoEntityMutations struct {
+// fielddemoentityMutations is a collection of FieldDemoEntity mutation.
+type fielddemoentityMutations struct {
 	Detacheds  map[string]*FieldDemoEntity
 	Unchangeds map[string]*FieldDemoEntity
 	Deleteds   map[string]*FieldDemoEntity
@@ -163,8 +163,8 @@ type fieldDemoEntityMutations struct {
 }
 
 // newFieldDemoEntityMutations creates a new mutations.
-func newFieldDemoEntityMutations() *fieldDemoEntityMutations {
-	return &fieldDemoEntityMutations{
+func newFieldDemoEntityMutations() *fielddemoentityMutations {
+	return &fielddemoentityMutations{
 		Detacheds:  make(map[string]*FieldDemoEntity),
 		Unchangeds: make(map[string]*FieldDemoEntity),
 		Deleteds:   make(map[string]*FieldDemoEntity),
@@ -174,7 +174,7 @@ func newFieldDemoEntityMutations() *fieldDemoEntityMutations {
 }
 
 // Get returns all the FieldDemoEntity in the specified state.
-func (ms *fieldDemoEntityMutations) Get(state entity.EntityState) []*FieldDemoEntity {
+func (ms *fielddemoentityMutations) Get(state entity.EntityState) []*FieldDemoEntity {
 	switch state {
 	case entity.Detached:
 		s := make([]*FieldDemoEntity, 0, len(ms.Detacheds))
@@ -211,7 +211,7 @@ func (ms *fieldDemoEntityMutations) Get(state entity.EntityState) []*FieldDemoEn
 }
 
 // SetEntityState sets the state of the entity.
-func (ms *fieldDemoEntityMutations) SetEntityState(e *FieldDemoEntity, state entity.EntityState) error {
+func (ms *fielddemoentityMutations) SetEntityState(e *FieldDemoEntity, state entity.EntityState) error {
 	m := e.config.Mutation
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -222,7 +222,7 @@ func (ms *fieldDemoEntityMutations) SetEntityState(e *FieldDemoEntity, state ent
 
 // ChangeEntityState attempts to set the desired entity state,
 // but will not do so if the conditions are not met.
-func (ms *fieldDemoEntityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
+func (ms *fielddemoentityMutations) ChangeEntityState(m *entity.Mutation, state entity.EntityState) {
 	e := ms.getEntity(m)
 	ms.set(e, state)
 	if err := internal.SetEntityState(m, state); err != nil {
@@ -231,7 +231,7 @@ func (ms *fieldDemoEntityMutations) ChangeEntityState(m *entity.Mutation, state 
 }
 
 // getEntity returns the entity in the specified state.
-func (ms *fieldDemoEntityMutations) getEntity(m *entity.Mutation) *FieldDemoEntity {
+func (ms *fielddemoentityMutations) getEntity(m *entity.Mutation) *FieldDemoEntity {
 	key := m.Key()
 	switch m.State() {
 	case entity.Detached:
@@ -249,7 +249,7 @@ func (ms *fieldDemoEntityMutations) getEntity(m *entity.Mutation) *FieldDemoEnti
 }
 
 // Set sets the entity in the specified state.
-func (ms *fieldDemoEntityMutations) set(e *FieldDemoEntity, state entity.EntityState) {
+func (ms *fielddemoentityMutations) set(e *FieldDemoEntity, state entity.EntityState) {
 	m := e.config.Mutation
 	key := m.Key()
 	switch m.State() {

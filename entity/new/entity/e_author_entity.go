@@ -13,41 +13,38 @@ import (
 
 type AuthorEntity struct {
 	internal.Entity `json:"-"`
-	config          *authorEntityConfig
+	config          *authorentityConfig
+	ID              *authorID // ID Author primary key
+	Name            *authorName
 
-	// ID Author primary key
-	ID *authorID
-
-	Name *authorName
-
-	Posts []*PostEntity `json:"-"`
+	Posts []*PostEntity `json:"posts,omitempty"`
 }
 
-// authorEntityConfig holds the configuration for the AuthorEntity.
-type authorEntityConfig struct {
+// authorentityConfig holds the configuration for the AuthorEntity.
+type authorentityConfig struct {
 	internal.EntityConfig
 	*internal.Dialect
 	*entity.Mutation
-	*authorEntityMutations
+	*authorentityMutations
 	name string
 }
 
-func newAuthorEntityConfig(c *internal.Dialect) *authorEntityConfig {
-	return &authorEntityConfig{
+func newAuthorEntityConfig(c *internal.Dialect) *authorentityConfig {
+	return &authorentityConfig{
 		Dialect:               c,
-		authorEntityMutations: newAuthorEntityMutations(),
+		authorentityMutations: newAuthorEntityMutations(),
 		name:                  "author",
 	}
 }
 
 // New creates a new AuthorEntity, but does not add tracking.
-func (c *authorEntityConfig) New() internal.Entity {
+func (c *authorentityConfig) New() internal.Entity {
 	b := entity.NewMutation(entity.Detached)
 	e := &AuthorEntity{
-		config: &authorEntityConfig{
+		config: &authorentityConfig{
 			Mutation:              b,
 			Dialect:               c.Dialect,
-			authorEntityMutations: c.authorEntityMutations,
+			authorentityMutations: c.authorentityMutations,
 		},
 	}
 	e.setState(entity.Detached)
@@ -56,7 +53,7 @@ func (c *authorEntityConfig) New() internal.Entity {
 	return e
 }
 
-func (c *authorEntityConfig) Desc() internal.EntityConfigDesc {
+func (c *authorentityConfig) Desc() internal.EntityConfigDesc {
 	return internal.EntityConfigDesc{
 		Name: c.name,
 	}
@@ -98,7 +95,7 @@ func (e *AuthorEntity) setUnchanged() error {
 
 // setState sets the state of the AuthorEntity.
 func (e *AuthorEntity) setState(state entity.EntityState) error {
-	return e.config.authorEntityMutations.SetEntityState(e, state)
+	return e.config.authorentityMutations.SetEntityState(e, state)
 }
 
 // scan scans the database for the AuthorEntity.
@@ -139,11 +136,11 @@ func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 func (e *AuthorEntity) createRel(buidler *entitysql.ScannerBuilder, scanner *internal.QueryScanner) {
 	switch scanner.Config.Desc().Name {
 	case "post":
-		postEntity := scanner.Config.New().(*PostEntity)
-		buidler.Append(scanner.TableNum-1, postEntity.scan([]entitysql.ScannerField{})...)
-		e.Posts = append(e.Posts, postEntity)
+		postentity := scanner.Config.New().(*PostEntity)
+		buidler.Append(scanner.TableNum-1, postentity.scan([]entitysql.ScannerField{})...)
+		e.Posts = append(e.Posts, postentity)
 		for _, c := range scanner.Children {
-			postEntity.createRel(buidler, c)
+			postentity.createRel(buidler, c)
 		}
 	}
 }
@@ -157,17 +154,15 @@ func mergeAuthorEntity(es []*AuthorEntity, e *AuthorEntity) []*AuthorEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if e.ID.Get() != nil {
-			if v.ID.Get() != nil && *v.ID.Get() == *e.ID.Get() {
-				for _, post := range e.Posts {
-					posts := mergePostEntity(v.Posts, post)
-					if len(posts) > 0 {
-						v.Posts = posts
-					}
+		if v.ID.Get() == e.ID.Get() {
+			for _, post := range e.Posts {
+				posts := mergePostEntity(v.Posts, post)
+				if len(posts) > 0 {
+					v.Posts = posts
 				}
-			} else {
-				es = append(es, e)
 			}
+		} else {
+			es = append(es, e)
 		}
 	}
 	return es

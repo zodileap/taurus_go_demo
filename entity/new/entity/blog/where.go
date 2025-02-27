@@ -174,102 +174,102 @@ func (f *PredUUID) Like(uuid string) entitysql.PredicateFunc {
 	}
 }
 
-type PredDesc struct {
+type PredDescription struct {
 }
 
 // EQ returns a function that sets the predicate to check if the field is equal to the given value.
 // Operator "="
-func (f *PredDesc) EQ(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) EQ(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.EQ(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.EQ(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // NEQ returns a function that sets the predicate to check if the field is not equal to the given value.
 // Operator "<>"
-func (f *PredDesc) NEQ(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) NEQ(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.NEQ(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.NEQ(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // GT returns a function that sets the predicate to check if the field is greater than the given value.
 // Operator ">"
-func (f *PredDesc) GT(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) GT(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.GT(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.GT(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // GTE returns a function that sets the predicate to check if the field is greater than or equal to the given value.
 // Operator ">="
-func (f *PredDesc) GTE(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) GTE(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.GTE(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.GTE(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // LT returns a function that sets the predicate to check if the field is less than the given value.
 // Operator "<"
-func (f *PredDesc) LT(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) LT(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.LT(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.LT(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // LTE returns a function that sets the predicate to check if the field is less than or equal to the given value.
 // Operator "<="
-func (f *PredDesc) LTE(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) LTE(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.LTE(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.LTE(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // In returns a function that sets the predicate to check if the field is in the given values.
 // Operator "IN"
-func (f *PredDesc) In(descs ...string) entitysql.PredicateFunc {
+func (f *PredDescription) In(descriptions ...string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		v := make([]any, len(descs))
+		v := make([]any, len(descriptions))
 		for i := range v {
-			v[i] = descs[i]
+			v[i] = descriptions[i]
 		}
-		p.In(FieldDesc.Name.String(), p.Builder.FindAs(Entity), v...)
+		p.In(FieldDescription.Name.String(), p.Builder.FindAs(Entity), v...)
 	}
 }
 
 // NotIn returns a function that sets the predicate to check if the field is not in the given values.
 // Operator "NOT IN"
-func (f *PredDesc) NotIn(descs ...string) entitysql.PredicateFunc {
+func (f *PredDescription) NotIn(descriptions ...string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		v := make([]any, len(descs))
+		v := make([]any, len(descriptions))
 		for i := range v {
-			v[i] = descs[i]
+			v[i] = descriptions[i]
 		}
-		p.NotIn(FieldDesc.Name.String(), p.Builder.FindAs(Entity), v...)
+		p.NotIn(FieldDescription.Name.String(), p.Builder.FindAs(Entity), v...)
 	}
 }
 
 // Like returns a function that sets the predicate to check if the field is like the given value.
 // Operator "LIKE"
-func (f *PredDesc) Like(desc string) entitysql.PredicateFunc {
+func (f *PredDescription) Like(description string) entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.Like(FieldDesc.Name.String(), p.Builder.FindAs(Entity), desc)
+		p.Like(FieldDescription.Name.String(), p.Builder.FindAs(Entity), description)
 	}
 }
 
 // IsNull returns a function that sets the predicate to check if the field is null.
 // Operator "IS NULL"
-func (f *PredDesc) IsNull() entitysql.PredicateFunc {
+func (f *PredDescription) IsNull() entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.IsNull(FieldDesc.Name.String(), p.Builder.FindAs(Entity))
+		p.IsNull(FieldDescription.Name.String(), p.Builder.FindAs(Entity))
 	}
 }
 
 // NotNull returns a function that sets the predicate to check if the field is not null.
 // Operator "IS NOT NULL"
-func (f *PredDesc) NotNull() entitysql.PredicateFunc {
+func (f *PredDescription) NotNull() entitysql.PredicateFunc {
 	return func(p *entitysql.Predicate) {
-		p.NotNull(FieldDesc.Name.String(), p.Builder.FindAs(Entity))
+		p.NotNull(FieldDescription.Name.String(), p.Builder.FindAs(Entity))
 	}
 }
 

@@ -38,7 +38,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.EQ("single desc"),
+			db.Blogs.Description.EQ("single desc"),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -51,7 +51,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.EQ("desc"),
+			db.Blogs.Description.EQ("desc"),
 		).Single(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -64,7 +64,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.EQ("desc"),
+			db.Blogs.Description.EQ("desc"),
 		).Limit(3).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -77,7 +77,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.NEQ("single desc"),
+			db.Blogs.Description.NEQ("single desc"),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -142,7 +142,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.In("single desc", "multi desc"),
+			db.Blogs.Description.In("single desc", "multi desc"),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -168,7 +168,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.Like("%mutil%"),
+			db.Blogs.Description.Like("%mutil%"),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -181,7 +181,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.IsNull(),
+			db.Blogs.Description.IsNull(),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -194,7 +194,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.Desc.NotNull(),
+			db.Blogs.Description.NotNull(),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -209,9 +209,21 @@ func TestQuery(t *testing.T) {
 
 		u, err := db.Posts.Where(
 			db.Posts.ID.EQ(1),
-		).Order(db.Posts.ByID.Desc()).
+		).Order(db.Posts.ByID.NullsLast()).
 			ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
+	})
+
+	// 查询全部的字段类型
+	// Query all entries.
+	t.Run("Query all field types.", func(t *testing.T) {
+		db := initDb()
+		defer db.Close()
+		ctx := context.Background()
+		u, err := db.FieldDemos.ToList(ctx)
+		unit.Must(t, err)
+		fmt.Println(u)
+		fmt.Println(u[0].JsonF.Get().Key)
 	})
 }

@@ -13,22 +13,22 @@ type rel interface {
 	reset()
 }
 
-type authorEntityRel interface {
+type authorentityRel interface {
 	rel
 }
 
-type blogEntityRel interface {
+type blogentityRel interface {
 	rel
 }
 
-type fieldDemoEntityRel interface {
+type fielddemoentityRel interface {
 	rel
 }
 
-type geoEntityRel interface {
+type geoentityRel interface {
 	rel
 }
 
-type postEntityRel interface {
+type postentityRel interface {
 	rel
 }

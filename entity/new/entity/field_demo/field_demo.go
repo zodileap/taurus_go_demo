@@ -41,6 +41,12 @@ var (
 		Default:  false,
 		Required: true,
 	}
+	FieldStringArrayF = entitysql.Field{
+		Name:     "string_array_f",
+		Primary:  0,
+		Default:  false,
+		Required: true,
+	}
 	FieldBoolArrayF = entitysql.Field{
 		Name:     "bool_array_f",
 		Primary:  0,
@@ -59,6 +65,12 @@ var (
 		Default:  false,
 		Required: true,
 	}
+	FieldJsonF = entitysql.Field{
+		Name:     "json_f",
+		Primary:  0,
+		Default:  false,
+		Required: false,
+	}
 )
 
 var (
@@ -68,8 +80,10 @@ var (
 		FieldBoolF.Name,
 		FieldIntArrayF.Name,
 		FieldIntarray2F.Name,
+		FieldStringArrayF.Name,
 		FieldBoolArrayF.Name,
 		FieldTimeF.Name,
 		FieldTimeArrayF.Name,
+		FieldJsonF.Name,
 	}
 )

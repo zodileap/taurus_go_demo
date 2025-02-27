@@ -21,12 +21,12 @@ const UserTag = "UserTag"
 type User struct {
 	*internal.Dialect
 	tracker    entity.Tracker
-	Authors    *authorEntityBuilder
-	Blogs      *blogEntityBuilder
-	FieldDemos *fieldDemoEntityBuilder
+	Authors    *authorentityBuilder
+	Blogs      *blogentityBuilder
+	FieldDemos *fielddemoentityBuilder
 	// Geos Geo的类型测试
-	Geos  *geoEntityBuilder
-	Posts *postEntityBuilder
+	Geos  *geoentityBuilder
+	Posts *postentityBuilder
 }
 
 type userEntityFlag interface {
@@ -97,17 +97,17 @@ func (d *User) Remove(e userEntityFlag) error {
 }
 
 func (d *User) init() {
-	authorEntityConfig := newAuthorEntityConfig(d.Dialect)
-	blogEntityConfig := newBlogEntityConfig(d.Dialect)
-	fieldDemoEntityConfig := newFieldDemoEntityConfig(d.Dialect)
-	geoEntityConfig := newGeoEntityConfig(d.Dialect)
-	postEntityConfig := newPostEntityConfig(d.Dialect)
+	authorentityConfig := newAuthorEntityConfig(d.Dialect)
+	blogentityConfig := newBlogEntityConfig(d.Dialect)
+	fielddemoentityConfig := newFieldDemoEntityConfig(d.Dialect)
+	geoentityConfig := newGeoEntityConfig(d.Dialect)
+	postentityConfig := newPostEntityConfig(d.Dialect)
 
 	d.Authors = newAuthorEntityBuilder(
-		authorEntityConfig,
+		authorentityConfig,
 		d.tracker,
-		*newPostEntityRelation(
-			postEntityConfig,
+		*newPostentityRelation(
+			postentityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
 					post.ByPrimary,
@@ -128,10 +128,10 @@ func (d *User) init() {
 	d.tracker.Add(d.Authors)
 
 	d.Blogs = newBlogEntityBuilder(
-		blogEntityConfig,
+		blogentityConfig,
 		d.tracker,
-		*newPostEntityRelation(
-			postEntityConfig,
+		*newPostentityRelation(
+			postentityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
 					post.ByPrimary,
@@ -151,17 +151,17 @@ func (d *User) init() {
 	)
 	d.tracker.Add(d.Blogs)
 
-	d.FieldDemos = newFieldDemoEntityBuilder(fieldDemoEntityConfig, d.tracker)
+	d.FieldDemos = newFieldDemoEntityBuilder(fielddemoentityConfig, d.tracker)
 	d.tracker.Add(d.FieldDemos)
 
-	d.Geos = newGeoEntityBuilder(geoEntityConfig, d.tracker)
+	d.Geos = newGeoEntityBuilder(geoentityConfig, d.tracker)
 	d.tracker.Add(d.Geos)
 
 	d.Posts = newPostEntityBuilder(
-		postEntityConfig,
+		postentityConfig,
 		d.tracker,
-		*newBlogEntityRelation(
-			blogEntityConfig,
+		*newBlogentityRelation(
+			blogentityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
 					blog.ByPrimary,
@@ -179,8 +179,8 @@ func (d *User) init() {
 			},
 		),
 
-		*newAuthorEntityRelation(
-			authorEntityConfig,
+		*newAuthorentityRelation(
+			authorentityConfig,
 			entitysql.RelationDesc{
 				Orders: []entitysql.OrderFunc{
 					author.ByPrimary,

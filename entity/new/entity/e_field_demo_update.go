@@ -12,8 +12,8 @@ import (
 	"github.com/yohobala/taurus_go/entity/entitysql"
 )
 
-// fieldDemoEntityUpdate is the update action for the fieldDemoEntity.
-type fieldDemoEntityUpdate struct {
+// FieldDemoEntityUpdate is the update action for the FieldDemoEntity.
+type FieldDemoEntityUpdate struct {
 	config     *internal.Dialect
 	ctx        *entitysql.QueryContext
 	tracker    entity.Tracker
@@ -24,9 +24,9 @@ type fieldDemoEntityUpdate struct {
 	batchIndex []int
 }
 
-// newFieldDemoEntityUpdate creates a new fieldDemoEntityUpdate.
-func newFieldDemoEntityUpdate(c *internal.Dialect, es ...*FieldDemoEntity) *fieldDemoEntityUpdate {
-	return &fieldDemoEntityUpdate{
+// newFieldDemoEntityUpdate creates a new FieldDemoEntityUpdate.
+func newFieldDemoEntityUpdate(c *internal.Dialect, es ...*FieldDemoEntity) *FieldDemoEntityUpdate {
+	return &FieldDemoEntityUpdate{
 		config:     c,
 		ctx:        &entitysql.QueryContext{},
 		es:         es,
@@ -35,11 +35,11 @@ func newFieldDemoEntityUpdate(c *internal.Dialect, es ...*FieldDemoEntity) *fiel
 	}
 }
 
-func (o *fieldDemoEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityUpdate) update(ctx context.Context, tx dialect.Tx) error {
 	return o.sqlUpdate(ctx, tx)
 }
 
-func (o *fieldDemoEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
+func (o *FieldDemoEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) error {
 	var (
 		spec, err = o.updateSpec()
 		res       = o.es
@@ -62,7 +62,7 @@ func (o *fieldDemoEntityUpdate) sqlUpdate(ctx context.Context, tx dialect.Tx) er
 	return entitysql.NewUpdate(ctx, tx, spec)
 }
 
-func (o *fieldDemoEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
+func (o *FieldDemoEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	spec := entitysql.NewUpdateSpec(field_demo.Entity, field_demo.Columns)
 	if len(o.predicates) != len(o.sets) {
 		return nil, entity.Err_0100030005
@@ -74,9 +74,9 @@ func (o *fieldDemoEntityUpdate) updateSpec() (*entitysql.UpdateSpec, error) {
 	return spec, nil
 }
 
-// setEntity 用于在updateSpec中设置[]*fieldDemoEntity的配置，
+// setEntity 用于在updateSpec中设置[]*FieldDemoEntity的配置，
 // 一般来说这个setEntity里的entity都是通过状态追踪，自动添加的。
-func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
+func (o *FieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	predInt64F := &field_demo.PredInt64F{}
 	num := 0
 	for i, e := range o.es {
@@ -89,9 +89,9 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		// 因为判断过predicates和set长度，所以这里默认等长
 		index := len(o.predicates) - 1
 		if i > 0 {
-			o.predicates[index] = append(o.predicates[index], entitysql.Or, predInt64F.EQ(*e.Int64F.Get()))
+			o.predicates[index] = append(o.predicates[index], entitysql.Or, predInt64F.EQ(e.Int64F.Get()))
 		} else {
-			o.predicates[index] = append(o.predicates[index], predInt64F.EQ(*e.Int64F.Get()))
+			o.predicates[index] = append(o.predicates[index], predInt64F.EQ(e.Int64F.Get()))
 		}
 		num++
 		for _, f := range fields {
@@ -106,7 +106,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.Int64F.SqlFormatParam()
 				o.sets[index][field_demo.FieldInt64F.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldVarF.Name.String():
@@ -119,7 +119,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.VarF.SqlFormatParam()
 				o.sets[index][field_demo.FieldVarF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldBoolF.Name.String():
@@ -132,7 +132,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.BoolF.SqlFormatParam()
 				o.sets[index][field_demo.FieldBoolF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldIntArrayF.Name.String():
@@ -145,7 +145,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.IntArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldIntArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldIntarray2F.Name.String():
@@ -158,7 +158,20 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.Intarray2F.SqlFormatParam()
 				o.sets[index][field_demo.FieldIntarray2F.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
+				}
+				num++
+			case field_demo.FieldStringArrayF.Name.String():
+				v, err := e.StringArrayF.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldStringArrayF.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.StringArrayF.SqlFormatParam()
+				o.sets[index][field_demo.FieldStringArrayF.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldBoolArrayF.Name.String():
@@ -171,7 +184,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.BoolArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldBoolArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldTimeF.Name.String():
@@ -184,7 +197,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.TimeF.SqlFormatParam()
 				o.sets[index][field_demo.FieldTimeF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			case field_demo.FieldTimeArrayF.Name.String():
@@ -197,7 +210,20 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldTimeArrayF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predInt64F.EQ(*e.Int64F.Get()),
+					When:  predInt64F.EQ(e.Int64F.Get()),
+				}
+				num++
+			case field_demo.FieldJsonF.Name.String():
+				v, err := e.JsonF.SqlParam(o.config.Driver.Dialect())
+				if err != nil {
+					return err
+				}
+				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
+				fieldSpace.Param = v
+				fieldSpace.ParamFormat = e.JsonF.SqlFormatParam()
+				o.sets[index][field_demo.FieldJsonF.Name.String()] = entitysql.CaseSpec{
+					Field: fieldSpace,
+					When:  predInt64F.EQ(e.Int64F.Get()),
 				}
 				num++
 			}
@@ -213,7 +239,7 @@ func (o *fieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 	return nil
 }
 
-func (o *fieldDemoEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
+func (o *FieldDemoEntityUpdate) mergeArgs(spec *entitysql.UpdateSpec) {
 	for i, end := range o.batchIndex {
 		var begin int
 		if i == 0 {
