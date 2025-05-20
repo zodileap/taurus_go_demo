@@ -6,8 +6,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 
 	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/blog"

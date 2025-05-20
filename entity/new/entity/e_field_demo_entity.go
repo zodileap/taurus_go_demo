@@ -6,26 +6,24 @@ import (
 	"fmt"
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
-	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type FieldDemoEntity struct {
 	internal.Entity `json:"-"`
 	config          *fielddemoentityConfig
-	Int64F          *fieldDemoInt64F       // Int64F Int64 field
-	VarF            *fieldDemoVarF         // VarF Varchar field
-	BoolF           *fieldDemoBoolF        // BoolF Bool field
-	IntArrayF       *fieldDemoIntArrayF    // IntArrayF Int array field
-	Intarray2F      *fieldDemoIntarray2F   // Intarray2F Int array2 field
-	StringArrayF    *fieldDemoStringArrayF // StringArrayF String array field
-	BoolArrayF      *fieldDemoBoolArrayF   // BoolArrayF Bool array field
-	TimeF           *fieldDemoTimeF        // TimeF Time field
-	TimeArrayF      *fieldDemoTimeArrayF   // TimeArrayF Time array field
-	JsonF           *fieldDemoJsonF        // JsonF Json field
+	Int64F          *fieldDemo_Int64F       // Int64F Int64 field
+	VarF            *fieldDemo_VarF         // VarF Varchar field
+	BoolF           *fieldDemo_BoolF        // BoolF Bool field
+	IntArrayF       *fieldDemo_IntArrayF    // IntArrayF Int array field
+	Intarray2F      *fieldDemo_Intarray2F   // Intarray2F Int array2 field
+	StringArrayF    *fieldDemo_StringArrayF // StringArrayF String array field
+	BoolArrayF      *fieldDemo_BoolArrayF   // BoolArrayF Bool array field
+	TimeF           *fieldDemo_TimeF        // TimeF Time field
+	TimeArrayF      *fieldDemo_TimeArrayF   // TimeArrayF Time array field
 }
 
 // fielddemoentityConfig holds the configuration for the FieldDemoEntity.
@@ -56,16 +54,15 @@ func (c *fielddemoentityConfig) New() internal.Entity {
 		},
 	}
 	e.setState(entity.Detached)
-	e.Int64F = newFieldDemoInt64F(e.config)
-	e.VarF = newFieldDemoVarF(e.config)
-	e.BoolF = newFieldDemoBoolF(e.config)
-	e.IntArrayF = newFieldDemoIntArrayF(e.config)
-	e.Intarray2F = newFieldDemoIntarray2F(e.config)
-	e.StringArrayF = newFieldDemoStringArrayF(e.config)
-	e.BoolArrayF = newFieldDemoBoolArrayF(e.config)
-	e.TimeF = newFieldDemoTimeF(e.config)
-	e.TimeArrayF = newFieldDemoTimeArrayF(e.config)
-	e.JsonF = newFieldDemoJsonF(e.config)
+	e.Int64F = newFieldDemo_Int64F(e.config)
+	e.VarF = newFieldDemo_VarF(e.config)
+	e.BoolF = newFieldDemo_BoolF(e.config)
+	e.IntArrayF = newFieldDemo_IntArrayF(e.config)
+	e.Intarray2F = newFieldDemo_Intarray2F(e.config)
+	e.StringArrayF = newFieldDemo_StringArrayF(e.config)
+	e.BoolArrayF = newFieldDemo_BoolArrayF(e.config)
+	e.TimeF = newFieldDemo_TimeF(e.config)
+	e.TimeArrayF = newFieldDemo_TimeArrayF(e.config)
 	return e
 }
 
@@ -77,7 +74,7 @@ func (c *fielddemoentityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *FieldDemoEntity) String() string {
-	return fmt.Sprintf("{ Int64F: %v, VarF: %v, BoolF: %v, IntArrayF: %v, Intarray2F: %v, StringArrayF: %v, BoolArrayF: %v, TimeF: %v, TimeArrayF: %v, JsonF: %v}",
+	return fmt.Sprintf("{ Int64F: %v, VarF: %v, BoolF: %v, IntArrayF: %v, Intarray2F: %v, StringArrayF: %v, BoolArrayF: %v, TimeF: %v, TimeArrayF: %v}",
 		e.Int64F,
 		e.VarF,
 		e.BoolF,
@@ -87,7 +84,6 @@ func (e *FieldDemoEntity) String() string {
 		e.BoolArrayF,
 		e.TimeF,
 		e.TimeArrayF,
-		e.JsonF,
 	)
 }
 
@@ -171,10 +167,6 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 				v := e.TimeArrayF
 				v.Set(*new([]time.Time))
 				args[i] = v
-			case field_demo.FieldJsonF.Name.String():
-				v := e.JsonF
-				v.Set(*new(schema.JsonFStruct))
-				args[i] = v
 			}
 		}
 		return args
@@ -217,10 +209,6 @@ func (e *FieldDemoEntity) scan(fields []entitysql.ScannerField) []any {
 			case field_demo.FieldTimeArrayF.Name.String():
 				v := e.TimeArrayF
 				v.Set(*new([]time.Time))
-				args[i] = v
-			case field_demo.FieldJsonF.Name.String():
-				v := e.JsonF
-				v.Set(*new(schema.JsonFStruct))
 				args[i] = v
 			}
 		}

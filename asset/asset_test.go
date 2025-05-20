@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/yohobala/taurus_go/asset"
+	"github.com/zodileap/taurus_go/asset"
 )
 
 func TestAdd(t *testing.T) {

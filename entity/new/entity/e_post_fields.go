@@ -5,25 +5,25 @@ package entity
 import (
 	"taurus_go_demo/entity/new/entity/post"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
-// postID is ID field
-type postID struct {
+// post_ID is Id field
+type post_ID struct {
 	field.IntStorage[int64]
 	config *postentityConfig
 }
 
-// newpostID creates a new postID
-func newPostID(c *postentityConfig) *postID {
-	t := &postID{}
+// newpost_ID creates a new post_ID
+func newPost_ID(c *postentityConfig) *post_ID {
+	t := &post_ID{}
 	t.config = c
 	return t
 }
 
-// Set sets the value of ID field
-func (t *postID) Set(v int64) {
+// Set sets the value of Id field
+func (t *post_ID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -31,28 +31,28 @@ func (t *postID) Set(v int64) {
 	}
 }
 
-// Get gets the value of ID field
+// Get gets the value of Id field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *postID) Get() int64 {
+func (t *post_ID) Get() int64 {
 	return *t.IntStorage.Get()
 }
 
-// postContent is Content field
-type postContent struct {
+// post_Content is Content field
+type post_Content struct {
 	field.StringStorage[string]
 	config *postentityConfig
 }
 
-// newpostContent creates a new postContent
-func newPostContent(c *postentityConfig) *postContent {
-	t := &postContent{}
+// newpost_Content creates a new post_Content
+func newPost_Content(c *postentityConfig) *post_Content {
+	t := &post_Content{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Content field
-func (t *postContent) Set(v string) {
+func (t *post_Content) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -63,25 +63,25 @@ func (t *postContent) Set(v string) {
 // Get gets the value of Content field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *postContent) Get() string {
+func (t *post_Content) Get() string {
 	return *t.StringStorage.Get()
 }
 
-// postBlogID is BlogID field
-type postBlogID struct {
+// post_BlogID is BlogID field
+type post_BlogID struct {
 	field.IntStorage[int64]
 	config *postentityConfig
 }
 
-// newpostBlogID creates a new postBlogID
-func newPostBlogID(c *postentityConfig) *postBlogID {
-	t := &postBlogID{}
+// newpost_BlogID creates a new post_BlogID
+func newPost_BlogID(c *postentityConfig) *post_BlogID {
+	t := &post_BlogID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of BlogID field
-func (t *postBlogID) Set(v int64) {
+func (t *post_BlogID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -92,25 +92,25 @@ func (t *postBlogID) Set(v int64) {
 // Get gets the value of BlogID field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *postBlogID) Get() int64 {
+func (t *post_BlogID) Get() int64 {
 	return *t.IntStorage.Get()
 }
 
-// postAuthorID is AuthorID field
-type postAuthorID struct {
+// post_AuthorID is AuthorID field
+type post_AuthorID struct {
 	field.IntStorage[int64]
 	config *postentityConfig
 }
 
-// newpostAuthorID creates a new postAuthorID
-func newPostAuthorID(c *postentityConfig) *postAuthorID {
-	t := &postAuthorID{}
+// newpost_AuthorID creates a new post_AuthorID
+func newPost_AuthorID(c *postentityConfig) *post_AuthorID {
+	t := &post_AuthorID{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of AuthorID field
-func (t *postAuthorID) Set(v int64) {
+func (t *post_AuthorID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.postentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -121,6 +121,6 @@ func (t *postAuthorID) Set(v int64) {
 // Get gets the value of AuthorID field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *postAuthorID) Get() int64 {
+func (t *post_AuthorID) Get() int64 {
 	return *t.IntStorage.Get()
 }

@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yohobala/taurus_go/testutil/unit"
-	"github.com/yohobala/taurus_go/tlog"
+	"github.com/zodileap/taurus_go/testutil/unit"
+	"github.com/zodileap/taurus_go/tlog"
 )
 
 func TestUpdate(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // BlogEntityQuery is the query action for the BlogEntity.
@@ -170,22 +170,22 @@ func (o *BlogEntityQuery) querySpec() *entitysql.QuerySpec {
 	for i := range s.Entity.Columns {
 		switch blog.Columns[i] {
 		case blog.FieldID.Name:
-			var a *blogID = new(blogID)
+			var a *blog_ID = new(blog_ID)
 			fieldSpace := entitysql.NewFieldSpec(blog.FieldID.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case blog.FieldUUID.Name:
-			var a *blogUUID = new(blogUUID)
+			var a *blog_UUID = new(blog_UUID)
 			fieldSpace := entitysql.NewFieldSpec(blog.FieldUUID.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case blog.FieldDescription.Name:
-			var a *blogDescription = new(blogDescription)
+			var a *blog_Description = new(blog_Description)
 			fieldSpace := entitysql.NewFieldSpec(blog.FieldDescription.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case blog.FieldCreatedTime.Name:
-			var a *blogCreatedTime = new(blogCreatedTime)
+			var a *blog_CreatedTime = new(blog_CreatedTime)
 			fieldSpace := entitysql.NewFieldSpec(blog.FieldCreatedTime.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace

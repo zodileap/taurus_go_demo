@@ -5,25 +5,25 @@ package entity
 import (
 	"taurus_go_demo/entity/new/entity/author"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
-// authorID is ID field
-type authorID struct {
+// author_ID is Id field
+type author_ID struct {
 	field.IntStorage[int64]
 	config *authorentityConfig
 }
 
-// newauthorID creates a new authorID
-func newAuthorID(c *authorentityConfig) *authorID {
-	t := &authorID{}
+// newauthor_ID creates a new author_ID
+func newAuthor_ID(c *authorentityConfig) *author_ID {
+	t := &author_ID{}
 	t.config = c
 	return t
 }
 
-// Set sets the value of ID field
-func (t *authorID) Set(v int64) {
+// Set sets the value of Id field
+func (t *author_ID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.authorentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -31,28 +31,28 @@ func (t *authorID) Set(v int64) {
 	}
 }
 
-// Get gets the value of ID field
+// Get gets the value of Id field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *authorID) Get() int64 {
+func (t *author_ID) Get() int64 {
 	return *t.IntStorage.Get()
 }
 
-// authorName is Name field
-type authorName struct {
+// author_Name is Name field
+type author_Name struct {
 	field.StringStorage[string]
 	config *authorentityConfig
 }
 
-// newauthorName creates a new authorName
-func newAuthorName(c *authorentityConfig) *authorName {
-	t := &authorName{}
+// newauthor_Name creates a new author_Name
+func newAuthor_Name(c *authorentityConfig) *author_Name {
+	t := &author_Name{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Name field
-func (t *authorName) Set(v string) {
+func (t *author_Name) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.authorentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -63,6 +63,6 @@ func (t *authorName) Set(v string) {
 // Get gets the value of Name field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *authorName) Get() string {
+func (t *author_Name) Get() string {
 	return *t.StringStorage.Get()
 }

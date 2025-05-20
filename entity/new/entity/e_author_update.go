@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // AuthorEntityUpdate is the update action for the AuthorEntity.
@@ -89,24 +89,24 @@ func (o *AuthorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		// 因为判断过predicates和set长度，所以这里默认等长
 		index := len(o.predicates) - 1
 		if i > 0 {
-			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(e.Id.Get()))
 		} else {
-			o.predicates[index] = append(o.predicates[index], predID.EQ(e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], predID.EQ(e.Id.Get()))
 		}
 		num++
 		for _, f := range fields {
 			switch f {
 			case author.FieldID.Name.String():
-				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Id.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return err
 				}
 				fieldSpace := entitysql.NewFieldSpec(author.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Id.SqlFormatParam()
 				o.sets[index][author.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			case author.FieldName.Name.String():
@@ -119,7 +119,7 @@ func (o *AuthorEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.Name.SqlFormatParam()
 				o.sets[index][author.FieldName.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			}

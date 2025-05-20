@@ -7,17 +7,17 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 	"taurus_go_demo/entity/new/entity/post"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type PostEntity struct {
 	internal.Entity `json:"-"`
 	config          *postentityConfig
-	ID              *postID // ID Post primary key
-	Content         *postContent
-	BlogID          *postBlogID
-	AuthorID        *postAuthorID
+	Id              *post_ID // Id Post primary key
+	Content         *post_Content
+	BlogID          *post_BlogID
+	AuthorID        *post_AuthorID
 
 	Blog *BlogEntity `json:"blog,omitempty"`
 
@@ -52,10 +52,10 @@ func (c *postentityConfig) New() internal.Entity {
 		},
 	}
 	e.setState(entity.Detached)
-	e.ID = newPostID(e.config)
-	e.Content = newPostContent(e.config)
-	e.BlogID = newPostBlogID(e.config)
-	e.AuthorID = newPostAuthorID(e.config)
+	e.Id = newPost_ID(e.config)
+	e.Content = newPost_Content(e.config)
+	e.BlogID = newPost_BlogID(e.config)
+	e.AuthorID = newPost_AuthorID(e.config)
 	return e
 }
 
@@ -67,8 +67,8 @@ func (c *postentityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *PostEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Content: %v, BlogID: %v, AuthorID: %v, Blog: %v, Author: %v}",
-		e.ID,
+	return fmt.Sprintf("{ Id: %v, Content: %v, BlogID: %v, AuthorID: %v, Blog: %v, Author: %v}",
+		e.Id,
 		e.Content,
 		e.BlogID,
 		e.AuthorID,
@@ -116,7 +116,7 @@ func (e *PostEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range post.Columns {
 			switch c.String() {
 			case post.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case post.FieldContent.Name.String():
@@ -139,7 +139,7 @@ func (e *PostEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case post.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case post.FieldContent.Name.String():
@@ -188,7 +188,7 @@ func mergePostEntity(es []*PostEntity, e *PostEntity) []*PostEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if v.ID.Get() == e.ID.Get() {
+		if v.Id.Get() == e.Id.Get() {
 			blogs := mergeBlogEntity([]*BlogEntity{v.Blog}, e.Blog)
 			if len(blogs) > 0 {
 				v.Blog = blogs[0]

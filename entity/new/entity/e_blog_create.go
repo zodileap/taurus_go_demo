@@ -7,8 +7,8 @@ import (
 	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // BlogEntityCreate is the create action for the BlogEntity.
@@ -69,26 +69,26 @@ func (o *BlogEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range blog.Columns {
 			switch blog.Columns[j] {
 			case blog.FieldID.Name:
-				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Id.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return nil, err
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Id.SqlFormatParam()
 				fieldSpace.Default = true
 				fields = append(fields, &fieldSpace)
 			case blog.FieldUUID.Name:
-				v, err := e.UUID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Uuid.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return nil, err
 				}
-				if err := spec.CheckRequired(o.config.Driver.Dialect(), blog.FieldUUID.Name, e.UUID); err != nil {
+				if err := spec.CheckRequired(o.config.Driver.Dialect(), blog.FieldUUID.Name, e.Uuid); err != nil {
 					return nil, err
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldUUID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.UUID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Uuid.SqlFormatParam()
 				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			case blog.FieldDescription.Name:

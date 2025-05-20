@@ -5,26 +5,26 @@ package entity
 import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
-// geoDemoID is ID field
-type geoDemoID struct {
+// geoDemo_ID is Id field
+type geoDemo_ID struct {
 	field.IntStorage[int64]
 	config *geoentityConfig
 }
 
-// newgeoDemoID creates a new geoDemoID
-func newGeoDemoID(c *geoentityConfig) *geoDemoID {
-	t := &geoDemoID{}
+// newgeoDemo_ID creates a new geoDemo_ID
+func newGeoDemo_ID(c *geoentityConfig) *geoDemo_ID {
+	t := &geoDemo_ID{}
 	t.config = c
 	return t
 }
 
-// Set sets the value of ID field
-func (t *geoDemoID) Set(v int64) {
+// Set sets the value of Id field
+func (t *geoDemo_ID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -32,28 +32,28 @@ func (t *geoDemoID) Set(v int64) {
 	}
 }
 
-// Get gets the value of ID field
+// Get gets the value of Id field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *geoDemoID) Get() int64 {
+func (t *geoDemo_ID) Get() int64 {
 	return *t.IntStorage.Get()
 }
 
-// geoDemoPoint is Point field
-type geoDemoPoint struct {
+// geoDemo_Point is Point field
+type geoDemo_Point struct {
 	geo.GeometryStorage[*geo.Point, geo.S4326, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoPoint creates a new geoDemoPoint
-func newGeoDemoPoint(c *geoentityConfig) *geoDemoPoint {
-	t := &geoDemoPoint{}
+// newgeoDemo_Point creates a new geoDemo_Point
+func newGeoDemo_Point(c *geoentityConfig) *geoDemo_Point {
+	t := &geoDemo_Point{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Point field
-func (t *geoDemoPoint) Set(v *geo.Point) {
+func (t *geoDemo_Point) Set(v *geo.Point) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -65,25 +65,25 @@ func (t *geoDemoPoint) Set(v *geo.Point) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoPoint) Get() **geo.Point {
+func (t *geoDemo_Point) Get() **geo.Point {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoLineString is LineString field
-type geoDemoLineString struct {
+// geoDemo_LineString is LineString field
+type geoDemo_LineString struct {
 	geo.GeometryStorage[*geo.LineString, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoLineString creates a new geoDemoLineString
-func newGeoDemoLineString(c *geoentityConfig) *geoDemoLineString {
-	t := &geoDemoLineString{}
+// newgeoDemo_LineString creates a new geoDemo_LineString
+func newGeoDemo_LineString(c *geoentityConfig) *geoDemo_LineString {
+	t := &geoDemo_LineString{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of LineString field
-func (t *geoDemoLineString) Set(v *geo.LineString) {
+func (t *geoDemo_LineString) Set(v *geo.LineString) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -95,25 +95,25 @@ func (t *geoDemoLineString) Set(v *geo.LineString) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoLineString) Get() **geo.LineString {
+func (t *geoDemo_LineString) Get() **geo.LineString {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoPolygon is Polygon field
-type geoDemoPolygon struct {
+// geoDemo_Polygon is Polygon field
+type geoDemo_Polygon struct {
 	geo.GeometryStorage[*geo.Polygon, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoPolygon creates a new geoDemoPolygon
-func newGeoDemoPolygon(c *geoentityConfig) *geoDemoPolygon {
-	t := &geoDemoPolygon{}
+// newgeoDemo_Polygon creates a new geoDemo_Polygon
+func newGeoDemo_Polygon(c *geoentityConfig) *geoDemo_Polygon {
+	t := &geoDemo_Polygon{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Polygon field
-func (t *geoDemoPolygon) Set(v *geo.Polygon) {
+func (t *geoDemo_Polygon) Set(v *geo.Polygon) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -125,25 +125,25 @@ func (t *geoDemoPolygon) Set(v *geo.Polygon) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoPolygon) Get() **geo.Polygon {
+func (t *geoDemo_Polygon) Get() **geo.Polygon {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiPoint is MultiPoint field
-type geoDemoMultiPoint struct {
+// geoDemo_MultiPoint is MultiPoint field
+type geoDemo_MultiPoint struct {
 	geo.GeometryStorage[*geo.MultiPoint, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiPoint creates a new geoDemoMultiPoint
-func newGeoDemoMultiPoint(c *geoentityConfig) *geoDemoMultiPoint {
-	t := &geoDemoMultiPoint{}
+// newgeoDemo_MultiPoint creates a new geoDemo_MultiPoint
+func newGeoDemo_MultiPoint(c *geoentityConfig) *geoDemo_MultiPoint {
+	t := &geoDemo_MultiPoint{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiPoint field
-func (t *geoDemoMultiPoint) Set(v *geo.MultiPoint) {
+func (t *geoDemo_MultiPoint) Set(v *geo.MultiPoint) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -155,25 +155,25 @@ func (t *geoDemoMultiPoint) Set(v *geo.MultiPoint) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiPoint) Get() **geo.MultiPoint {
+func (t *geoDemo_MultiPoint) Get() **geo.MultiPoint {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiLineString is MultiLineString field
-type geoDemoMultiLineString struct {
+// geoDemo_MultiLineString is MultiLineString field
+type geoDemo_MultiLineString struct {
 	geo.GeometryStorage[*geo.MultiLineString, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiLineString creates a new geoDemoMultiLineString
-func newGeoDemoMultiLineString(c *geoentityConfig) *geoDemoMultiLineString {
-	t := &geoDemoMultiLineString{}
+// newgeoDemo_MultiLineString creates a new geoDemo_MultiLineString
+func newGeoDemo_MultiLineString(c *geoentityConfig) *geoDemo_MultiLineString {
+	t := &geoDemo_MultiLineString{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiLineString field
-func (t *geoDemoMultiLineString) Set(v *geo.MultiLineString) {
+func (t *geoDemo_MultiLineString) Set(v *geo.MultiLineString) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -185,25 +185,25 @@ func (t *geoDemoMultiLineString) Set(v *geo.MultiLineString) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiLineString) Get() **geo.MultiLineString {
+func (t *geoDemo_MultiLineString) Get() **geo.MultiLineString {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiPolygon is MultiPolygon field
-type geoDemoMultiPolygon struct {
+// geoDemo_MultiPolygon is MultiPolygon field
+type geoDemo_MultiPolygon struct {
 	geo.GeometryStorage[*geo.MultiPolygon, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiPolygon creates a new geoDemoMultiPolygon
-func newGeoDemoMultiPolygon(c *geoentityConfig) *geoDemoMultiPolygon {
-	t := &geoDemoMultiPolygon{}
+// newgeoDemo_MultiPolygon creates a new geoDemo_MultiPolygon
+func newGeoDemo_MultiPolygon(c *geoentityConfig) *geoDemo_MultiPolygon {
+	t := &geoDemo_MultiPolygon{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiPolygon field
-func (t *geoDemoMultiPolygon) Set(v *geo.MultiPolygon) {
+func (t *geoDemo_MultiPolygon) Set(v *geo.MultiPolygon) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -215,25 +215,25 @@ func (t *geoDemoMultiPolygon) Set(v *geo.MultiPolygon) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiPolygon) Get() **geo.MultiPolygon {
+func (t *geoDemo_MultiPolygon) Get() **geo.MultiPolygon {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoCircularString is CircularString field
-type geoDemoCircularString struct {
+// geoDemo_CircularString is CircularString field
+type geoDemo_CircularString struct {
 	geo.GeometryStorage[*geo.CircularString, geo.SDefault, geo.GeomFromText]
 	config *geoentityConfig
 }
 
-// newgeoDemoCircularString creates a new geoDemoCircularString
-func newGeoDemoCircularString(c *geoentityConfig) *geoDemoCircularString {
-	t := &geoDemoCircularString{}
+// newgeoDemo_CircularString creates a new geoDemo_CircularString
+func newGeoDemo_CircularString(c *geoentityConfig) *geoDemo_CircularString {
+	t := &geoDemo_CircularString{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of CircularString field
-func (t *geoDemoCircularString) Set(v *geo.CircularString) {
+func (t *geoDemo_CircularString) Set(v *geo.CircularString) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -245,25 +245,25 @@ func (t *geoDemoCircularString) Set(v *geo.CircularString) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoCircularString) Get() **geo.CircularString {
+func (t *geoDemo_CircularString) Get() **geo.CircularString {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoPointJson is PointJson field
-type geoDemoPointJson struct {
+// geoDemo_PointJson is PointJson field
+type geoDemo_PointJson struct {
 	geo.GeometryStorage[*geo.Point, geo.S4326, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoPointJson creates a new geoDemoPointJson
-func newGeoDemoPointJson(c *geoentityConfig) *geoDemoPointJson {
-	t := &geoDemoPointJson{}
+// newgeoDemo_PointJson creates a new geoDemo_PointJson
+func newGeoDemo_PointJson(c *geoentityConfig) *geoDemo_PointJson {
+	t := &geoDemo_PointJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of PointJson field
-func (t *geoDemoPointJson) Set(v *geo.Point) {
+func (t *geoDemo_PointJson) Set(v *geo.Point) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -275,25 +275,25 @@ func (t *geoDemoPointJson) Set(v *geo.Point) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoPointJson) Get() **geo.Point {
+func (t *geoDemo_PointJson) Get() **geo.Point {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoLineStringJson is LineStringJson field
-type geoDemoLineStringJson struct {
+// geoDemo_LineStringJson is LineStringJson field
+type geoDemo_LineStringJson struct {
 	geo.GeometryStorage[*geo.LineString, geo.SDefault, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoLineStringJson creates a new geoDemoLineStringJson
-func newGeoDemoLineStringJson(c *geoentityConfig) *geoDemoLineStringJson {
-	t := &geoDemoLineStringJson{}
+// newgeoDemo_LineStringJson creates a new geoDemo_LineStringJson
+func newGeoDemo_LineStringJson(c *geoentityConfig) *geoDemo_LineStringJson {
+	t := &geoDemo_LineStringJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of LineStringJson field
-func (t *geoDemoLineStringJson) Set(v *geo.LineString) {
+func (t *geoDemo_LineStringJson) Set(v *geo.LineString) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -305,25 +305,25 @@ func (t *geoDemoLineStringJson) Set(v *geo.LineString) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoLineStringJson) Get() **geo.LineString {
+func (t *geoDemo_LineStringJson) Get() **geo.LineString {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoPolygonJson is PolygonJson field
-type geoDemoPolygonJson struct {
+// geoDemo_PolygonJson is PolygonJson field
+type geoDemo_PolygonJson struct {
 	geo.GeometryStorage[*geo.Polygon, geo.SDefault, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoPolygonJson creates a new geoDemoPolygonJson
-func newGeoDemoPolygonJson(c *geoentityConfig) *geoDemoPolygonJson {
-	t := &geoDemoPolygonJson{}
+// newgeoDemo_PolygonJson creates a new geoDemo_PolygonJson
+func newGeoDemo_PolygonJson(c *geoentityConfig) *geoDemo_PolygonJson {
+	t := &geoDemo_PolygonJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of PolygonJson field
-func (t *geoDemoPolygonJson) Set(v *geo.Polygon) {
+func (t *geoDemo_PolygonJson) Set(v *geo.Polygon) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -335,25 +335,25 @@ func (t *geoDemoPolygonJson) Set(v *geo.Polygon) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoPolygonJson) Get() **geo.Polygon {
+func (t *geoDemo_PolygonJson) Get() **geo.Polygon {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiPointJson is MultiPointJson field
-type geoDemoMultiPointJson struct {
+// geoDemo_MultiPointJson is MultiPointJson field
+type geoDemo_MultiPointJson struct {
 	geo.GeometryStorage[*geo.MultiPoint, geo.SDefault, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiPointJson creates a new geoDemoMultiPointJson
-func newGeoDemoMultiPointJson(c *geoentityConfig) *geoDemoMultiPointJson {
-	t := &geoDemoMultiPointJson{}
+// newgeoDemo_MultiPointJson creates a new geoDemo_MultiPointJson
+func newGeoDemo_MultiPointJson(c *geoentityConfig) *geoDemo_MultiPointJson {
+	t := &geoDemo_MultiPointJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiPointJson field
-func (t *geoDemoMultiPointJson) Set(v *geo.MultiPoint) {
+func (t *geoDemo_MultiPointJson) Set(v *geo.MultiPoint) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -365,25 +365,25 @@ func (t *geoDemoMultiPointJson) Set(v *geo.MultiPoint) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiPointJson) Get() **geo.MultiPoint {
+func (t *geoDemo_MultiPointJson) Get() **geo.MultiPoint {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiLineStringJson is MultiLineStringJson field
-type geoDemoMultiLineStringJson struct {
+// geoDemo_MultiLineStringJson is MultiLineStringJson field
+type geoDemo_MultiLineStringJson struct {
 	geo.GeometryStorage[*geo.MultiLineString, geo.SDefault, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiLineStringJson creates a new geoDemoMultiLineStringJson
-func newGeoDemoMultiLineStringJson(c *geoentityConfig) *geoDemoMultiLineStringJson {
-	t := &geoDemoMultiLineStringJson{}
+// newgeoDemo_MultiLineStringJson creates a new geoDemo_MultiLineStringJson
+func newGeoDemo_MultiLineStringJson(c *geoentityConfig) *geoDemo_MultiLineStringJson {
+	t := &geoDemo_MultiLineStringJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiLineStringJson field
-func (t *geoDemoMultiLineStringJson) Set(v *geo.MultiLineString) {
+func (t *geoDemo_MultiLineStringJson) Set(v *geo.MultiLineString) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -395,25 +395,25 @@ func (t *geoDemoMultiLineStringJson) Set(v *geo.MultiLineString) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiLineStringJson) Get() **geo.MultiLineString {
+func (t *geoDemo_MultiLineStringJson) Get() **geo.MultiLineString {
 	return t.GeometryStorage.Get()
 }
 
-// geoDemoMultiPolygonJson is MultiPolygonJson field
-type geoDemoMultiPolygonJson struct {
+// geoDemo_MultiPolygonJson is MultiPolygonJson field
+type geoDemo_MultiPolygonJson struct {
 	geo.GeometryStorage[*geo.MultiPolygon, geo.SDefault, geo.GeomFromGeoJSON]
 	config *geoentityConfig
 }
 
-// newgeoDemoMultiPolygonJson creates a new geoDemoMultiPolygonJson
-func newGeoDemoMultiPolygonJson(c *geoentityConfig) *geoDemoMultiPolygonJson {
-	t := &geoDemoMultiPolygonJson{}
+// newgeoDemo_MultiPolygonJson creates a new geoDemo_MultiPolygonJson
+func newGeoDemo_MultiPolygonJson(c *geoentityConfig) *geoDemo_MultiPolygonJson {
+	t := &geoDemo_MultiPolygonJson{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of MultiPolygonJson field
-func (t *geoDemoMultiPolygonJson) Set(v *geo.MultiPolygon) {
+func (t *geoDemo_MultiPolygonJson) Set(v *geo.MultiPolygon) {
 	t.GeometryStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.geoentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -425,6 +425,6 @@ func (t *geoDemoMultiPolygonJson) Set(v *geo.MultiPolygon) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *geoDemoMultiPolygonJson) Get() **geo.MultiPolygon {
+func (t *geoDemo_MultiPolygonJson) Get() **geo.MultiPolygon {
 	return t.GeometryStorage.Get()
 }

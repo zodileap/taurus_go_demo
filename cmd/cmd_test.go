@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/yohobala/taurus_go/cmd"
+	"github.com/zodileap/taurus_go/cmd"
 )
 
 func TestNew(t *testing.T) {

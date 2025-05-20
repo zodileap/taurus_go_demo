@@ -5,8 +5,8 @@ package geo_demo
 import (
 	"fmt"
 
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // Geo provides an interface for the Predicate structure to integrate the geospatial query capabilities of the PostGIS extension.

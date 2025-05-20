@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // FieldDemoEntityUpdate is the update action for the FieldDemoEntity.
@@ -209,19 +209,6 @@ func (o *FieldDemoEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
 				o.sets[index][field_demo.FieldTimeArrayF.Name.String()] = entitysql.CaseSpec{
-					Field: fieldSpace,
-					When:  predInt64F.EQ(e.Int64F.Get()),
-				}
-				num++
-			case field_demo.FieldJsonF.Name.String():
-				v, err := e.JsonF.SqlParam(o.config.Driver.Dialect())
-				if err != nil {
-					return err
-				}
-				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
-				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.JsonF.SqlFormatParam()
-				o.sets[index][field_demo.FieldJsonF.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
 					When:  predInt64F.EQ(e.Int64F.Get()),
 				}

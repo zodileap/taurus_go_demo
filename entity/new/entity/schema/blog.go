@@ -1,14 +1,14 @@
 package schema
 
 import (
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
 type BlogEntity struct {
 	entity.Entity
-	ID          *field.Int64 `json:"id"`
-	UUID        *field.UUID
+	Id          *field.Int64 `json:"id"`
+	Uuid        *field.Uuid
 	Description *field.Varchar
 	CreatedTime *field.Timestamptz
 }
@@ -21,15 +21,15 @@ func (e *BlogEntity) Config() entity.EntityConfig {
 
 func (e *BlogEntity) Fields() []entity.FieldBuilder {
 	return []entity.FieldBuilder{
-		e.ID.Name("id").Primary(1).Sequence(entity.NewSequence("blog_id_seq")).Comment("Blog primary key").Locked(),
-		e.UUID.Required().Name("uuid"),
+		e.Id.Name("id").Primary(1).Sequence(entity.NewSequence("blog_id_seq")).Comment("Blog primary key").Locked(),
+		e.Uuid.Required().Name("uuid"),
 		e.CreatedTime.Default("CURRENT_TIMESTAMP"),
 	}
 }
 
 type PostEntity struct {
 	entity.Entity
-	ID       *field.Int64
+	Id       *field.Int64
 	Content  *field.Varchar
 	BlogID   *field.Int64
 	AuthorID *field.Int64
@@ -43,7 +43,7 @@ func (e *PostEntity) Config() entity.EntityConfig {
 
 func (e *PostEntity) Fields() []entity.FieldBuilder {
 	return []entity.FieldBuilder{
-		e.ID.Name("id").Primary(1).Sequence(entity.NewSequence("post_id_seq")).Comment("Post primary key").Locked(),
+		e.Id.Name("id").Primary(1).Sequence(entity.NewSequence("post_id_seq")).Comment("Post primary key").Locked(),
 		e.Content.Required().Name("content"),
 		e.BlogID.Required().Name("blog_id"),
 		e.AuthorID.Required().Name("author_id"),
@@ -52,7 +52,7 @@ func (e *PostEntity) Fields() []entity.FieldBuilder {
 
 type AuthorEntity struct {
 	entity.Entity
-	ID   *field.Int64
+	Id   *field.Int64
 	Name *field.Varchar
 }
 
@@ -64,7 +64,7 @@ func (e *AuthorEntity) Config() entity.EntityConfig {
 
 func (e *AuthorEntity) Fields() []entity.FieldBuilder {
 	return []entity.FieldBuilder{
-		e.ID.Name("id").Primary(1).Sequence(entity.NewSequence("author_id_seq")).Comment("Author primary key").Locked(),
+		e.Id.Name("id").Primary(1).Sequence(entity.NewSequence("author_id_seq")).Comment("Author primary key").Locked(),
 		e.Name.Required().Name("name"),
 	}
 }
@@ -85,7 +85,6 @@ type FieldDemoEntity struct {
 	BoolArrayF   *field.BoolA1
 	TimeF        *field.Timestamptz
 	TimeArrayF   *field.TimestamptzA1
-	JsonF        *field.JSON[JsonFStruct]
 }
 
 func (e *FieldDemoEntity) Config() entity.EntityConfig {
@@ -105,6 +104,5 @@ func (e *FieldDemoEntity) Fields() []entity.FieldBuilder {
 		e.BoolArrayF.Required().Name("bool_array_f").Comment("Bool array field"),
 		e.TimeF.Required().Name("time_f").Comment("Time field"),
 		e.TimeArrayF.Required().Name("time_array_f").Comment("Time array field"),
-		e.JsonF.Name("json_f").Comment("Json field"),
 	}
 }

@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 	"taurus_go_demo/entity/new/entity/post"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // postentityBuilder is a builder for the PostEntity entity.
@@ -18,7 +18,7 @@ import (
 type postentityBuilder struct {
 	config   *postentityConfig
 	tracker  entity.Tracker
-	ID       post.PredID // ID Post primary key
+	Id       post.PredID // Id Post primary key
 	Content  post.PredContent
 	BlogID   post.PredBlogID
 	AuthorID post.PredAuthorID

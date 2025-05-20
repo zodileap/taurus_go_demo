@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // FieldDemoEntityQuery is the query action for the FieldDemoEntity.
@@ -170,53 +170,48 @@ func (o *FieldDemoEntityQuery) querySpec() *entitysql.QuerySpec {
 	for i := range s.Entity.Columns {
 		switch field_demo.Columns[i] {
 		case field_demo.FieldInt64F.Name:
-			var a *fieldDemoInt64F = new(fieldDemoInt64F)
+			var a *fieldDemo_Int64F = new(fieldDemo_Int64F)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldInt64F.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldVarF.Name:
-			var a *fieldDemoVarF = new(fieldDemoVarF)
+			var a *fieldDemo_VarF = new(fieldDemo_VarF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldVarF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldBoolF.Name:
-			var a *fieldDemoBoolF = new(fieldDemoBoolF)
+			var a *fieldDemo_BoolF = new(fieldDemo_BoolF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldIntArrayF.Name:
-			var a *fieldDemoIntArrayF = new(fieldDemoIntArrayF)
+			var a *fieldDemo_IntArrayF = new(fieldDemo_IntArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntArrayF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldIntarray2F.Name:
-			var a *fieldDemoIntarray2F = new(fieldDemoIntarray2F)
+			var a *fieldDemo_Intarray2F = new(fieldDemo_Intarray2F)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldIntarray2F.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldStringArrayF.Name:
-			var a *fieldDemoStringArrayF = new(fieldDemoStringArrayF)
+			var a *fieldDemo_StringArrayF = new(fieldDemo_StringArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldStringArrayF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldBoolArrayF.Name:
-			var a *fieldDemoBoolArrayF = new(fieldDemoBoolArrayF)
+			var a *fieldDemo_BoolArrayF = new(fieldDemo_BoolArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldBoolArrayF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldTimeF.Name:
-			var a *fieldDemoTimeF = new(fieldDemoTimeF)
+			var a *fieldDemo_TimeF = new(fieldDemo_TimeF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case field_demo.FieldTimeArrayF.Name:
-			var a *fieldDemoTimeArrayF = new(fieldDemoTimeArrayF)
+			var a *fieldDemo_TimeArrayF = new(fieldDemo_TimeArrayF)
 			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
-			fieldSpace.NameFormat = a.SqlSelectFormat()
-			s.Entity.Columns[i] = fieldSpace
-		case field_demo.FieldJsonF.Name:
-			var a *fieldDemoJsonF = new(fieldDemoJsonF)
-			fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		}

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/yohobala/taurus_go/testutil/unit"
+	"github.com/zodileap/taurus_go/testutil/unit"
 
 	schema "taurus_go_demo/entity/new/entity/schema"
 )
@@ -29,7 +29,7 @@ func TestCreate(t *testing.T) {
 
 		err = db.Save(ctx)
 		unit.Must(t, err)
-		fmt.Print(u.ID)
+		fmt.Print(u.Id)
 	})
 
 	// 创建多个实体。

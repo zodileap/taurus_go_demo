@@ -6,8 +6,8 @@ import (
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 
-	e "github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
+	e "github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
 
 	entity "taurus_go_demo/entity/new/entity"
 )

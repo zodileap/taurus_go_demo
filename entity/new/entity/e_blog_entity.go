@@ -8,17 +8,17 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 	"time"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type BlogEntity struct {
 	internal.Entity `json:"-"`
 	config          *blogentityConfig
-	ID              *blogID `json:"id"` // ID Blog primary key
-	UUID            *blogUUID
-	Description     *blogDescription
-	CreatedTime     *blogCreatedTime
+	Id              *blog_ID `json:"id"` // Id Blog primary key
+	Uuid            *blog_UUID
+	Description     *blog_Description
+	CreatedTime     *blog_CreatedTime
 
 	Posts []*PostEntity `json:"posts,omitempty"`
 }
@@ -51,10 +51,10 @@ func (c *blogentityConfig) New() internal.Entity {
 		},
 	}
 	e.setState(entity.Detached)
-	e.ID = newBlogID(e.config)
-	e.UUID = newBlogUUID(e.config)
-	e.Description = newBlogDescription(e.config)
-	e.CreatedTime = newBlogCreatedTime(e.config)
+	e.Id = newBlog_ID(e.config)
+	e.Uuid = newBlog_UUID(e.config)
+	e.Description = newBlog_Description(e.config)
+	e.CreatedTime = newBlog_CreatedTime(e.config)
 	return e
 }
 
@@ -66,9 +66,9 @@ func (c *blogentityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *BlogEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, UUID: %v, Description: %v, CreatedTime: %v, Posts: %v}",
-		e.ID,
-		e.UUID,
+	return fmt.Sprintf("{ Id: %v, Uuid: %v, Description: %v, CreatedTime: %v, Posts: %v}",
+		e.Id,
+		e.Uuid,
 		e.Description,
 		e.CreatedTime,
 		e.Posts,
@@ -88,7 +88,7 @@ func (e *BlogEntity) remove() error {
 // create creates a new BlogEntity and adds tracking.
 func (e *BlogEntity) create(uuid string, options ...func(*BlogEntity)) (*BlogEntity, error) {
 	e.setState(entity.Added)
-	e.UUID.Set(uuid)
+	e.Uuid.Set(uuid)
 	for _, option := range options {
 		option(e)
 	}
@@ -112,11 +112,11 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range blog.Columns {
 			switch c.String() {
 			case blog.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case blog.FieldUUID.Name.String():
-				v := e.UUID
+				v := e.Uuid
 				v.Set(*new(string))
 				args[i] = v
 			case blog.FieldDescription.Name.String():
@@ -135,11 +135,11 @@ func (e *BlogEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case blog.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case blog.FieldUUID.Name.String():
-				v := e.UUID
+				v := e.Uuid
 				v.Set(*new(string))
 				args[i] = v
 			case blog.FieldDescription.Name.String():
@@ -177,7 +177,7 @@ func mergeBlogEntity(es []*BlogEntity, e *BlogEntity) []*BlogEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if v.ID.Get() == e.ID.Get() {
+		if v.Id.Get() == e.Id.Get() {
 			for _, post := range e.Posts {
 				posts := mergePostEntity(v.Posts, post)
 				if len(posts) > 0 {

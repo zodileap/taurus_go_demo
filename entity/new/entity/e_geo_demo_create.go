@@ -7,8 +7,8 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // GeoEntityCreate is the create action for the GeoEntity.
@@ -68,13 +68,13 @@ func (o *GeoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range geo_demo.Columns {
 			switch geo_demo.Columns[j] {
 			case geo_demo.FieldID.Name:
-				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Id.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return nil, err
 				}
 				fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Id.SqlFormatParam()
 				fieldSpace.Default = true
 				fields = append(fields, &fieldSpace)
 			case geo_demo.FieldPoint.Name:

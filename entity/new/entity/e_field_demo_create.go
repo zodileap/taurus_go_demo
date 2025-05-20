@@ -7,8 +7,8 @@ import (
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // FieldDemoEntityCreate is the create action for the FieldDemoEntity.
@@ -180,16 +180,6 @@ func (o *FieldDemoEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldTimeArrayF.Name)
 				fieldSpace.Param = v
 				fieldSpace.ParamFormat = e.TimeArrayF.SqlFormatParam()
-				fieldSpace.Default = false
-				fields = append(fields, &fieldSpace)
-			case field_demo.FieldJsonF.Name:
-				v, err := e.JsonF.SqlParam(o.config.Driver.Dialect())
-				if err != nil {
-					return nil, err
-				}
-				fieldSpace := entitysql.NewFieldSpec(field_demo.FieldJsonF.Name)
-				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.JsonF.SqlFormatParam()
 				fieldSpace.Default = false
 				fields = append(fields, &fieldSpace)
 			}

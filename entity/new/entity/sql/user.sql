@@ -6,6 +6,12 @@
 */
 
 -- ********
+-- EXTENSION
+-- ********
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
+-- ********
 -- Delete Foreign Key
 -- ********
 DO $$
@@ -60,6 +66,13 @@ $$;
 -- ********
 DO $$ 
 BEGIN     
+    -- 创建基础序列
+    CREATE SEQUENCE IF NOT EXISTS "public".author_id_seq
+        INCREMENT 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        START 1
+        CACHE 1;
     -- 创建随机种子序列
     CREATE SEQUENCE IF NOT EXISTS "public"."author_id_seq_seed"
     INCREMENT 1
@@ -237,6 +250,13 @@ $$;
 -- ********
 DO $$ 
 BEGIN     
+    -- 创建基础序列
+    CREATE SEQUENCE IF NOT EXISTS "public".blog_id_seq
+        INCREMENT 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        START 1
+        CACHE 1;
     -- 创建随机种子序列
     CREATE SEQUENCE IF NOT EXISTS "public"."blog_id_seq_seed"
     INCREMENT 1
@@ -458,7 +478,7 @@ BEGIN
             WHERE table_schema = 'public' 
             AND table_name = 'field_demo' 
         LOOP
-            IF column_rec.column_name NOT IN ('int64_f','var_f','bool_f','int_array_f','int_array2_f','string_array_f','bool_array_f','time_f','time_array_f','json_f') THEN
+            IF column_rec.column_name NOT IN ('int64_f','var_f','bool_f','int_array_f','int_array2_f','string_array_f','bool_array_f','time_f','time_array_f') THEN
                 EXECUTE 'ALTER TABLE "public"."field_demo" DROP COLUMN IF EXISTS ' || 
                         quote_ident(column_rec.column_name) || ' CASCADE';
             END IF;
@@ -529,13 +549,6 @@ BEGIN
             ALTER TABLE "public"."field_demo" ALTER COLUMN "time_array_f" SET NOT NULL; 
             ALTER TABLE "public"."field_demo" ALTER COLUMN "time_array_f" DROP DEFAULT; ALTER TABLE "public"."field_demo" ALTER COLUMN "time_array_f" TYPE timestamptz[] USING "time_array_f"::timestamptz[];
         END IF;
-        IF NOT EXISTS (SELECT FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'field_demo' AND column_name = 'json_f' ) THEN
-            ALTER TABLE "public"."field_demo" ADD COLUMN "json_f" json;
-        ELSE
-            
-            ALTER TABLE "public"."field_demo" ALTER COLUMN "json_f" DROP NOT NULL; 
-            ALTER TABLE "public"."field_demo" ALTER COLUMN "json_f" DROP DEFAULT; ALTER TABLE "public"."field_demo" ALTER COLUMN "json_f" TYPE json USING "json_f"::json;
-        END IF;
 
         -- Search for existing unique and primary key constraints and drop them
         -- 查找并删除现有的唯一约束和主键约束
@@ -587,8 +600,7 @@ BEGIN
             "string_array_f" varchar[] NOT NULL,
             "bool_array_f" boolean[] NOT NULL,
             "time_f" timestamptz(6) NOT NULL,
-            "time_array_f" timestamptz[] NOT NULL,
-            "json_f" json
+            "time_array_f" timestamptz[] NOT NULL
         );
     END IF;
     -- Field Comment.
@@ -602,7 +614,6 @@ BEGIN
     COMMENT ON COLUMN "public"."field_demo"."bool_array_f" IS  'Bool array field';
     COMMENT ON COLUMN "public"."field_demo"."time_f" IS  'Time field';
     COMMENT ON COLUMN "public"."field_demo"."time_array_f" IS  'Time array field';
-    COMMENT ON COLUMN "public"."field_demo"."json_f" IS  'Json field';
 
     -- Primary Key.
     -- 主键。
@@ -648,6 +659,13 @@ $$;
 -- ********
 DO $$ 
 BEGIN     
+    -- 创建基础序列
+    CREATE SEQUENCE IF NOT EXISTS "public".geo_id_seq
+        INCREMENT 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        START 1
+        CACHE 1;
     -- 创建随机种子序列
     CREATE SEQUENCE IF NOT EXISTS "public"."geo_id_seq_seed"
     INCREMENT 1
@@ -936,6 +954,13 @@ $$;
 -- ********
 DO $$ 
 BEGIN     
+    -- 创建基础序列
+    CREATE SEQUENCE IF NOT EXISTS "public".post_id_seq
+        INCREMENT 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        START 1
+        CACHE 1;
     -- 创建随机种子序列
     CREATE SEQUENCE IF NOT EXISTS "public"."post_id_seq_seed"
     INCREMENT 1

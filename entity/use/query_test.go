@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/yohobala/taurus_go/testutil/unit"
+	"github.com/zodileap/taurus_go/testutil/unit"
 )
 
 func TestQuery(t *testing.T) {
@@ -90,7 +90,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.ID.GT(1),
+			db.Blogs.Id.GT(1),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -103,7 +103,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.ID.GTE(4068),
+			db.Blogs.Id.GTE(4068),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -116,7 +116,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.ID.LT(20157081),
+			db.Blogs.Id.LT(20157081),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -129,7 +129,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.ID.LTE(20157081),
+			db.Blogs.Id.LTE(20157081),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -155,7 +155,7 @@ func TestQuery(t *testing.T) {
 		defer db.Close()
 		ctx := context.Background()
 		u, err := db.Blogs.Where(
-			db.Blogs.ID.NotIn(1, 2),
+			db.Blogs.Id.NotIn(1, 2),
 		).ToList(ctx)
 		unit.Must(t, err)
 		fmt.Println(u)
@@ -208,7 +208,7 @@ func TestQuery(t *testing.T) {
 		ctx := context.Background()
 
 		u, err := db.Posts.Where(
-			db.Posts.ID.EQ(1),
+			db.Posts.Id.EQ(1),
 		).Order(db.Posts.ByID.NullsLast()).
 			ToList(ctx)
 		unit.Must(t, err)

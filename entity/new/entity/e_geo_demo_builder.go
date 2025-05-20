@@ -7,10 +7,10 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // geoentityBuilder is a builder for the GeoEntity entity.
@@ -19,7 +19,7 @@ import (
 type geoentityBuilder struct {
 	config              *geoentityConfig
 	tracker             entity.Tracker
-	ID                  geo_demo.PredID                  // ID 主键。
+	Id                  geo_demo.PredID                  // Id 主键。
 	Point               geo_demo.PredPoint               // Point 点
 	LineString          geo_demo.PredLineString          // LineString 线
 	Polygon             geo_demo.PredPolygon             // Polygon 多边形
@@ -134,7 +134,7 @@ func (s *geoentityBuilder) Where(conditions ...entitysql.PredicateFunc) *GeoEnti
 // WithID sets the "id" field of the GeoEntity.
 func (s *geoentityBuilder) WithID(id int64) func(*GeoEntity) {
 	return func(e *GeoEntity) {
-		e.ID.Set(id)
+		e.Id.Set(id)
 	}
 }
 

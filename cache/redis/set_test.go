@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yohobala/taurus_go/cache/redis"
+	"github.com/zodileap/taurus_go/cache/redis"
 )
 
 func TestSetExample(t *testing.T) {

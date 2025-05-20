@@ -3,8 +3,8 @@ package use
 import (
 	entity "taurus_go_demo/entity/new/entity"
 
-	e "github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
+	e "github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
 
 	_ "github.com/lib/pq"
 )

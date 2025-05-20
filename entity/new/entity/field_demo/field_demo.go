@@ -3,7 +3,7 @@
 package field_demo
 
 import (
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 const (
@@ -65,12 +65,6 @@ var (
 		Default:  false,
 		Required: true,
 	}
-	FieldJsonF = entitysql.Field{
-		Name:     "json_f",
-		Primary:  0,
-		Default:  false,
-		Required: false,
-	}
 )
 
 var (
@@ -84,6 +78,5 @@ var (
 		FieldBoolArrayF.Name,
 		FieldTimeF.Name,
 		FieldTimeArrayF.Name,
-		FieldJsonF.Name,
 	}
 )

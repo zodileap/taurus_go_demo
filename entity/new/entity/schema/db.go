@@ -1,8 +1,8 @@
 package schema
 
 import (
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
 )
 
 type User struct {
@@ -27,14 +27,14 @@ func (u *User) Relationships() []entity.RelationshipBuilder {
 		entity.InitRelationship().
 			HasMany(u.Post).
 			WithOne(u.Blog).
-			ReferenceKey(u.Blog.ID).
+			ReferenceKey(u.Blog.Id).
 			ForeignKey(u.Post.BlogID).
 			Update(entity.Cascade).
 			ConstraintName("fk_blog_id"),
 		entity.InitRelationship().
 			HasOne(u.Author).
 			WithMany(u.Post).
-			ReferenceKey(u.Author.ID).
+			ReferenceKey(u.Author.Id).
 			ForeignKey(u.Post.AuthorID).
 			Update(entity.Cascade).
 			ConstraintName("fk_author_id"),

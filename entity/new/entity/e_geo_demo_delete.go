@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // GeoEntityDelete is the delete action for the GeoEntity.
@@ -74,7 +74,7 @@ func (o *GeoEntityDelete) deleteSpec() (*entitysql.DeleteSpec, error) {
 		if i >= 1 {
 			o.predicates = append(o.predicates, entitysql.Or)
 		}
-		o.predicates = append(o.predicates, predID.EQ(e.ID.Get()))
+		o.predicates = append(o.predicates, predID.EQ(e.Id.Get()))
 	}
 	if ps := o.predicates; len(ps) > 0 {
 		spec.Predicate = func(p *entitysql.Predicate) {

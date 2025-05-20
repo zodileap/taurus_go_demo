@@ -5,7 +5,7 @@ package entity
 import (
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type geoentityRelation struct {

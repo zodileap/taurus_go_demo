@@ -1,14 +1,14 @@
 package schema
 
 import (
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
 type GeoEntity struct {
 	entity.Entity
-	ID              *field.Int64
+	Id              *field.Int64
 	Point           *geo.PostGIS[*geo.Point, geo.S4326, geo.GeomFromText]
 	LineString      *geo.PostGIS[*geo.LineString, geo.SDefault, geo.GeomFromText]
 	Polygon         *geo.PostGIS[*geo.Polygon, geo.SDefault, geo.GeomFromText]
@@ -34,7 +34,7 @@ func (e *GeoEntity) Config() entity.EntityConfig {
 
 func (e *GeoEntity) Fields() []entity.FieldBuilder {
 	return []entity.FieldBuilder{
-		e.ID.
+		e.Id.
 			Name("id").
 			Primary(1).
 			Comment("主键。").

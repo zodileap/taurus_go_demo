@@ -3,7 +3,7 @@
 package post
 
 import (
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 const (

@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // AuthorEntityQuery is the query action for the AuthorEntity.
@@ -170,12 +170,12 @@ func (o *AuthorEntityQuery) querySpec() *entitysql.QuerySpec {
 	for i := range s.Entity.Columns {
 		switch author.Columns[i] {
 		case author.FieldID.Name:
-			var a *authorID = new(authorID)
+			var a *author_ID = new(author_ID)
 			fieldSpace := entitysql.NewFieldSpec(author.FieldID.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case author.FieldName.Name:
-			var a *authorName = new(authorName)
+			var a *author_Name = new(author_Name)
 			fieldSpace := entitysql.NewFieldSpec(author.FieldName.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace

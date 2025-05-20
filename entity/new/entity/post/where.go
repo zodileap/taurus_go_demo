@@ -2,7 +2,7 @@
 
 package post
 
-import "github.com/yohobala/taurus_go/entity/entitysql"
+import "github.com/zodileap/taurus_go/entity/entitysql"
 
 type PredID struct {
 }

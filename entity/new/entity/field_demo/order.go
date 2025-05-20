@@ -2,7 +2,7 @@
 
 package field_demo
 
-import "github.com/yohobala/taurus_go/entity/entitysql"
+import "github.com/zodileap/taurus_go/entity/entitysql"
 
 type OrderOption func(*entitysql.Order)
 
@@ -404,50 +404,6 @@ func (b *ByTimeArrayF) NullsFirst() *ByTimeArrayF {
 }
 
 func (b *ByTimeArrayF) NullsLast() *ByTimeArrayF {
-	b.Options = append(b.Options, func(o *entitysql.Order) {
-		o.NullsLast()
-	})
-	return b
-}
-
-type ByJsonF struct {
-	OrderTerm
-	Options []OrderOption
-	Field   string
-}
-
-func (b *ByJsonF) Apply(o *entitysql.Order) {
-	o.SetColumn(FieldJsonF.Name.String())
-	if len(b.Options) == 0 {
-		b.Asc()
-	}
-	for _, opt := range b.Options {
-		opt(o)
-	}
-}
-
-func (b *ByJsonF) Desc() *ByJsonF {
-	b.Options = append(b.Options, func(o *entitysql.Order) {
-		o.Desc()
-	})
-	return b
-}
-
-func (b *ByJsonF) Asc() *ByJsonF {
-	b.Options = append(b.Options, func(o *entitysql.Order) {
-		o.Asc()
-	})
-	return b
-}
-
-func (b *ByJsonF) NullsFirst() *ByJsonF {
-	b.Options = append(b.Options, func(o *entitysql.Order) {
-		o.NullsFirst()
-	})
-	return b
-}
-
-func (b *ByJsonF) NullsLast() *ByJsonF {
 	b.Options = append(b.Options, func(o *entitysql.Order) {
 		o.NullsLast()
 	})

@@ -2,7 +2,7 @@
 
 package author
 
-import "github.com/yohobala/taurus_go/entity/entitysql"
+import "github.com/zodileap/taurus_go/entity/entitysql"
 
 type OrderOption func(*entitysql.Order)
 

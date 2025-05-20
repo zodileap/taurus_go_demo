@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // GeoEntityQuery is the query action for the GeoEntity.
@@ -170,72 +170,72 @@ func (o *GeoEntityQuery) querySpec() *entitysql.QuerySpec {
 	for i := range s.Entity.Columns {
 		switch geo_demo.Columns[i] {
 		case geo_demo.FieldID.Name:
-			var a *geoDemoID = new(geoDemoID)
+			var a *geoDemo_ID = new(geoDemo_ID)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldID.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldPoint.Name:
-			var a *geoDemoPoint = new(geoDemoPoint)
+			var a *geoDemo_Point = new(geoDemo_Point)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPoint.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldLineString.Name:
-			var a *geoDemoLineString = new(geoDemoLineString)
+			var a *geoDemo_LineString = new(geoDemo_LineString)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineString.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldPolygon.Name:
-			var a *geoDemoPolygon = new(geoDemoPolygon)
+			var a *geoDemo_Polygon = new(geoDemo_Polygon)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygon.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiPoint.Name:
-			var a *geoDemoMultiPoint = new(geoDemoMultiPoint)
+			var a *geoDemo_MultiPoint = new(geoDemo_MultiPoint)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPoint.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiLineString.Name:
-			var a *geoDemoMultiLineString = new(geoDemoMultiLineString)
+			var a *geoDemo_MultiLineString = new(geoDemo_MultiLineString)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineString.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiPolygon.Name:
-			var a *geoDemoMultiPolygon = new(geoDemoMultiPolygon)
+			var a *geoDemo_MultiPolygon = new(geoDemo_MultiPolygon)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygon.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldCircularString.Name:
-			var a *geoDemoCircularString = new(geoDemoCircularString)
+			var a *geoDemo_CircularString = new(geoDemo_CircularString)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldCircularString.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldPointJson.Name:
-			var a *geoDemoPointJson = new(geoDemoPointJson)
+			var a *geoDemo_PointJson = new(geoDemo_PointJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPointJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldLineStringJson.Name:
-			var a *geoDemoLineStringJson = new(geoDemoLineStringJson)
+			var a *geoDemo_LineStringJson = new(geoDemo_LineStringJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldLineStringJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldPolygonJson.Name:
-			var a *geoDemoPolygonJson = new(geoDemoPolygonJson)
+			var a *geoDemo_PolygonJson = new(geoDemo_PolygonJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldPolygonJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiPointJson.Name:
-			var a *geoDemoMultiPointJson = new(geoDemoMultiPointJson)
+			var a *geoDemo_MultiPointJson = new(geoDemo_MultiPointJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPointJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiLineStringJson.Name:
-			var a *geoDemoMultiLineStringJson = new(geoDemoMultiLineStringJson)
+			var a *geoDemo_MultiLineStringJson = new(geoDemo_MultiLineStringJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiLineStringJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace
 		case geo_demo.FieldMultiPolygonJson.Name:
-			var a *geoDemoMultiPolygonJson = new(geoDemoMultiPolygonJson)
+			var a *geoDemo_MultiPolygonJson = new(geoDemo_MultiPolygonJson)
 			fieldSpace := entitysql.NewFieldSpec(geo_demo.FieldMultiPolygonJson.Name)
 			fieldSpace.NameFormat = a.SqlSelectFormat()
 			s.Entity.Columns[i] = fieldSpace

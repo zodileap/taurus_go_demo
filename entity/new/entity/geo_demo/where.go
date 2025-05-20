@@ -3,8 +3,8 @@
 package geo_demo
 
 import (
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type PredID struct {

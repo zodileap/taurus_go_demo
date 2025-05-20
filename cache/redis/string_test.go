@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/yohobala/taurus_go/cache/redis"
+	"github.com/zodileap/taurus_go/cache/redis"
 )
 
 func TestStringExample(t *testing.T) {

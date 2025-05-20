@@ -5,7 +5,7 @@ package blog
 import (
 	"time"
 
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type PredID struct {

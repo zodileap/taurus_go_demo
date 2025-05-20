@@ -7,8 +7,8 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 	"taurus_go_demo/entity/new/entity/post"
 
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // PostEntityCreate is the create action for the PostEntity.
@@ -68,13 +68,13 @@ func (o *PostEntityCreate) createSpec() (*entitysql.CreateSpec, error) {
 		for j := range post.Columns {
 			switch post.Columns[j] {
 			case post.FieldID.Name:
-				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Id.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return nil, err
 				}
 				fieldSpace := entitysql.NewFieldSpec(post.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Id.SqlFormatParam()
 				fieldSpace.Default = true
 				fields = append(fields, &fieldSpace)
 			case post.FieldContent.Name:

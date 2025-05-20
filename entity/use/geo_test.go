@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/testutil/unit"
-	"github.com/yohobala/taurus_go/tlog"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/testutil/unit"
+	"github.com/zodileap/taurus_go/tlog"
 )
 
 func TestGeo(t *testing.T) {

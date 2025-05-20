@@ -7,15 +7,15 @@ import (
 	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 type AuthorEntity struct {
 	internal.Entity `json:"-"`
 	config          *authorentityConfig
-	ID              *authorID // ID Author primary key
-	Name            *authorName
+	Id              *author_ID // Id Author primary key
+	Name            *author_Name
 
 	Posts []*PostEntity `json:"posts,omitempty"`
 }
@@ -48,8 +48,8 @@ func (c *authorentityConfig) New() internal.Entity {
 		},
 	}
 	e.setState(entity.Detached)
-	e.ID = newAuthorID(e.config)
-	e.Name = newAuthorName(e.config)
+	e.Id = newAuthor_ID(e.config)
+	e.Name = newAuthor_Name(e.config)
 	return e
 }
 
@@ -61,8 +61,8 @@ func (c *authorentityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *AuthorEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Name: %v, Posts: %v}",
-		e.ID,
+	return fmt.Sprintf("{ Id: %v, Name: %v, Posts: %v}",
+		e.Id,
 		e.Name,
 		e.Posts,
 	)
@@ -105,7 +105,7 @@ func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range author.Columns {
 			switch c.String() {
 			case author.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case author.FieldName.Name.String():
@@ -120,7 +120,7 @@ func (e *AuthorEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case author.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case author.FieldName.Name.String():
@@ -154,7 +154,7 @@ func mergeAuthorEntity(es []*AuthorEntity, e *AuthorEntity) []*AuthorEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if v.ID.Get() == e.ID.Get() {
+		if v.Id.Get() == e.Id.Get() {
 			for _, post := range e.Posts {
 				posts := mergePostEntity(v.Posts, post)
 				if len(posts) > 0 {

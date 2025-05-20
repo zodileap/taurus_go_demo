@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/blog"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // BlogEntityUpdate is the update action for the BlogEntity.
@@ -89,37 +89,37 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 		// 因为判断过predicates和set长度，所以这里默认等长
 		index := len(o.predicates) - 1
 		if i > 0 {
-			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], entitysql.Or, predID.EQ(e.Id.Get()))
 		} else {
-			o.predicates[index] = append(o.predicates[index], predID.EQ(e.ID.Get()))
+			o.predicates[index] = append(o.predicates[index], predID.EQ(e.Id.Get()))
 		}
 		num++
 		for _, f := range fields {
 			switch f {
 			case blog.FieldID.Name.String():
-				v, err := e.ID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Id.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return err
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.ID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Id.SqlFormatParam()
 				o.sets[index][blog.FieldID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			case blog.FieldUUID.Name.String():
-				v, err := e.UUID.SqlParam(o.config.Driver.Dialect())
+				v, err := e.Uuid.SqlParam(o.config.Driver.Dialect())
 				if err != nil {
 					return err
 				}
 				fieldSpace := entitysql.NewFieldSpec(blog.FieldUUID.Name)
 				fieldSpace.Param = v
-				fieldSpace.ParamFormat = e.UUID.SqlFormatParam()
+				fieldSpace.ParamFormat = e.Uuid.SqlFormatParam()
 				o.sets[index][blog.FieldUUID.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			case blog.FieldDescription.Name.String():
@@ -132,7 +132,7 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.Description.SqlFormatParam()
 				o.sets[index][blog.FieldDescription.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			case blog.FieldCreatedTime.Name.String():
@@ -145,7 +145,7 @@ func (o *BlogEntityUpdate) setEntity(spec *entitysql.UpdateSpec) error {
 				fieldSpace.ParamFormat = e.CreatedTime.SqlFormatParam()
 				o.sets[index][blog.FieldCreatedTime.Name.String()] = entitysql.CaseSpec{
 					Field: fieldSpace,
-					When:  predID.EQ(e.ID.Get()),
+					When:  predID.EQ(e.Id.Get()),
 				}
 				num++
 			}

@@ -8,9 +8,9 @@ import (
 	"taurus_go_demo/entity/new/entity/internal"
 	"time"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // blogentityBuilder is a builder for the BlogEntity entity.
@@ -19,8 +19,8 @@ import (
 type blogentityBuilder struct {
 	config      *blogentityConfig
 	tracker     entity.Tracker
-	ID          blog.PredID // ID Blog primary key
-	UUID        blog.PredUUID
+	Id          blog.PredID // Id Blog primary key
+	Uuid        blog.PredUUID
 	Description blog.PredDescription
 	CreatedTime blog.PredCreatedTime
 	// ByID configures the query to sort results based on the 'id' field of the entity.

@@ -6,12 +6,11 @@ import (
 	"context"
 	"taurus_go_demo/entity/new/entity/field_demo"
 	"taurus_go_demo/entity/new/entity/internal"
-	"taurus_go_demo/entity/new/entity/schema"
 	"time"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // fielddemoentityBuilder is a builder for the FieldDemoEntity entity.
@@ -29,7 +28,6 @@ type fielddemoentityBuilder struct {
 	BoolArrayF   field_demo.PredBoolArrayF   // BoolArrayF Bool array field
 	TimeF        field_demo.PredTimeF        // TimeF Time field
 	TimeArrayF   field_demo.PredTimeArrayF   // TimeArrayF Time array field
-	JsonF        field_demo.PredJsonF        // JsonF Json field
 	// ByInt64F configures the query to sort results based on the 'int64_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByInt64F field_demo.ByInt64F
@@ -57,9 +55,6 @@ type fielddemoentityBuilder struct {
 	// ByTimeArrayF configures the query to sort results based on the 'time_array_f' field of the entity.
 	// Sorting entities in ascending order by default.
 	ByTimeArrayF field_demo.ByTimeArrayF
-	// ByJsonF configures the query to sort results based on the 'json_f' field of the entity.
-	// Sorting entities in ascending order by default.
-	ByJsonF field_demo.ByJsonF
 }
 
 // newFieldDemoEntityBuilder creates a new FieldDemoEntityBuilder .
@@ -114,13 +109,6 @@ func (s *fielddemoentityBuilder) Order(o ...field_demo.OrderTerm) *FieldDemoEnti
 func (s *fielddemoentityBuilder) Where(conditions ...entitysql.PredicateFunc) *FieldDemoEntityQuery {
 	query := s.initQuery()
 	return query.Where(conditions...)
-}
-
-// WithJsonF sets the "json_f" field of the FieldDemoEntity.
-func (s *fielddemoentityBuilder) WithJsonF(jsonf schema.JsonFStruct) func(*FieldDemoEntity) {
-	return func(e *FieldDemoEntity) {
-		e.JsonF.Set(jsonf)
-	}
 }
 
 // Exec executes all the fielddemoentityMutations for the FieldDemoEntity.

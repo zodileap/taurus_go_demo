@@ -7,9 +7,9 @@ import (
 	"taurus_go_demo/entity/new/entity/author"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/dialect"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/dialect"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // authorentityBuilder is a builder for the AuthorEntity entity.
@@ -18,7 +18,7 @@ import (
 type authorentityBuilder struct {
 	config  *authorentityConfig
 	tracker entity.Tracker
-	ID      author.PredID // ID Author primary key
+	Id      author.PredID // Id Author primary key
 	Name    author.PredName
 	// ByID configures the query to sort results based on the 'id' field of the entity.
 	// Sorting entities in ascending order by default.

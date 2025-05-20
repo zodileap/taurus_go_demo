@@ -6,25 +6,25 @@ import (
 	"taurus_go_demo/entity/new/entity/blog"
 	"time"
 
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/field"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/field"
 )
 
-// blogID is ID field
-type blogID struct {
+// blog_ID is Id field
+type blog_ID struct {
 	field.IntStorage[int64]
 	config *blogentityConfig
 }
 
-// newblogID creates a new blogID
-func newBlogID(c *blogentityConfig) *blogID {
-	t := &blogID{}
+// newblog_ID creates a new blog_ID
+func newBlog_ID(c *blogentityConfig) *blog_ID {
+	t := &blog_ID{}
 	t.config = c
 	return t
 }
 
-// Set sets the value of ID field
-func (t *blogID) Set(v int64) {
+// Set sets the value of Id field
+func (t *blog_ID) Set(v int64) {
 	t.IntStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.blogentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -32,28 +32,28 @@ func (t *blogID) Set(v int64) {
 	}
 }
 
-// Get gets the value of ID field
+// Get gets the value of Id field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *blogID) Get() int64 {
+func (t *blog_ID) Get() int64 {
 	return *t.IntStorage.Get()
 }
 
-// blogUUID is UUID field
-type blogUUID struct {
+// blog_UUID is Uuid field
+type blog_UUID struct {
 	field.StringStorage[string]
 	config *blogentityConfig
 }
 
-// newblogUUID creates a new blogUUID
-func newBlogUUID(c *blogentityConfig) *blogUUID {
-	t := &blogUUID{}
+// newblog_UUID creates a new blog_UUID
+func newBlog_UUID(c *blogentityConfig) *blog_UUID {
+	t := &blog_UUID{}
 	t.config = c
 	return t
 }
 
-// Set sets the value of UUID field
-func (t *blogUUID) Set(v string) {
+// Set sets the value of Uuid field
+func (t *blog_UUID) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.blogentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -61,28 +61,28 @@ func (t *blogUUID) Set(v string) {
 	}
 }
 
-// Get gets the value of UUID field
+// Get gets the value of Uuid field
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
-func (t *blogUUID) Get() string {
+func (t *blog_UUID) Get() string {
 	return *t.StringStorage.Get()
 }
 
-// blogDescription is Description field
-type blogDescription struct {
+// blog_Description is Description field
+type blog_Description struct {
 	field.StringStorage[string]
 	config *blogentityConfig
 }
 
-// newblogDescription creates a new blogDescription
-func newBlogDescription(c *blogentityConfig) *blogDescription {
-	t := &blogDescription{}
+// newblog_Description creates a new blog_Description
+func newBlog_Description(c *blogentityConfig) *blog_Description {
+	t := &blog_Description{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of Description field
-func (t *blogDescription) Set(v string) {
+func (t *blog_Description) Set(v string) {
 	t.StringStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.blogentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -94,25 +94,25 @@ func (t *blogDescription) Set(v string) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *blogDescription) Get() *string {
+func (t *blog_Description) Get() *string {
 	return t.StringStorage.Get()
 }
 
-// blogCreatedTime is CreatedTime field
-type blogCreatedTime struct {
+// blog_CreatedTime is CreatedTime field
+type blog_CreatedTime struct {
 	field.TimestampStorage[time.Time]
 	config *blogentityConfig
 }
 
-// newblogCreatedTime creates a new blogCreatedTime
-func newBlogCreatedTime(c *blogentityConfig) *blogCreatedTime {
-	t := &blogCreatedTime{}
+// newblog_CreatedTime creates a new blog_CreatedTime
+func newBlog_CreatedTime(c *blogentityConfig) *blog_CreatedTime {
+	t := &blog_CreatedTime{}
 	t.config = c
 	return t
 }
 
 // Set sets the value of CreatedTime field
-func (t *blogCreatedTime) Set(v time.Time) {
+func (t *blog_CreatedTime) Set(v time.Time) {
 	t.TimestampStorage.Set(v)
 	if t.config.State() == entity.Unchanged || t.config.State() == entity.Modified {
 		t.config.blogentityMutations.ChangeEntityState(t.config.Mutation, entity.Modified)
@@ -124,6 +124,6 @@ func (t *blogCreatedTime) Set(v time.Time) {
 //
 // If the field is required, it returns the value type; otherwise, it returns a pointer type.
 
-func (t *blogCreatedTime) Get() *time.Time {
+func (t *blog_CreatedTime) Get() *time.Time {
 	return t.TimestampStorage.Get()
 }

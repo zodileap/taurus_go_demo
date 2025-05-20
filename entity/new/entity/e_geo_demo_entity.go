@@ -7,29 +7,29 @@ import (
 	"taurus_go_demo/entity/new/entity/geo_demo"
 	"taurus_go_demo/entity/new/entity/internal"
 
-	"github.com/yohobala/taurus_go/datautil/geo"
-	"github.com/yohobala/taurus_go/entity"
-	"github.com/yohobala/taurus_go/entity/entitysql"
+	"github.com/zodileap/taurus_go/datautil/geo"
+	"github.com/zodileap/taurus_go/entity"
+	"github.com/zodileap/taurus_go/entity/entitysql"
 )
 
 // Geo的类型测试
 type GeoEntity struct {
 	internal.Entity     `json:"-"`
 	config              *geoentityConfig
-	ID                  *geoDemoID                  // ID 主键。
-	Point               *geoDemoPoint               // Point 点
-	LineString          *geoDemoLineString          // LineString 线
-	Polygon             *geoDemoPolygon             // Polygon 多边形
-	MultiPoint          *geoDemoMultiPoint          // MultiPoint 多点
-	MultiLineString     *geoDemoMultiLineString     // MultiLineString 多线
-	MultiPolygon        *geoDemoMultiPolygon        // MultiPolygon 多多边形
-	CircularString      *geoDemoCircularString      // CircularString 圆弧
-	PointJson           *geoDemoPointJson           // PointJson 点
-	LineStringJson      *geoDemoLineStringJson      // LineStringJson 线
-	PolygonJson         *geoDemoPolygonJson         // PolygonJson 多边形
-	MultiPointJson      *geoDemoMultiPointJson      // MultiPointJson 多点
-	MultiLineStringJson *geoDemoMultiLineStringJson // MultiLineStringJson 多线
-	MultiPolygonJson    *geoDemoMultiPolygonJson    // MultiPolygonJson 多多边形
+	Id                  *geoDemo_ID                  // Id 主键。
+	Point               *geoDemo_Point               // Point 点
+	LineString          *geoDemo_LineString          // LineString 线
+	Polygon             *geoDemo_Polygon             // Polygon 多边形
+	MultiPoint          *geoDemo_MultiPoint          // MultiPoint 多点
+	MultiLineString     *geoDemo_MultiLineString     // MultiLineString 多线
+	MultiPolygon        *geoDemo_MultiPolygon        // MultiPolygon 多多边形
+	CircularString      *geoDemo_CircularString      // CircularString 圆弧
+	PointJson           *geoDemo_PointJson           // PointJson 点
+	LineStringJson      *geoDemo_LineStringJson      // LineStringJson 线
+	PolygonJson         *geoDemo_PolygonJson         // PolygonJson 多边形
+	MultiPointJson      *geoDemo_MultiPointJson      // MultiPointJson 多点
+	MultiLineStringJson *geoDemo_MultiLineStringJson // MultiLineStringJson 多线
+	MultiPolygonJson    *geoDemo_MultiPolygonJson    // MultiPolygonJson 多多边形
 }
 
 // geoentityConfig holds the configuration for the GeoEntity.
@@ -60,20 +60,20 @@ func (c *geoentityConfig) New() internal.Entity {
 		},
 	}
 	e.setState(entity.Detached)
-	e.ID = newGeoDemoID(e.config)
-	e.Point = newGeoDemoPoint(e.config)
-	e.LineString = newGeoDemoLineString(e.config)
-	e.Polygon = newGeoDemoPolygon(e.config)
-	e.MultiPoint = newGeoDemoMultiPoint(e.config)
-	e.MultiLineString = newGeoDemoMultiLineString(e.config)
-	e.MultiPolygon = newGeoDemoMultiPolygon(e.config)
-	e.CircularString = newGeoDemoCircularString(e.config)
-	e.PointJson = newGeoDemoPointJson(e.config)
-	e.LineStringJson = newGeoDemoLineStringJson(e.config)
-	e.PolygonJson = newGeoDemoPolygonJson(e.config)
-	e.MultiPointJson = newGeoDemoMultiPointJson(e.config)
-	e.MultiLineStringJson = newGeoDemoMultiLineStringJson(e.config)
-	e.MultiPolygonJson = newGeoDemoMultiPolygonJson(e.config)
+	e.Id = newGeoDemo_ID(e.config)
+	e.Point = newGeoDemo_Point(e.config)
+	e.LineString = newGeoDemo_LineString(e.config)
+	e.Polygon = newGeoDemo_Polygon(e.config)
+	e.MultiPoint = newGeoDemo_MultiPoint(e.config)
+	e.MultiLineString = newGeoDemo_MultiLineString(e.config)
+	e.MultiPolygon = newGeoDemo_MultiPolygon(e.config)
+	e.CircularString = newGeoDemo_CircularString(e.config)
+	e.PointJson = newGeoDemo_PointJson(e.config)
+	e.LineStringJson = newGeoDemo_LineStringJson(e.config)
+	e.PolygonJson = newGeoDemo_PolygonJson(e.config)
+	e.MultiPointJson = newGeoDemo_MultiPointJson(e.config)
+	e.MultiLineStringJson = newGeoDemo_MultiLineStringJson(e.config)
+	e.MultiPolygonJson = newGeoDemo_MultiPolygonJson(e.config)
 	return e
 }
 
@@ -85,8 +85,8 @@ func (c *geoentityConfig) Desc() internal.EntityConfigDesc {
 
 // String implements the fmt.Stringer interface.
 func (e *GeoEntity) String() string {
-	return fmt.Sprintf("{ ID: %v, Point: %v, LineString: %v, Polygon: %v, MultiPoint: %v, MultiLineString: %v, MultiPolygon: %v, CircularString: %v, PointJson: %v, LineStringJson: %v, PolygonJson: %v, MultiPointJson: %v, MultiLineStringJson: %v, MultiPolygonJson: %v}",
-		e.ID,
+	return fmt.Sprintf("{ Id: %v, Point: %v, LineString: %v, Polygon: %v, MultiPoint: %v, MultiLineString: %v, MultiPolygon: %v, CircularString: %v, PointJson: %v, LineStringJson: %v, PolygonJson: %v, MultiPointJson: %v, MultiLineStringJson: %v, MultiPolygonJson: %v}",
+		e.Id,
 		e.Point,
 		e.LineString,
 		e.Polygon,
@@ -139,7 +139,7 @@ func (e *GeoEntity) scan(fields []entitysql.ScannerField) []any {
 		for i, c := range geo_demo.Columns {
 			switch c.String() {
 			case geo_demo.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case geo_demo.FieldPoint.Name.String():
@@ -202,7 +202,7 @@ func (e *GeoEntity) scan(fields []entitysql.ScannerField) []any {
 		for i := range fields {
 			switch fields[i].String() {
 			case geo_demo.FieldID.Name.String():
-				v := e.ID
+				v := e.Id
 				v.Set(*new(int64))
 				args[i] = v
 			case geo_demo.FieldPoint.Name.String():
@@ -277,7 +277,7 @@ func mergeGeoEntity(es []*GeoEntity, e *GeoEntity) []*GeoEntity {
 	} else {
 		v := es[len(es)-1]
 
-		if v.ID.Get() == e.ID.Get() {
+		if v.Id.Get() == e.Id.Get() {
 		} else {
 			es = append(es, e)
 		}
